@@ -1,2 +1,6 @@
 export { default as Home } from './Home.vue'
 export { default as About } from './About.vue'
+export { default as Contact } from './Contact.vue'
+export { default as Articles } from './Articles.vue'
+export { default as Categories } from './Categories.vue'
+export { default as Post } from './Post.vue'
