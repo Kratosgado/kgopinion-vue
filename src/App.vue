@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView } from 'vue-router'
 import { Footer } from '@/components'
 import { useAuth } from './lib'
 
-const route = useRoute()
 const { state: authState, signOut } = useAuth()
 </script>
 
