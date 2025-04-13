@@ -1,4 +1,15 @@
-import { Home, About, Contact, Articles, Categories, Post, Auth, Profile, Dashboard } from '@/views'
+import {
+  Home,
+  About,
+  Contact,
+  Articles,
+  Categories,
+  Post,
+  Auth,
+  Profile,
+  Dashboard,
+  PostEditor,
+} from '@/views'
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -12,6 +23,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/auth', component: Auth },
   { path: '/auth/profile', component: Profile },
   { path: '/auth/dashboard', component: Dashboard },
+  { path: '/editor', component: PostEditor },
 ]
 
 export const router = createRouter({
