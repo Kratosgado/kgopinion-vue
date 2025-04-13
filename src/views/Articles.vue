@@ -49,8 +49,13 @@ const filteredPosts = computed(() =>
     <!-- Category Filter -->
     <div class="mb-8">
       <div class="flex flex-wrap gap-2">
-        <button v-for="category in categories" :key="category" class="btn btn-sm"
-          :class="selectedCategory === category ? 'btn-primary' : 'btn-outline'" @click="selectedCategory = category">
+        <button
+          v-for="category in categories"
+          :key="category"
+          class="btn btn-sm"
+          :class="selectedCategory === category ? 'btn-primary' : 'btn-outline'"
+          @click="selectedCategory = category"
+        >
           {{ category === 'all' ? 'All Categories' : category }}
         </button>
       </div>

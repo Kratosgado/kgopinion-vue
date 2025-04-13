@@ -34,7 +34,8 @@ const { state: authState, signOut } = useAuth()
               <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }">Articles</RouterLink>
             </li>
             <li>
-              <a href="/articles/categories" :class="{ active: $route.path === '/articles/categories' }">Categories</a>
+              <RouterLink to="/articles/categories" :class="{ active: $route.path === '/articles/categories' }">
+                Categories</RouterLink>
             </li>
             <li>
               <RouterLink to="/about" :class="{ active: $route.path === '/about' }">About</RouterLink>

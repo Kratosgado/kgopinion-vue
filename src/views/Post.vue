@@ -391,7 +391,7 @@ const likeComment = (commentId: string) => {
           <div v-if="relatedPosts.length" class="mb-8 rounded-box bg-base-100 p-6 shadow-xl">
             <h3 class="mb-4 text-xl font-bold">Related Posts</h3>
             <div class="space-y-6">
-              <div v-for="relatedPost in relatedPosts" :key="relatedPost.id" class="flex gap-4">
+              <div v-for="relatedPost in relatedPosts" :key="relatedPost.slug" class="flex gap-4">
                 <img
                   :src="relatedPost.featuredImage || '/placeholder.svg'"
                   :alt="relatedPost.title"

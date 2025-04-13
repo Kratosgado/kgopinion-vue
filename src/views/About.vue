@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { Loading } from '@/components'
+import type { SEO, SEOMetadata } from '@/lib/seo'
+
+const metadata: SEOMetadata = {
+  title: 'About - KgOpinion',
+  description:
+    'Learn more about KgOpinion and its mission to provide high-quality content on web development, design, and technology.',
+  keywords: ['about', 'mission', 'team', 'community', 'contact'],
+  type: 'website',
+  ogImage: '/static/favicon.ico',
+}
+
+const loading = ref(true)
+
+onMounted(() => {
+  loading.value = false
+})
+</script>
 <template>
   <div class="container mx-auto px-4 py-12">
     <SEO :metadata="metadata" />
@@ -52,24 +72,3 @@
     <Loading v-if="loading" />
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { SEO, Loading } from '@/components'
-import type { SEOMetadata } from '@/lib/seo'
-
-const metadata: SEOMetadata = {
-  title: 'About - KgOpinion',
-  description:
-    'Learn more about KgOpinion and its mission to provide high-quality content on web development, design, and technology.',
-  keywords: ['about', 'mission', 'team', 'community', 'contact'],
-  type: 'website',
-  ogImage: '/static/favicon.ico',
-}
-
-const loading = ref(true)
-
-onMounted(() => {
-  loading.value = false
-})
-</script>
