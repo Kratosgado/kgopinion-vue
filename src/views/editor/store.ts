@@ -1,0 +1,28 @@
+import { reactive } from 'vue'
+import { type Post } from '@/lib'
+
+export const post: Post = reactive({
+  title: 'Untitled Blog',
+  content: '',
+  slug: '',
+  published: false,
+  categories: [],
+  keywords: [],
+  authorId: '',
+  commentCount: 0,
+  likeCount: 0,
+  featuredImage: undefined,
+  excerpt: '',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+})
+
+export const extra = reactive({
+  linkText: '',
+  showImageModal: false,
+  showLinkModal: false,
+  showYoutubeModal: false,
+  error: '',
+  success: '',
+  featured: false,
+})
