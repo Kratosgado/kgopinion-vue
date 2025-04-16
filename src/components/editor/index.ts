@@ -1,6 +1,6 @@
 export * from './ResizableImage'
-export * from './CommandList'
-export * from './SlashCommands'
+// export * from './CommandList'
+// export * from './SlashCommands'
 export * from './extensions'
 // export * from './YoutubeExtension'
 // export { default as YoutubeModal } from './YoutubeModal.svelte';

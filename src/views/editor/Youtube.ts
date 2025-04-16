@@ -56,11 +56,11 @@ export default Node.create({
     }
   },
 
-  addCommands() {
+  addCommands(): any {
     return {
       setYoutube:
         (options: { src: string }) =>
-        ({ commands }) => {
+        ({ commands }: any) => {
           return commands.insertContent({
             type: this.name,
             attrs: options,

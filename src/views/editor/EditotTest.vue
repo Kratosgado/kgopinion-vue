@@ -3,14 +3,14 @@ import StarterKit from '@tiptap/starter-kit'
 import { Editor, EditorContent, useEditor, type AnyExtension } from '@tiptap/vue-3'
 
 import Commands from './commands.js'
-import suggestion from './suggestion.js'
+// import suggestion from './suggestion.js'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const editor = useEditor({
   extensions: [
     StarterKit as AnyExtension,
     Commands.configure({
-      suggestion,
+      // suggestion,
     }),
   ],
   content: `

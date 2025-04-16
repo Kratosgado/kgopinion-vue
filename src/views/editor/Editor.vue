@@ -5,10 +5,10 @@ import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 import { post, extra } from './store'
 import BubbleMenu from '@tiptap/extension-bubble-menu'
-import { EditorContent, Editor } from '@tiptap/vue-3'
+import { EditorContent, Editor, type AnyExtension } from '@tiptap/vue-3'
 import Commands from './commands'
 import SlashCommands from './SlashCommands'
-import { suggestions } from './CommandList'
+// import { suggestions } from './CommandList'
 // Editor state
 const editor = ref<Editor | undefined>(undefined)
 const characterCount = ref(0)
@@ -17,14 +17,14 @@ const characterCount = ref(0)
 onMounted(() => {
   editor.value = new Editor({
     extensions: [
-      StarterKit,
+      StarterKit as AnyExtension,
       Image.configure({
         inline: true,
         allowBase64: true,
       }),
-      Commands.configure({
-        suggestions,
-      }),
+      // Commands.configure({
+      //   suggestions,
+      // }),
       Link.configure({
         openOnClick: false,
       }),
@@ -45,7 +45,7 @@ onMounted(() => {
       //   },
       // }),
       BubbleMenu.configure({
-        element: document.querySelector('.modal'),
+        element: document.querySelector('.modal') as HTMLElement,
       }),
       // FloatingMenu.configure({
       //   element: document.createElement('div'),
@@ -104,21 +104,21 @@ const addYoutube = (url: string) => {
       <!--   {{ command.title }} -->
       <!-- </button> -->
     </div>
-    <bubble-menu class="bubble-menu" :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
-      <div class="bubble-menu">
-        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
-          Bold
-        </button>
-        <button @click="editor.chain().focus().toggleItalic().run()"
-          :class="{ 'is-active': editor.isActive('italic') }">
-          Italic
-        </button>
-        <button @click="editor.chain().focus().toggleStrike().run()"
-          :class="{ 'is-active': editor.isActive('strike') }">
-          Strike
-        </button>
-      </div>
-    </bubble-menu>
+    <!-- <bubble-menu class="bubble-menu" :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor"> -->
+    <!--   <div class="bubble-menu"> -->
+    <!--     <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }"> -->
+    <!--       Bold -->
+    <!--     </button> -->
+    <!--     <button @click="editor.chain().focus().toggleItalic().run()" -->
+    <!--       :class="{ 'is-active': editor.isActive('italic') }"> -->
+    <!--       Italic -->
+    <!--     </button> -->
+    <!--     <button @click="editor.chain().focus().toggleStrike().run()" -->
+    <!--       :class="{ 'is-active': editor.isActive('strike') }"> -->
+    <!--       Strike -->
+    <!--     </button> -->
+    <!--   </div> -->
+    <!-- </bubble-menu> -->
     <EditorContent :editor="editor as any" />
     <!-- <div ref="editorElement" class="prose min-h-[500px] max-w-none border rounded p-4"></div> -->
     <div v-if="editor" class="editor-info mt-2 text-sm text-gray-500">

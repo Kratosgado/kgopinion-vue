@@ -1,4 +1,4 @@
-import type { Extensions } from '@tiptap/core'
+import type { AnyExtension, Extensions } from '@tiptap/core'
 import Link from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
 import Focus from '@tiptap/extension-focus'
@@ -20,11 +20,11 @@ import TaskList from '@tiptap/extension-task-list'
 import TextStyle from '@tiptap/extension-text-style'
 import Typography from '@tiptap/extension-typography'
 import Underline from '@tiptap/extension-underline'
-import SlashCommands from './SlashCommands'
+// import SlashCommands from './SlashCommands'
 import StarterKit from '@tiptap/starter-kit'
 
 export const extensions: Extensions = [
-  StarterKit,
+  StarterKit as AnyExtension,
   Image.configure({
     HTMLAttributes: {
       class: 'rounded-box shadow-lg mx-auto max-w-full h-auto cursor-move',
@@ -49,7 +49,7 @@ export const extensions: Extensions = [
   Placeholder.configure({
     placeholder: 'Start writing your article...',
   }),
-  SlashCommands,
+  // SlashCommands,
   // CodeBlockLowlight.configure({ lowlight }),
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   // TextStyle.configure({ types: [ListItem.name] }),
