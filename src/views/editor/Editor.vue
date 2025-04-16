@@ -3,58 +3,15 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-// import { lowlight } from 'lowlight'
-// import javascript from 'highlight.js/lib/languages/javascript'
 import { post, extra } from './store'
 import BubbleMenu from '@tiptap/extension-bubble-menu'
-import { useRouter } from 'vue-router'
 import { EditorContent, Editor } from '@tiptap/vue-3'
-
-// Register language for code highlighting
-// lowlight.registerLanguage('javascript', javascript)
-
+import Commands from './commands'
+import SlashCommands from './SlashCommands'
+import { suggestions } from './CommandList'
 // Editor state
 const editor = ref<Editor | undefined>(undefined)
 const characterCount = ref(0)
-// const router = useRouter()
-//
-// // Slash command configuration
-// const commands = [
-//   {
-//     title: 'Heading 1',
-//     command: ({ editor }: { editor: Editor }) =>
-//       editor.chain().focus().toggleHeading({ level: 1 }).run(),
-//   },
-//   {
-//     title: 'Heading 2',
-//     command: ({ editor }: { editor: Editor }) =>
-//       editor.chain().focus().toggleHeading({ level: 2 }).run(),
-//   },
-//   {
-//     title: 'Bold',
-//     command: ({ editor }: { editor: Editor }) => editor.chain().focus().toggleBold().run(),
-//   },
-//   {
-//     title: 'Italic',
-//     command: ({ editor }: { editor: Editor }) => editor.chain().focus().toggleItalic().run(),
-//   },
-//   {
-//     title: 'Bullet List',
-//     command: ({ editor }: { editor: Editor }) => editor.chain().focus().toggleBulletList().run(),
-//   },
-//   {
-//     title: 'Ordered List',
-//     command: ({ editor }: { editor: Editor }) => editor.chain().focus().toggleOrderedList().run(),
-//   },
-//   { title: 'Image', command: () => (extra.showImageModal = true) },
-//   { title: 'Link', command: () => (extra.showLinkModal = true) },
-//   { title: 'YouTube', command: () => (extra.showYoutubeModal = true) },
-//   {
-//     title: 'Code Block',
-//     command: ({ editor }: { editor: Editor }) => editor.chain().focus().toggleCodeBlock().run(),
-//   },
-// ]
 
 // Initialize editor
 onMounted(() => {
@@ -65,9 +22,13 @@ onMounted(() => {
         inline: true,
         allowBase64: true,
       }),
+      Commands.configure({
+        suggestions,
+      }),
       Link.configure({
         openOnClick: false,
       }),
+      // SlashCommands,
       // CodeBlockLowlight.configure({
       //   lowlight,
       // }),
