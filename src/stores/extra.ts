@@ -18,11 +18,12 @@ export const post: Post = reactive({
 })
 
 export const extra = reactive({
+  linkUrl: '',
   linkText: '',
   showImageModal: false,
   showLinkModal: false,
   showYoutubeModal: false,
   error: '',
   success: '',
-  featured: false,
+  isFeatured: false,
 })

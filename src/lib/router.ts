@@ -10,7 +10,6 @@ import {
   Dashboard,
   PostEditor,
 } from '@/views'
-import EditotTest from '@/views/editor/EditotTest.vue'
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -25,7 +24,6 @@ const routes: RouteRecordRaw[] = [
   { path: '/auth/profile', component: Profile },
   { path: '/auth/dashboard', component: Dashboard },
   { path: '/editor', component: PostEditor },
-  { path: '/test', component: EditotTest },
 ]
 
 export const router = createRouter({

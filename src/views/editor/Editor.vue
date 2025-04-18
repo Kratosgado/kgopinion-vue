@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import { post, extra } from '@/stores'
 import { EditorContent, Editor, type AnyExtension, useEditor } from '@tiptap/vue-3'
-import { extensions } from '@/components'
+import { extensions, YoutubeModal, LinkModal, ImageModal } from '@/components'
 
 // Editor state
 const editor = useEditor({
   extensions,
-
 })
 const characterCount = ref(0)
-
 
 // Cleanup editor
 onUnmounted(() => {
@@ -19,27 +17,6 @@ onUnmounted(() => {
   }
 })
 
-// Toolbar actions
-const setLink = (url: string) => {
-  if (editor.value) {
-    editor.value.chain().focus().setLink({ href: url }).run()
-    extra.showLinkModal = false
-  }
-}
-
-const addImage = (url: string) => {
-  if (editor.value) {
-    editor.value.chain().focus().setImage({ src: url }).run()
-    extra.showImageModal = false
-  }
-}
-
-const addYoutube = (url: string) => {
-  if (editor.value) {
-    // editor.value.chain().focus().setYoutube({ src: url }).run()
-    extra.showYoutubeModal = false
-  }
-}
 </script>
 
 <template>
@@ -69,7 +46,7 @@ const addYoutube = (url: string) => {
     <!--     </button> -->
     <!--   </div> -->
     <!-- </bubble-menu> -->
-    <EditorContent :editor="editor as any" />
+    <EditorContent :editor="editor" />
     <!-- <div ref="editorElement" class="prose min-h-[500px] max-w-none border rounded p-4"></div> -->
     <div v-if="editor" class="editor-info mt-2 text-sm text-gray-500">
       <span>Type <kbd>/</kbd> for commands</span> |
@@ -77,40 +54,9 @@ const addYoutube = (url: string) => {
     </div>
 
     <!-- Modals -->
-    <div v-if="extra.showLinkModal" class="modal modal-open">
-      <div class="modal-box">
-        <h3 class="font-bold text-lg">Insert Link</h3>
-        <input v-model="extra.linkText" type="text" placeholder="Enter URL" class="input input-bordered w-full mt-2" />
-        <div class="modal-action">
-          <button class="btn" @click="extra.showLinkModal = false">Cancel</button>
-          <button class="btn btn-primary" @click="setLink(extra.linkText)">Insert</button>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="extra.showImageModal" class="modal modal-open">
-      <div class="modal-box">
-        <h3 class="font-bold text-lg">Insert Image</h3>
-        <input type="text" placeholder="Enter image URL" class="input input-bordered w-full mt-2"
-          @change="(e) => addImage((e.target as HTMLInputElement).value)" />
-        <div class="modal-action">
-          <button class="btn" @click="extra.showImageModal = false">Cancel</button>
-          <button class="btn btn-primary" @click="extra.showImageModal = false">Insert</button>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="extra.showYoutubeModal" class="modal modal-open">
-      <div class="modal-box">
-        <h3 class="font-bold text-lg">Insert YouTube Video</h3>
-        <input type="text" placeholder="Enter YouTube URL" class="input input-bordered w-full mt-2"
-          @change="(e) => addYoutube((e.target as HTMLInputElement).value)" />
-        <div class="modal-action">
-          <button class="btn" @click="extra.showYoutubeModal = false">Cancel</button>
-          <button class="btn btn-primary" @click="extra.showYoutubeModal = false">Insert</button>
-        </div>
-      </div>
-    </div>
+    <LinkModal :editor="editor!" />
+    <YoutubeModal :editor="editor!" />
+    <ImageModal :editor="editor!" />
   </div>
 </template>
 

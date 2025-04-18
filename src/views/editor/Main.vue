@@ -5,6 +5,7 @@ import Details from './Details.vue'
 import Preview from './Preview.vue'
 
 const showPreview = ref(false)
+
 </script>
 
 <template>

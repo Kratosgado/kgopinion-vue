@@ -12,7 +12,7 @@ const newKeyword = ref('')
 
 async function selectImage() {
   extra.showImageModal = true
-  extra.featured = true
+  extra.isFeatured = true
 }
 
 async function savePost() {
