@@ -1,4 +1,3 @@
-import type { AnyExtension, Extensions } from '@tiptap/core'
 import Link from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
 import Focus from '@tiptap/extension-focus'
@@ -20,8 +19,11 @@ import TaskList from '@tiptap/extension-task-list'
 import TextStyle from '@tiptap/extension-text-style'
 import Typography from '@tiptap/extension-typography'
 import Underline from '@tiptap/extension-underline'
-import StarterKit from '@tiptap/starter-kit'
+import { StarterKit } from '@tiptap/starter-kit'
 import SlashCommands from './SlashCommands'
+import { Heading } from '@tiptap/extension-heading'
+import { BulletList } from '@tiptap/extension-bullet-list'
+import type { AnyExtension, Extensions } from '@tiptap/vue-3'
 
 export const extensions: Extensions = [
   StarterKit as AnyExtension,

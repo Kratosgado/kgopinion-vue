@@ -3,6 +3,13 @@ import { extra } from '@/stores'
 import Suggestion from '@tiptap/suggestion'
 import type { Editor } from '@tiptap/vue-3'
 
+import { extensions } from './extensions'
+import { OrderedList } from '@tiptap/extension-ordered-list'
+import { CodeBlock } from '@tiptap/extension-code-block'
+import { ListItem } from '@tiptap/extension-list-item'
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule'
+import { Typography } from '@tiptap/extension-typography'
+
 // Command suggestion configuration
 export const suggestions = (editor: Editor) =>
   Suggestion({
@@ -78,7 +85,7 @@ export const suggestions = (editor: Editor) =>
         {
           title: 'Blockquote',
           command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).toggleBlockquote().run()
+            // editor.chain().focus().deleteRange(range).toggleBlockquote().run()
           },
         },
         {
@@ -90,25 +97,25 @@ export const suggestions = (editor: Editor) =>
         {
           title: 'Table',
           command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run()
+            // editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run()
           },
         },
         {
           title: 'Mathematics',
           command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).insertMathInline().run()
+            // editor.chain().focus().deleteRange(range).insertMathInline().run()
           },
         },
         {
           title: 'Emoji',
           command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).insertEmoji({ emoji: '😀' }).run()
+            // editor.chain().focus().deleteRange(range).insertEmoji({ emoji: '😀' }).run()
           },
         },
         {
           title: 'Details',
           command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).insertDetails().run()
+            // editor.chain().focus().deleteRange(range).insertDetails().run()
           },
         },
       ]
@@ -172,7 +179,7 @@ export const suggestions = (editor: Editor) =>
             a.textContent = item.title
             // button.textContent = item.title;
             li.addEventListener('click', () => {
-              item.command(props)
+              item.command({ editor, range: props.range, props: {} })
               props.editor.commands.focus()
             })
 
@@ -188,7 +195,7 @@ export const suggestions = (editor: Editor) =>
 
           document.body.appendChild(popup)
 
-          const { left, bottom } = props.clientRect()
+          const { left, bottom } = props.clientRect!()!
           popup.style.left = `${left}px`
           popup.style.top = `${bottom}px`
 
@@ -196,7 +203,7 @@ export const suggestions = (editor: Editor) =>
         },
 
         onUpdate: (props) => {
-          const { left, bottom } = props.clientRect()
+          const { left, bottom } = props.clientRect!()!
           popup.style.left = `${left}px`
           popup.style.top = `${bottom}px`
 
@@ -208,7 +215,7 @@ export const suggestions = (editor: Editor) =>
           items = props.items.map((item, index) => {
             const li = document.createElement('li')
             li.addEventListener('click', () => {
-              item.command(props)
+              item.command({ editor, range: props.range, props: {} })
               props.editor.commands.focus()
             })
 
