@@ -1,66 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import StarterKit from '@tiptap/starter-kit'
-import Image from '@tiptap/extension-image'
-import Link from '@tiptap/extension-link'
-import { post, extra } from './store'
-import BubbleMenu from '@tiptap/extension-bubble-menu'
-import { EditorContent, Editor, type AnyExtension } from '@tiptap/vue-3'
-import Commands from './commands'
-import SlashCommands from './SlashCommands'
-// import { suggestions } from './CommandList'
+import { post, extra } from '@/stores'
+import { EditorContent, Editor, type AnyExtension, useEditor } from '@tiptap/vue-3'
+import { extensions } from '@/components'
+
 // Editor state
-const editor = ref<Editor | undefined>(undefined)
+const editor = useEditor({
+  extensions,
+
+})
 const characterCount = ref(0)
 
-// Initialize editor
-onMounted(() => {
-  editor.value = new Editor({
-    extensions: [
-      StarterKit as AnyExtension,
-      Image.configure({
-        inline: true,
-        allowBase64: true,
-      }),
-      // Commands.configure({
-      //   suggestions,
-      // }),
-      Link.configure({
-        openOnClick: false,
-      }),
-      // SlashCommands,
-      // CodeBlockLowlight.configure({
-      //   lowlight,
-      // }),
-      // Youtube,
-      // suggestion({
-      //   items: ({ query }: { query: string }) => {
-      //     return commands.filter((command) =>
-      //       command.title.toLowerCase().startsWith(query.toLowerCase()),
-      //     )
-      //   },
-      //   command: ({ editor, range, props }: { editor: Editor; range: any; props: any }) => {
-      //     props.command({ editor })
-      //     editor.chain().focus().deleteRange(range).run()
-      //   },
-      // }),
-      BubbleMenu.configure({
-        element: document.querySelector('.modal') as HTMLElement,
-      }),
-      // FloatingMenu.configure({
-      //   element: document.createElement('div'),
-      // }),
-    ],
-    content: post.content,
-    onUpdate: ({ editor }) => {
-      post.content = editor.getHTML()
-      characterCount.value = editor.getText().length
-    },
-    onTransaction: () => {
-      if (editor.value) editor.value = editor.value
-    },
-  })
-})
 
 // Cleanup editor
 onUnmounted(() => {

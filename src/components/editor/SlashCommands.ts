@@ -1,5 +1,5 @@
 import { Extension } from '@tiptap/core'
-import Suggestion from '@tiptap/suggestion'
+import { suggestions } from './suggestions'
 
 export default Extension.create({
   name: 'commands',
@@ -16,11 +16,6 @@ export default Extension.create({
   },
 
   addProseMirrorPlugins() {
-    return [
-      Suggestion({
-        editor: this.editor,
-        ...this.options.suggestion,
-      }),
-    ]
+    return [suggestions(this.editor)]
   },
 })

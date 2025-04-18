@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { savePostOrUpdate, togglePublish } from '@/lib'
-import { extra, post } from './store'
+import { extra, post } from '@/stores'
 
 defineProps<{
   togglePreview: () => void

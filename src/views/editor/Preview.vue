@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { post } from '@/stores'
 import PostView from '../PostView.vue'
-import { post } from './store'
 
 defineProps<{
   togglePreview: () => void

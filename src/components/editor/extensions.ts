@@ -22,6 +22,7 @@ import Typography from '@tiptap/extension-typography'
 import Underline from '@tiptap/extension-underline'
 // import SlashCommands from './SlashCommands'
 import StarterKit from '@tiptap/starter-kit'
+import SlashCommands from './SlashCommands'
 
 export const extensions: Extensions = [
   StarterKit as AnyExtension,
@@ -49,7 +50,7 @@ export const extensions: Extensions = [
   Placeholder.configure({
     placeholder: 'Start writing your article...',
   }),
-  // SlashCommands,
+  SlashCommands,
   // CodeBlockLowlight.configure({ lowlight }),
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   // TextStyle.configure({ types: [ListItem.name] }),

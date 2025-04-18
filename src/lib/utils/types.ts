@@ -1,3 +1,5 @@
+import type { Editor, Range } from "@tiptap/vue-3";
+
 export type Author = {
 	id: string;
 	name: string;
@@ -58,3 +60,8 @@ export type Category = {
 	description?: string; // Category description
 	postCount: number; // Number of posts in category
 };
+
+export type TiptapCommandType = {
+  editor: Editor;
+  range: Range;
+}
