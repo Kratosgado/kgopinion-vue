@@ -1,7 +1,7 @@
 import type { TiptapCommandType } from '@/lib'
 import { extra } from '@/stores'
-import type { Editor, Range } from '@tiptap/core'
 import Suggestion from '@tiptap/suggestion'
+import type { Editor } from '@tiptap/vue-3'
 
 // Command suggestion configuration
 export const suggestions = (editor: Editor) =>
@@ -15,8 +15,8 @@ export const suggestions = (editor: Editor) =>
       }[] = [
         {
           title: 'Heading 1',
-          command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).setHeading({ level: 1 }).run()
+          command: ({ editor, range }: TiptapCommandType) => {
+            editor.chain().focus().deleteRange(range).setHeading({ level: 1 }).run()
           },
         },
         {
@@ -42,25 +42,25 @@ export const suggestions = (editor: Editor) =>
         {
           title: 'Heading 2',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run()
+            editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run()
           },
         },
         {
           title: 'Heading 3',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run()
+            editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run()
           },
         },
         {
           title: 'Bullet List',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).toggleBulletList().run()
+            editor.chain().focus().deleteRange(range).toggleBulletList().run()
           },
         },
         {
           title: 'Numbered List',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).toggleOrderedList().run()
+            editor.chain().focus().deleteRange(range).toggleOrderedList().run()
           },
         },
         {
@@ -78,37 +78,37 @@ export const suggestions = (editor: Editor) =>
         {
           title: 'Blockquote',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).toggleBlockquote().run()
+            editor.chain().focus().deleteRange(range).toggleBlockquote().run()
           },
         },
         {
           title: 'Horizontal Rule',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).setHorizontalRule().run()
+            editor.chain().focus().deleteRange(range).setHorizontalRule().run()
           },
         },
         {
           title: 'Table',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run()
+            editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run()
           },
         },
         {
           title: 'Mathematics',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).insertMathInline().run()
+            editor.chain().focus().deleteRange(range).insertMathInline().run()
           },
         },
         {
           title: 'Emoji',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).insertEmoji({ emoji: '😀' }).run()
+            editor.chain().focus().deleteRange(range).insertEmoji({ emoji: '😀' }).run()
           },
         },
         {
           title: 'Details',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).insertDetails().run()
+            editor.chain().focus().deleteRange(range).insertDetails().run()
           },
         },
       ]

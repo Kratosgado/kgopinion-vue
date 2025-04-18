@@ -20,7 +20,6 @@ import TaskList from '@tiptap/extension-task-list'
 import TextStyle from '@tiptap/extension-text-style'
 import Typography from '@tiptap/extension-typography'
 import Underline from '@tiptap/extension-underline'
-// import SlashCommands from './SlashCommands'
 import StarterKit from '@tiptap/starter-kit'
 import SlashCommands from './SlashCommands'
 

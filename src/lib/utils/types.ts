@@ -64,4 +64,5 @@ export type Category = {
 export type TiptapCommandType = {
   editor: Editor;
   range: Range;
+  props: any
 }

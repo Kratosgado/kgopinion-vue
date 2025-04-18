@@ -1,22 +1,29 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
-import { post, extra } from '@/stores'
 import { EditorContent, Editor, type AnyExtension, useEditor } from '@tiptap/vue-3'
 import { extensions, YoutubeModal, LinkModal, ImageModal } from '@/components'
+import { post } from '@/stores'
+
+const characterCount = ref(0)
 
 // Editor state
 const editor = useEditor({
   extensions,
+  content: post.content,
+  onUpdate: ({ editor }) => {
+    post.content = editor.getHTML()
+    characterCount.value = editor.storage.characterCount.characters()
+  },
+  onTransaction: () => {
+    editor.value = editor.value
+  },
 })
-const characterCount = ref(0)
-
 // Cleanup editor
 onUnmounted(() => {
   if (editor.value) {
     editor.value.destroy()
   }
 })
-
 </script>
 
 <template>

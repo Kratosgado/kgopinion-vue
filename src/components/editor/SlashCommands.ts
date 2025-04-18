@@ -1,5 +1,6 @@
-import { Extension } from '@tiptap/core'
+import { Extension } from '@tiptap/vue-3'
 import { suggestions } from './suggestions'
+import type { TiptapCommandType } from '@/lib'
 
 export default Extension.create({
   name: 'commands',
@@ -8,7 +9,7 @@ export default Extension.create({
     return {
       suggestion: {
         char: '/',
-        command: ({ editor, range, props }: any) => {
+        command: ({ editor, range, props }: TiptapCommandType) => {
           props.command({ editor, range })
         },
       },
@@ -16,6 +17,6 @@ export default Extension.create({
   },
 
   addProseMirrorPlugins() {
-    return [suggestions(this.editor)]
+    return [suggestions(this.editor as any)]
   },
 })
