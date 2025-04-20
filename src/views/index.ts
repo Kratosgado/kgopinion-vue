@@ -1,10 +1,10 @@
-export { default as Home } from './Home.vue'
-export { default as About } from './About.vue'
-export { default as Contact } from './Contact.vue'
-export { default as Articles } from './Articles.vue'
-export { default as Categories } from './Categories.vue'
-export { default as PostView } from './PostView.vue'
-export { default as Auth } from './Auth.vue'
-export { default as Profile } from './Profile.vue'
-export { default as Dashboard } from './Dashboard.vue'
-export { default as PostEditor } from './editor/Main.vue'
+export const Home = () => import('./Home.vue')
+export const About = () => import('./About.vue')
+export const Contact = () => import('./Contact.vue')
+export const Articles = () => import('./Articles.vue')
+export const Categories = () => import('./Categories.vue')
+export const PostView = () => import('./PostView.vue')
+export const Auth = () => import('./Auth.vue')
+export const Profile = () => import('./Profile.vue')
+export const Dashboard = () => import('./Dashboard.vue')
+export const PostEditor = () => import('./editor/Main.vue')

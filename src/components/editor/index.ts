@@ -1,5 +1,5 @@
 export * from './ResizableImage'
-export * from './SlashCommands'
+// export * from './SlashCommands'
 export * from './extensions'
 // export * from './YoutubeExtension'
 export { default as YoutubeModal } from './YoutubeModal.vue'
