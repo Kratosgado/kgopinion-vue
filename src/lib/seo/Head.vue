@@ -12,7 +12,7 @@ const router = useRouter()
 const defaultMetadata: SEOMetadata = {
   type: 'website',
   canonicalUrl: router.currentRoute.value.fullPath,
-  ogImage: 'https://kgopinion.pages.dev/favicon.ico',
+  ogImage: 'https://Kratosgado.pages.dev/favicon.ico',
   title: '',
   description: '',
   keywords: [],
@@ -22,7 +22,7 @@ const seoData = { ...defaultMetadata, ...metadata }
 
 // Use @vueuse/head to manage head tags
 useHead({
-  title: `${seoData.title} | Kgopinion`,
+  title: `${seoData.title} | Kratosgado`,
   meta: [
     { name: 'description', content: seoData.description },
     { name: 'keywords', content: seoData.keywords?.join(', ') || '' },

@@ -3,9 +3,9 @@ import { ref } from 'vue'
 import { emailAddress, type SEOMetadata } from '@/lib'
 
 const metadata: SEOMetadata = {
-  title: 'Contact Us - KgOpinion',
+  title: 'Contact Us - Kratosgado',
   description: 'Get in touch with the us',
-  keywords: ['KgOpinion', 'contact', 'developer'],
+  keywords: ['Kratosgado', 'contact', 'developer'],
 }
 
 const name = ref('')

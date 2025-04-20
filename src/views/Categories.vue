@@ -5,9 +5,9 @@ import { Loading } from '@/components'
 import { getAllCategories } from '@/lib/backend/comment.query'
 
 const metadata: SEOMetadata = {
-  title: 'Categories - KgOpinion',
-  description: 'View all categories of articles posted on KgOpinion',
-  keywords: ['KgOpinion', 'blogger', 'categories', 'category'],
+  title: 'Categories - Kratosgado',
+  description: 'View all categories of articles posted on Kratosgado',
+  keywords: ['Kratosgado', 'blogger', 'categories', 'category'],
 }
 
 const categories = ref<Category[]>([])

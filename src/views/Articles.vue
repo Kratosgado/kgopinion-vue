@@ -5,8 +5,8 @@ import { PostOverview } from '@/components'
 import { getRecentPosts } from '@/lib/backend/post.query'
 
 const metadata: SEOMetadata = {
-  title: 'Articles - KgOpinion',
-  description: 'Browse all articles on KgOpinion',
+  title: 'Articles - Kratosgado',
+  description: 'Browse all articles on Kratosgado',
   keywords: ['articles', 'posts', 'science', 'programming'],
 }
 

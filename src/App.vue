@@ -14,24 +14,15 @@ const { state: authState, signOut } = useAuth()
       <div class="navbar w-full bg-base-300">
         <div class="flex-none lg:hidden">
           <label for="my-drawer-3" class="btn btn-square btn-ghost">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-6 w-6 stroke-current"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </label>
         </div>
         <img alt="logo" src="/favicon.ico" class="w-10 rounded-full" />
         <div class="mx-2 flex-1 px-2">
-          <RouterLink to="/" class="text-xl font-bold">KgOpinion</RouterLink>
+          <RouterLink to="/" class="text-xl font-bold">Kratosgado</RouterLink>
         </div>
         <div class="hidden flex-none lg:block">
           <ul class="menu menu-horizontal items-center">
@@ -40,27 +31,17 @@ const { state: authState, signOut } = useAuth()
               <RouterLink to="/" :class="{ active: $route.path === '/' }">Home</RouterLink>
             </li>
             <li>
-              <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }"
-                >Articles</RouterLink
-              >
+              <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }">Articles</RouterLink>
             </li>
             <li>
-              <RouterLink
-                to="/articles/categories"
-                :class="{ active: $route.path === '/articles/categories' }"
-              >
-                Categories</RouterLink
-              >
+              <RouterLink to="/articles/categories" :class="{ active: $route.path === '/articles/categories' }">
+                Categories</RouterLink>
             </li>
             <li>
-              <RouterLink to="/about" :class="{ active: $route.path === '/about' }"
-                >About</RouterLink
-              >
+              <RouterLink to="/about" :class="{ active: $route.path === '/about' }">About</RouterLink>
             </li>
             <li>
-              <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }"
-                >Contact</RouterLink
-              >
+              <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }">Contact</RouterLink>
             </li>
 
             <!-- Authenticated navigation -->
@@ -70,10 +51,7 @@ const { state: authState, signOut } = useAuth()
                   <summary>
                     <div class="avatar">
                       <div class="h-8 w-8 rounded-full">
-                        <img
-                          :src="authState.user.avatar || '/favicon.ico'"
-                          :alt="authState.user.name"
-                        />
+                        <img :src="authState.user.avatar || '/favicon.ico'" :alt="authState.user.name" />
                       </div>
                     </div>
                   </summary>
@@ -117,25 +95,17 @@ const { state: authState, signOut } = useAuth()
           <RouterLink to="/" :class="{ active: $route.path === '/' }">Home</RouterLink>
         </li>
         <li aria-label="articles">
-          <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }"
-            >Articles</RouterLink
-          >
+          <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }">Articles</RouterLink>
         </li>
         <li aria-label="categories">
-          <RouterLink
-            to="/articles/categories"
-            :class="{ active: $route.path === '/articles/categories' }"
-          >
-            Categories</RouterLink
-          >
+          <RouterLink to="/articles/categories" :class="{ active: $route.path === '/articles/categories' }">
+            Categories</RouterLink>
         </li>
         <li aria-label="about">
           <RouterLink to="/about" :class="{ active: $route.path === '/about' }">About</RouterLink>
         </li>
         <li aria-label="contact">
-          <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }"
-            >Contact</RouterLink
-          >
+          <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }">Contact</RouterLink>
         </li>
 
         <!-- Divider -->
@@ -181,14 +151,15 @@ body {
   height: 100%;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-}
-
-#app {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+/**/
+/* body { */
+/*   display: flex; */
+/*   flex-direction: column; */
+/* } */
+/**/
+/* #app { */
+/*   flex: 1; */
+/*   display: flex; */
+/*   flex-direction: column; */
+/* } */
 </style>

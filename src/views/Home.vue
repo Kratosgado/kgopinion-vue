@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { PostOverview } from '@/components' // Adjust path as needed
+import { PostOverview, Loading } from '@/components' // Adjust path as needed
 import { SEO } from '@/lib'
 import { getCategoryColor, type Category, type Post, type SEOMetadata } from '@/lib'
 import { getAllCategories } from '@/lib/backend/comment.query'
@@ -15,12 +15,12 @@ const email = ref('')
 
 // SEO metadata
 const metadata: SEOMetadata = {
-  title: 'Kgopinion',
+  title: 'Kratosgado',
   description:
     'Explore programming and science topics in an engaging and informative way. Read challenging thoughts including that will make you question your existence.',
   keywords: ['programming', 'science', 'development', 'software', 'technology'],
   type: 'website',
-  ogImage: 'https://kgopinion.pages.dev/favicon.ico',
+  ogImage: 'https://Kratosgado.pages.dev/favicon.ico',
   author: 'Kratosgado',
 }
 
@@ -56,7 +56,7 @@ const handleSubscribe = () => {
     <div class="hero min-h-[35vh] bg-base-200">
       <div class="hero-content text-center">
         <div class="max-w-md">
-          <h1 class="text-4xl font-bold">Welcome to KgOpinion</h1>
+          <h1 class="text-4xl font-bold">I Have An Idea🤔</h1>
           <p class="py-6">
             Discover insightful articles on web development, design, and technology. Stay updated
             with the latest trends and best practices.
@@ -74,7 +74,7 @@ const handleSubscribe = () => {
           <router-link to="/" class="btn btn-outline btn-sm">View All</router-link>
         </div>
 
-        <div v-if="loading" class="text-center">Loading posts...</div>
+        <Loading v-if="loading" />
         <div v-else-if="error" class="text-center text-error">{{ error }}</div>
         <div v-else class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <PostOverview v-for="post in posts" :key="post.slug" :post="post" />
@@ -90,11 +90,7 @@ const handleSubscribe = () => {
             <div v-if="loading" class="text-center">Loading categories...</div>
             <div v-else-if="error" class="text-center text-error">{{ error }}</div>
             <div v-else class="space-y-4">
-              <div
-                v-for="category in categories"
-                :key="category.name"
-                class="flex items-center justify-between"
-              >
+              <div v-for="category in categories" :key="category.name" class="flex items-center justify-between">
                 <span class="text-lg">{{ category.name }}</span>
                 <span :class="`badge badge-${getCategoryColor(category.postCount)}`">
                   {{ category.postCount }}
@@ -110,13 +106,8 @@ const handleSubscribe = () => {
             <h3 class="mb-4 text-2xl font-bold">Subscribe to our Newsletter</h3>
             <p class="mb-6">Get the latest posts and updates delivered straight to your inbox.</p>
             <form @submit.prevent="handleSubscribe" class="flex flex-col gap-4 sm:flex-row">
-              <input
-                v-model="email"
-                type="email"
-                placeholder="Enter your email"
-                class="input input-bordered w-full"
-                required
-              />
+              <input v-model="email" type="email" placeholder="Enter your email" class="input input-bordered w-full"
+                required />
               <button type="submit" class="btn btn-primary whitespace-nowrap">Subscribe</button>
             </form>
           </div>

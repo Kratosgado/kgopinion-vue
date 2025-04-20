@@ -4,7 +4,7 @@ import { facebookLink, githubLink, linkedInLink, twitterLink } from '@/lib'
 <template>
   <footer class="footer p-10 bg-base-300 text-base-content mt-auto">
     <div>
-      <span class="footer-title">KgOpinion</span>
+      <span class="footer-title">Kratosgado</span>
       <p class="max-w-xs">
         A platform for bloggers and content creators to share their knowledge and insights.
       </p>
@@ -59,6 +59,6 @@ import { facebookLink, githubLink, linkedInLink, twitterLink } from '@/lib'
     </div>
   </footer>
   <div class="footer footer-center bg-base-300 p-4 text-base-content">
-    <p>Copyright © 2025 - All rights reserved by KgOpinion</p>
+    <p>Copyright © 2025 - All rights reserved by Kratosgado</p>
   </div>
 </template>

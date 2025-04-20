@@ -5,9 +5,9 @@ import { SEO, useAuth, type SEOMetadata } from '@/lib'
 
 const router = useRouter()
 const metadata: SEOMetadata = {
-  title: 'Sign in - KgOpinion',
+  title: 'Sign in - Kratosgado',
   description: 'Become a creator',
-  keywords: ['KgOpinion', 'blogger', 'contact', 'developer'],
+  keywords: ['Kratosgado', 'blogger', 'contact', 'developer'],
 }
 
 const email = ref('')

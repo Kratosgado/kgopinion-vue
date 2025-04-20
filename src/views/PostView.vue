@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { type Post, type Comment, type SEOMetadata, SEO, togglePostLike } from '@/lib'
 import { getPostBySlug } from '@/lib/backend/post.query'
+import { Loading } from '@/components'
 
 const route = useRoute()
 const post = ref<Post | null>(null)

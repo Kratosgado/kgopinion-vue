@@ -4,9 +4,9 @@ import { Loading } from '@/components'
 import type { SEO, SEOMetadata } from '@/lib/seo'
 
 const metadata: SEOMetadata = {
-  title: 'About - KgOpinion',
+  title: 'About - Kratosgado',
   description:
-    'Learn more about KgOpinion and its mission to provide high-quality content on web development, design, and technology.',
+    'Learn more about Kratosgado and its mission to provide high-quality content on web development, design, and technology.',
   keywords: ['about', 'mission', 'team', 'community', 'contact'],
   type: 'website',
   ogImage: '/static/favicon.ico',
@@ -22,17 +22,17 @@ onMounted(() => {
   <div class="container mx-auto px-4 py-12">
     <SEO :metadata="metadata" />
 
-    <h1 class="mb-8 text-4xl font-bold">About KgOpinion</h1>
+    <h1 class="mb-8 text-4xl font-bold">About Kratosgado</h1>
 
     <div class="prose mb-16 max-w-none lg:prose-xl">
       <p>
-        Welcome to KgOpinion, a platform dedicated to sharing knowledge and insights about web
+        Welcome to Kratosgado, a platform dedicated to sharing knowledge and insights about web
         development, design, and technology.
       </p>
 
       <h2>Our Mission</h2>
       <p>
-        At KgOpinion, we strive to provide high-quality, informative content that helps developers
+        At Kratosgado, we strive to provide high-quality, informative content that helps developers
         and designers stay up-to-date with the latest trends and best practices in the industry.
       </p>
 
