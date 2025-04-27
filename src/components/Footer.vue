@@ -34,6 +34,7 @@ import { IconLinkedIn, IconFacebook, IconGithub, IconTwitter } from '@/component
         <IconLinkedIn :link="linkedInLink" />
       </div>
     </nav>
+
     <form>
       <h6 class="footer-title">Newsletter</h6>
       <fieldset class="w-80">
