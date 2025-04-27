@@ -6,3 +6,4 @@ export { default as Loading } from './Loading.vue'
 // export { default as ThemeButton } from './ThemeButton.svelte';
 export { default as PostOverview } from './PostOverview.vue'
 export * from './editor'
+export * from './icons'
