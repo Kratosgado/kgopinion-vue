@@ -5,12 +5,20 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
-import cssnano from 'cssnano'
+import { VitePWA } from 'vite-plugin-pwa'
 import cssnanoPlugin from 'cssnano'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), visualizer(), tailwindcss(), vueDevTools()],
+  plugins: [
+    vue(),
+    visualizer(),
+    tailwindcss(),
+    vueDevTools({
+      launchEditor: 'nvim',
+    }),
+    VitePWA({ registerType: 'autoUpdate' }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
