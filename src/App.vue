@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 import { Footer } from '@/components'
 import { useAuth } from './lib'
 
-const { state: authState, signOut } = useAuth()
+// const { state: authState, signOut } = useAuth()
 </script>
 
 <template>
@@ -64,38 +64,38 @@ const { state: authState, signOut } = useAuth()
             </li>
 
             <!-- Authenticated navigation -->
-            <template v-if="authState?.isAuthenticated && authState.user">
-              <li>
-                <details>
-                  <summary>
-                    <div class="avatar">
-                      <div class="h-8 w-8 rounded-full">
-                        <img
-                          :src="authState.user.avatar || '/favicon.ico'"
-                          :alt="authState.user.name"
-                        />
-                      </div>
-                    </div>
-                  </summary>
-                  <ul class="rounded-t-none bg-base-100 p-2">
-                    <li>
-                      <RouterLink to="/auth/dashboard">Dashboard</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink to="/auth/profile">Profile</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink to="/" @click.prevent="signOut">Sign Out</RouterLink>
-                    </li>
-                  </ul>
-                </details>
-              </li>
-            </template>
-            <template v-else-if="!authState?.isLoading">
-              <li>
-                <RouterLink to="/auth" class="btn btn-primary">Sign In</RouterLink>
-              </li>
-            </template>
+            <!-- <template v-if="authState?.isAuthenticated && authState.user"> -->
+            <!--   <li> -->
+            <!--     <details> -->
+            <!--       <summary> -->
+            <!--         <div class="avatar"> -->
+            <!--           <div class="h-8 w-8 rounded-full"> -->
+            <!--             <img -->
+            <!--               :src="authState.user.avatar || '/favicon.ico'" -->
+            <!--               :alt="authState.user.name" -->
+            <!--             /> -->
+            <!--           </div> -->
+            <!--         </div> -->
+            <!--       </summary> -->
+            <!--       <ul class="rounded-t-none bg-base-100 p-2"> -->
+            <!--         <li> -->
+            <!--           <RouterLink to="/auth/dashboard">Dashboard</RouterLink> -->
+            <!--         </li> -->
+            <!--         <li> -->
+            <!--           <RouterLink to="/auth/profile">Profile</RouterLink> -->
+            <!--         </li> -->
+            <!--         <li> -->
+            <!--           <RouterLink to="/" @click.prevent="signOut">Sign Out</RouterLink> -->
+            <!--         </li> -->
+            <!--       </ul> -->
+            <!--     </details> -->
+            <!--   </li> -->
+            <!-- </template> -->
+            <!-- <template v-else-if="!authState?.isLoading"> -->
+            <!--   <li> -->
+            <!--     <RouterLink to="/auth" class="btn btn-primary">Sign In</RouterLink> -->
+            <!--   </li> -->
+            <!-- </template> -->
           </ul>
         </div>
       </div>
@@ -142,35 +142,35 @@ const { state: authState, signOut } = useAuth()
         <div class="divider"></div>
 
         <!-- Authenticated navigation for mobile -->
-        <template v-if="authState?.isAuthenticated && authState?.user">
-          <li class="menu-title">
-            <div class="flex items-center gap-2">
-              <div class="avatar">
-                <div class="h-8 w-8 rounded-full">
-                  <img :src="authState.user.avatar || '/favicon.svg'" :alt="authState.user.name" />
-                </div>
-              </div>
-              <span>{{ authState.user.name }}</span>
-            </div>
-          </li>
-          <li>
-            <RouterLink to="/auth/dashboard">Dashboard</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/auth/profile">Profile</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/editor">New Post</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/" @click.prevent="signOut">Sign Out</RouterLink>
-          </li>
-        </template>
-        <template v-else-if="!authState?.isLoading">
-          <li>
-            <RouterLink to="/auth" class="btn btn-primary justify-start">Sign In</RouterLink>
-          </li>
-        </template>
+        <!-- <template v-if="authState?.isAuthenticated && authState?.user"> -->
+        <!--   <li class="menu-title"> -->
+        <!--     <div class="flex items-center gap-2"> -->
+        <!--       <div class="avatar"> -->
+        <!--         <div class="h-8 w-8 rounded-full"> -->
+        <!--           <img :src="authState.user.avatar || '/favicon.svg'" :alt="authState.user.name" /> -->
+        <!--         </div> -->
+        <!--       </div> -->
+        <!--       <span>{{ authState.user.name }}</span> -->
+        <!--     </div> -->
+        <!--   </li> -->
+        <!--   <li> -->
+        <!--     <RouterLink to="/auth/dashboard">Dashboard</RouterLink> -->
+        <!--   </li> -->
+        <!--   <li> -->
+        <!--     <RouterLink to="/auth/profile">Profile</RouterLink> -->
+        <!--   </li> -->
+        <!--   <li> -->
+        <!--     <RouterLink to="/editor">New Post</RouterLink> -->
+        <!--   </li> -->
+        <!--   <li> -->
+        <!--     <RouterLink to="/" @click.prevent="signOut">Sign Out</RouterLink> -->
+        <!--   </li> -->
+        <!-- </template> -->
+        <!-- <template v-else-if="!authState?.isLoading"> -->
+        <!--   <li> -->
+        <!--     <RouterLink to="/auth" class="btn btn-primary justify-start">Sign In</RouterLink> -->
+        <!--   </li> -->
+        <!-- </template> -->
       </ul>
     </div>
   </div>
