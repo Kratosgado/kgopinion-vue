@@ -1,29 +1,17 @@
-import {
-  Home,
-  About,
-  Contact,
-  Articles,
-  Categories,
-  PostView,
-  Auth,
-  Profile,
-  Dashboard,
-  PostEditor,
-} from '@/views'
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: Home },
-  { path: '/articles', component: Articles },
-  { path: '/about', component: About },
-  { path: '/contact', component: Contact },
-  { path: '/articles', component: Articles },
-  { path: '/articles/categories', component: Categories },
-  { path: '/articles/:slug', component: PostView },
-  { path: '/auth', component: Auth },
-  { path: '/auth/profile', component: Profile },
-  { path: '/auth/dashboard', component: Dashboard },
-  { path: '/auth/editor', component: PostEditor },
+  { path: '/', component: import('../views/Home.vue') },
+  { path: '/articles', component: import('../views/Articles.vue') },
+  { path: '/about', component: import('../views/About.vue') },
+  { path: '/contact', component: import('../views/Contact.vue') },
+  { path: '/articles', component: import('../views/Articles.vue') },
+  { path: '/articles/categories', component: import('../views/Categories.vue') },
+  { path: '/articles/:slug', component: import('../views/PostView.vue') },
+  { path: '/auth', component: import('../views/Auth.vue') },
+  { path: '/auth/profile', component: import('../views/Profile.vue') },
+  { path: '/auth/dashboard', component: import('../views/Dashboard.vue') },
+  { path: '/auth/editor', component: import('../views/editor/Main.vue') },
 ]
 
 export const router = createRouter({

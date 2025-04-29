@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { facebookLink, githubLink, linkedInLink, twitterLink } from '@/lib'
-import { IconLinkedIn, IconFacebook, IconGithub, IconTwitter } from '@/components'
+import { facebookLink, githubLink, linkedInLink, twitterLink } from '@/lib/utils/constants'
+import { IconLinkedIn, IconFacebook, IconGithub, IconTwitter } from '@/components/icons'
 </script>
 
 <template>

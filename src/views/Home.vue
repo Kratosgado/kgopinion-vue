@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { PostOverview, Loading } from '@/components' // Adjust path as needed
-import { SEO } from '@/lib'
-import { getCategoryColor, type Category, type Post, type SEOMetadata } from '@/lib'
-import { getAllCategories } from '@/lib/backend/comment.query'
+import Loading from '@/components/Loading.vue' // Adjust path as needed
+import PostOverview from '@/components/PostOverview.vue'
+import SEO from '@/lib/seo/Head.vue'
+import { type SEOMetadata } from '@/lib/seo/types'
 import { getRecentPosts } from '@/lib/backend/post.query'
+import type { Post } from '@/lib/utils/types'
 
 // Reactive state
 const posts = ref<Post[]>([])

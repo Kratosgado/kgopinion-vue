@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { Footer } from '@/components'
+import Footer from '@/components/Footer.vue'
 import { defineAsyncComponent } from 'vue'
 
 const ProfileDropDown = defineAsyncComponent(() => import('./components/ProfileDropdown.vue'))
