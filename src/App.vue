@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { Footer } from '@/components'
-import { useAuth } from './lib'
+import { defineAsyncComponent } from 'vue'
 
-// const { state: authState, signOut } = useAuth()
+const ProfileDropDown = defineAsyncComponent(() => import('./components/ProfileDropdown.vue'))
 </script>
 
 <template>
@@ -14,18 +14,9 @@ import { useAuth } from './lib'
       <div class="navbar w-full bg-base-300">
         <div class="flex-none lg:hidden">
           <label for="my-drawer-3" class="btn btn-square btn-ghost">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-6 w-6 stroke-current"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              class="inline-block h-6 w-6 stroke-current">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </label>
         </div>
@@ -40,62 +31,19 @@ import { useAuth } from './lib'
               <RouterLink to="/" :class="{ active: $route.path === '/' }">Home</RouterLink>
             </li>
             <li>
-              <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }"
-                >Articles</RouterLink
-              >
+              <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }">Articles</RouterLink>
             </li>
             <li>
-              <RouterLink
-                to="/articles/categories"
-                :class="{ active: $route.path === '/articles/categories' }"
-              >
-                Categories</RouterLink
-              >
+              <RouterLink to="/articles/categories" :class="{ active: $route.path === '/articles/categories' }">
+                Categories</RouterLink>
             </li>
             <li>
-              <RouterLink to="/about" :class="{ active: $route.path === '/about' }"
-                >About</RouterLink
-              >
+              <RouterLink to="/about" :class="{ active: $route.path === '/about' }">About</RouterLink>
             </li>
             <li>
-              <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }"
-                >Contact</RouterLink
-              >
+              <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }">Contact</RouterLink>
             </li>
-
-            <!-- Authenticated navigation -->
-            <!-- <template v-if="authState?.isAuthenticated && authState.user"> -->
-            <!--   <li> -->
-            <!--     <details> -->
-            <!--       <summary> -->
-            <!--         <div class="avatar"> -->
-            <!--           <div class="h-8 w-8 rounded-full"> -->
-            <!--             <img -->
-            <!--               :src="authState.user.avatar || '/favicon.ico'" -->
-            <!--               :alt="authState.user.name" -->
-            <!--             /> -->
-            <!--           </div> -->
-            <!--         </div> -->
-            <!--       </summary> -->
-            <!--       <ul class="rounded-t-none bg-base-100 p-2"> -->
-            <!--         <li> -->
-            <!--           <RouterLink to="/auth/dashboard">Dashboard</RouterLink> -->
-            <!--         </li> -->
-            <!--         <li> -->
-            <!--           <RouterLink to="/auth/profile">Profile</RouterLink> -->
-            <!--         </li> -->
-            <!--         <li> -->
-            <!--           <RouterLink to="/" @click.prevent="signOut">Sign Out</RouterLink> -->
-            <!--         </li> -->
-            <!--       </ul> -->
-            <!--     </details> -->
-            <!--   </li> -->
-            <!-- </template> -->
-            <!-- <template v-else-if="!authState?.isLoading"> -->
-            <!--   <li> -->
-            <!--     <RouterLink to="/auth" class="btn btn-primary">Sign In</RouterLink> -->
-            <!--   </li> -->
-            <!-- </template> -->
+            <ProfileDropDown v-if="$route.path.startsWith('/auth')" />
           </ul>
         </div>
       </div>
@@ -117,60 +65,21 @@ import { useAuth } from './lib'
           <RouterLink to="/" :class="{ active: $route.path === '/' }">Home</RouterLink>
         </li>
         <li aria-label="articles">
-          <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }"
-            >Articles</RouterLink
-          >
+          <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }">Articles</RouterLink>
         </li>
         <li aria-label="categories">
-          <RouterLink
-            to="/articles/categories"
-            :class="{ active: $route.path === '/articles/categories' }"
-          >
-            Categories</RouterLink
-          >
+          <RouterLink to="/articles/categories" :class="{ active: $route.path === '/articles/categories' }">
+            Categories</RouterLink>
         </li>
         <li aria-label="about">
           <RouterLink to="/about" :class="{ active: $route.path === '/about' }">About</RouterLink>
         </li>
         <li aria-label="contact">
-          <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }"
-            >Contact</RouterLink
-          >
+          <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }">Contact</RouterLink>
         </li>
 
         <!-- Divider -->
         <div class="divider"></div>
-
-        <!-- Authenticated navigation for mobile -->
-        <!-- <template v-if="authState?.isAuthenticated && authState?.user"> -->
-        <!--   <li class="menu-title"> -->
-        <!--     <div class="flex items-center gap-2"> -->
-        <!--       <div class="avatar"> -->
-        <!--         <div class="h-8 w-8 rounded-full"> -->
-        <!--           <img :src="authState.user.avatar || '/favicon.svg'" :alt="authState.user.name" /> -->
-        <!--         </div> -->
-        <!--       </div> -->
-        <!--       <span>{{ authState.user.name }}</span> -->
-        <!--     </div> -->
-        <!--   </li> -->
-        <!--   <li> -->
-        <!--     <RouterLink to="/auth/dashboard">Dashboard</RouterLink> -->
-        <!--   </li> -->
-        <!--   <li> -->
-        <!--     <RouterLink to="/auth/profile">Profile</RouterLink> -->
-        <!--   </li> -->
-        <!--   <li> -->
-        <!--     <RouterLink to="/editor">New Post</RouterLink> -->
-        <!--   </li> -->
-        <!--   <li> -->
-        <!--     <RouterLink to="/" @click.prevent="signOut">Sign Out</RouterLink> -->
-        <!--   </li> -->
-        <!-- </template> -->
-        <!-- <template v-else-if="!authState?.isLoading"> -->
-        <!--   <li> -->
-        <!--     <RouterLink to="/auth" class="btn btn-primary justify-start">Sign In</RouterLink> -->
-        <!--   </li> -->
-        <!-- </template> -->
       </ul>
     </div>
   </div>

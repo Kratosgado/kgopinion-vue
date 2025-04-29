@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/auth', component: Auth },
   { path: '/auth/profile', component: Profile },
   { path: '/auth/dashboard', component: Dashboard },
-  { path: '/editor', component: PostEditor },
+  { path: '/auth/editor', component: PostEditor },
 ]
 
 export const router = createRouter({
