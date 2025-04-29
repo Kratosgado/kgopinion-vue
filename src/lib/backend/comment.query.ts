@@ -1,4 +1,4 @@
-import { type Category, type Author, type Post, type Comment } from '@/lib/utils'
+import { type Category, type Author, type Post, type Comment } from '@/lib/utils/types'
 import {
   addDoc,
   serverTimestamp,

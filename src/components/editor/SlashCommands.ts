@@ -1,6 +1,6 @@
 import { Extension } from '@tiptap/vue-3'
 import { suggestions } from './suggestions'
-import type { TiptapCommandType } from '@/lib'
+import type { TiptapCommandType } from '@/lib/utils/types'
 
 export default Extension.create({
   name: 'commands',

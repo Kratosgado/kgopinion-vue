@@ -1,5 +1,4 @@
-import type { TiptapCommandType } from '@/lib'
-import { extra } from '@/stores'
+import { extra } from '@/stores/extra'
 import Suggestion from '@tiptap/suggestion'
 import type { Editor } from '@tiptap/vue-3'
 
@@ -9,6 +8,7 @@ import { CodeBlock } from '@tiptap/extension-code-block'
 import { ListItem } from '@tiptap/extension-list-item'
 import { HorizontalRule } from '@tiptap/extension-horizontal-rule'
 import { Typography } from '@tiptap/extension-typography'
+import type { TiptapCommandType } from '@/lib/utils/types'
 
 // Command suggestion configuration
 export const suggestions = (editor: Editor) =>

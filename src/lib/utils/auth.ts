@@ -1,7 +1,8 @@
 // src/lib/auth.ts
 import { onAuthStateChanged, type User } from 'firebase/auth'
 import { firebaseAuth } from './firebase'
-import { getAuthor, type Author } from '..'
+import { getAuthor } from '../backend/user.query'
+import type { Author } from './types'
 
 export function subscribeToAuthState(callback: (user: Author | undefined) => void) {
   return onAuthStateChanged(firebaseAuth, async (u) => {

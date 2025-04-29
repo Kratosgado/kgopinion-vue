@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { SEO, type Post, type SEOMetadata } from '@/lib'
-import { PostOverview } from '@/components'
+import PostOverview from '@/components/PostOverview.vue'
 import { getRecentPosts } from '@/lib/backend/post.query'
+import type { SEOMetadata } from '@/lib/seo/types'
+import type { Post } from '@/lib/utils/types'
 
 const metadata: SEOMetadata = {
   title: 'Articles - Kratosgado',
@@ -49,13 +50,8 @@ const filteredPosts = computed(() =>
     <!-- Category Filter -->
     <div class="mb-8">
       <div class="flex flex-wrap gap-2">
-        <button
-          v-for="category in categories"
-          :key="category"
-          class="btn btn-sm"
-          :class="selectedCategory === category ? 'btn-primary' : 'btn-outline'"
-          @click="selectedCategory = category"
-        >
+        <button v-for="category in categories" :key="category" class="btn btn-sm"
+          :class="selectedCategory === category ? 'btn-primary' : 'btn-outline'" @click="selectedCategory = category">
           {{ category === 'all' ? 'All Categories' : category }}
         </button>
       </div>

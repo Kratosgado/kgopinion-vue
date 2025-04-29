@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { getPostsByAuthor } from '@/lib/backend/post.query'
+import type { Post } from '@/lib/utils/types'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getPostsByAuthor, type Post } from '@/lib'
 
 const router = useRouter()
 

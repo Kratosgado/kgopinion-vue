@@ -1,5 +1,5 @@
+import type { Post } from '@/lib/utils/types'
 import { reactive } from 'vue'
-import { type Post } from '@/lib'
 
 export const post: Post = reactive({
   title: 'Untitled Blog',

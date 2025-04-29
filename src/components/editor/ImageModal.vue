@@ -7,8 +7,8 @@ import {
   deleteObject,
 } from 'firebase/storage'
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
-import { db, storage } from '@/lib'
-import { extra } from '@/stores'
+import { extra } from '@/stores/extra'
+import { db, storage } from '@/lib/utils/firebase'
 
 interface ImageType {
   id: string

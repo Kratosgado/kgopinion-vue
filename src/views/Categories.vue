@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getCategoryColor, SEO, type Category, type SEOMetadata } from '@/lib'
-import { Loading } from '@/components'
+import Loading from '@/components/Loading.vue'
 import { getAllCategories } from '@/lib/backend/comment.query'
+import type { SEOMetadata } from '@/lib/seo/types'
+import type { Category } from '@/lib/utils/types'
+import { getCategoryColor } from '@/lib/utils/editor.functions'
 
 const metadata: SEOMetadata = {
   title: 'Categories - Kratosgado',

@@ -16,7 +16,7 @@ import { getCollRef, getDocRef } from './helpers'
 import { getAuthor } from './user.query'
 import { generateSlug, parseDate } from './utils'
 import type { Post } from '../utils/types'
-import { db } from '../utils/firebase'
+import { db, firebaseAuth } from '../utils/firebase'
 
 export async function savePostOrUpdate(postData: Post): Promise<string> {
   const slug = generateSlug(postData.title)

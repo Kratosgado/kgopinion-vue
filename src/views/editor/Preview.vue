@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { post } from '@/stores'
+import { post } from '@/stores/extra'
 import PostView from '../PostView.vue'
 
 defineProps<{

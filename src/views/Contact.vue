@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { SEOMetadata } from '@/lib/seo/types'
+import { emailAddress } from '@/lib/utils/constants'
 import { ref } from 'vue'
-import { emailAddress, type SEOMetadata } from '@/lib'
 
 const metadata: SEOMetadata = {
   title: 'Contact Us - Kratosgado',

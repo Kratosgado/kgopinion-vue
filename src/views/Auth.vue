@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useAuth } from '@/lib/backend/auth'
+import type { SEOMetadata } from '@/lib/seo/types'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { SEO, useAuth, type SEOMetadata } from '@/lib'
 
 const router = useRouter()
 const metadata: SEOMetadata = {
@@ -82,37 +83,19 @@ const toggleMode = () => {
         </p>
 
         <div v-if="error" class="alert alert-error mb-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 shrink-0 stroke-current"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span>{{ error }}</span>
         </div>
 
-        <button
-          class="btn btn-outline mb-4 w-full gap-2"
-          @click="auth.signInWithGoogle"
-          :disabled="authState.isLoading"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
+        <button class="btn btn-outline mb-4 w-full gap-2" @click="auth.signInWithGoogle"
+          :disabled="authState.isLoading">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path
-              d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"
-            />
+              d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" />
           </svg>
           Continue with Google
         </button>
@@ -124,65 +107,36 @@ const toggleMode = () => {
             <label class="label" for="name">
               <span class="label-text">Full Name</span>
             </label>
-            <input
-              v-model="name"
-              type="text"
-              id="name"
-              placeholder="John Doe"
-              class="input input-bordered w-full"
-              required
-            />
+            <input v-model="name" type="text" id="name" placeholder="John Doe" class="input input-bordered w-full"
+              required />
           </div>
 
           <div class="form-control">
             <label class="label" for="email">
               <span class="label-text">Email</span>
             </label>
-            <input
-              v-model="email"
-              type="email"
-              id="email"
-              placeholder="your@email.com"
-              class="input input-bordered w-full"
-              required
-            />
+            <input v-model="email" type="email" id="email" placeholder="your@email.com"
+              class="input input-bordered w-full" required />
           </div>
 
           <div class="form-control">
             <label class="label" for="password">
               <span class="label-text">Password</span>
-              <button
-                v-if="!isRegistering"
-                type="button"
-                class="link-hover link label-text-alt"
-                @click="resetPassword"
-                :disabled="authState.isLoading"
-              >
+              <button v-if="!isRegistering" type="button" class="link-hover link label-text-alt" @click="resetPassword"
+                :disabled="authState.isLoading">
                 Forgot password?
               </button>
             </label>
-            <input
-              v-model="password"
-              type="password"
-              id="password"
-              placeholder="••••••••"
-              class="input input-bordered w-full"
-              required
-            />
+            <input v-model="password" type="password" id="password" placeholder="••••••••"
+              class="input input-bordered w-full" required />
           </div>
 
           <div v-if="isRegistering" class="form-control">
             <label class="label" for="confirmPassword">
               <span class="label-text">Confirm Password</span>
             </label>
-            <input
-              v-model="confirmPassword"
-              type="password"
-              id="confirmPassword"
-              placeholder="••••••••"
-              class="input input-bordered w-full"
-              required
-            />
+            <input v-model="confirmPassword" type="password" id="confirmPassword" placeholder="••••••••"
+              class="input input-bordered w-full" required />
           </div>
 
           <div v-if="!isRegistering" class="form-control">
@@ -203,12 +157,7 @@ const toggleMode = () => {
         <div class="mt-4 text-center">
           <p>
             {{ isRegistering ? 'Already have an account?' : "Don't have an account?" }}
-            <button
-              type="button"
-              class="link link-primary"
-              @click="toggleMode"
-              :disabled="authState.isLoading"
-            >
+            <button type="button" class="link link-primary" @click="toggleMode" :disabled="authState.isLoading">
               {{ isRegistering ? 'Sign In' : 'Register' }}
             </button>
           </p>

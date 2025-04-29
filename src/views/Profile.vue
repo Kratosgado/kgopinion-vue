@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { useAuth } from '@/lib/backend/auth'
+import type { Author } from '@/lib/utils/types'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuth, type AuthState, type Author } from '@/lib'
 
 const router = useRouter()
 

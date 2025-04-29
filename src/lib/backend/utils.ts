@@ -1,5 +1,5 @@
-import type { Post } from '@/lib/utils'
 import { Timestamp } from 'firebase/firestore'
+import type { Post } from '../utils/types'
 
 export function parseDate<T = Post>(data: any): T {
   for (const [k, v] of Object.entries<any>(data)) {

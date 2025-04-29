@@ -7,9 +7,9 @@ import {
   signOut,
   type User,
 } from 'firebase/auth'
-import { firebaseAuth } from '@/lib/utils' // Adjust path as needed
+import { firebaseAuth } from '@/lib/utils/firebase' // Adjust path as needed
 import { addAuthor, getAuthor, updateAuthor } from './user.query'
-import type { Author } from '@/lib/utils'
+import type { Author } from '@/lib/utils/types'
 
 // Define AuthState type
 export type AuthState = {

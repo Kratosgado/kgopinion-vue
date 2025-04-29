@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
 import { EditorContent, Editor, type AnyExtension, useEditor } from '@tiptap/vue-3'
-import { extensions, YoutubeModal, LinkModal, ImageModal } from '@/components'
-import { post } from '@/stores'
+// import { extensions, YoutubeModal, LinkModal, ImageModal } from '@/components'
+import { post } from '@/stores/extra'
+import { extensions } from '@/components/editor/extensions'
 
 const characterCount = ref(0)
 

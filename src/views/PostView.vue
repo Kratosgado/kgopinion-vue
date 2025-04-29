@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { type Post, type Comment, type SEOMetadata, SEO, togglePostLike } from '@/lib'
-import { getPostBySlug } from '@/lib/backend/post.query'
-import { Loading } from '@/components'
+import { type Post, type Comment } from '@/lib/utils/types'
+import { getPostBySlug, togglePostLike } from '@/lib/backend/post.query'
+import Loading from '@/components/Loading.vue'
+import type { SEOMetadata } from '@/lib/seo/types'
 
 const route = useRoute()
 const post = ref<Post | null>(null)

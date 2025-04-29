@@ -1,4 +1,4 @@
-import type { Post } from '../utils'
+import type { Post } from '../utils/types'
 
 // src/lib/seo/schemas.ts
 export function generateArticleSchema(post: Post) {

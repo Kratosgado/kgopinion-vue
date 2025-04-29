@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { extra } from '@/stores'
+import { extra } from '@/stores/extra'
 import { Editor } from '@tiptap/vue-3'
 
-const {editor} = defineProps<{ editor: Editor }>()
+const { editor } = defineProps<{ editor: Editor }>()
 
 function insertLink() {
   if (extra.linkUrl) {

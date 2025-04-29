@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { extra } from '@/stores'
+import { extra } from '@/stores/extra'
 import type { Editor } from '@tiptap/core'
 import { ref } from 'vue'
 
@@ -25,12 +25,8 @@ function insertYoutube() {
         <label for="" class="label">
           <span class="label-text">YouTube URL</span>
         </label>
-        <input
-          type="text"
-          :value="{ youtubeUrl }"
-          placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-          class="input input-bordered w-full"
-        />
+        <input type="text" :value="{ youtubeUrl }" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          class="input input-bordered w-full" />
       </div>
       <div class="modal-action">
         <button class="btn" @click="() => (extra.showYoutubeModal = false)">Cancel</button>

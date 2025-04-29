@@ -1,7 +1,7 @@
 import { getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { getDocRef } from './helpers'
 import type { User } from 'firebase/auth'
-import type { Author } from '../utils'
+import type { Author } from '../utils/types'
 
 export async function getAuthor(id: string) {
   const authorDoc = await getDoc(getDocRef('admins', id))

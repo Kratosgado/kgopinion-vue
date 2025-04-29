@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import Loading from '@/components/Loading.vue' // Adjust path as needed
 import PostOverview from '@/components/PostOverview.vue'
-import SEO from '@/lib/seo/Head.vue'
+import SEO from '@/lib/seo/SEO.vue'
 import { type SEOMetadata } from '@/lib/seo/types'
 import { getRecentPosts } from '@/lib/backend/post.query'
 import type { Post } from '@/lib/utils/types'
@@ -20,6 +20,8 @@ const metadata: SEOMetadata = {
   keywords: ['programming', 'science', 'development', 'software', 'technology'],
   type: 'website',
   ogImage: 'https://Kratosgado.pages.dev/favicon.ico',
+  canonicalUrl: 'https://Kratosgado.pages.dev',
+  publishedTime: '2023',
   author: 'Kratosgado',
 }
 
