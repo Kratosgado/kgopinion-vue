@@ -19,7 +19,6 @@ const metadata: SEOMetadata = {
     'Explore programming and science topics in an engaging and informative way. Read challenging thoughts including that will make you question your existence.',
   keywords: ['programming', 'science', 'development', 'software', 'technology'],
   type: 'website',
-  ogImage: 'https://Kratosgado.pages.dev/favicon.ico',
   canonicalUrl: 'https://Kratosgado.pages.dev',
   publishedTime: '2023',
   author: 'Kratosgado',

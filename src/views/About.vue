@@ -9,7 +9,7 @@ const metadata: SEOMetadata = {
     'Learn more about Kratosgado and its mission to provide high-quality content on web development, design, and technology.',
   keywords: ['about', 'mission', 'team', 'community', 'contact'],
   type: 'website',
-  ogImage: '/static/favicon.ico',
+  canonicalUrl: 'https://Kratosgado.pages.dev/about',
 }
 
 const loading = ref(true)
