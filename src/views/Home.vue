@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeMount } from 'vue'
-import Loading from '@/components/Loading.vue' // Adjust path as needed
+import { ref, onBeforeMount } from 'vue'
 import PostOverview from '@/components/PostOverview.vue'
 import SEO from '@/lib/seo/SEO.vue'
 import { type SEOMetadata } from '@/lib/seo/types'

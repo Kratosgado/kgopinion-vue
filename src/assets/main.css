@@ -4,6 +4,7 @@
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/container-queries";
+@plugin "purgesss"
 
 #app {
   /* max-width: 1280px; */

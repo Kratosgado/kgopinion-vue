@@ -22,7 +22,6 @@ onBeforeMount(async () => {
     isLoading.value = true
     const { posts: fetchedPosts } = await getRecentPosts(6, null, true)
     posts.value = fetchedPosts
-    console.log('here')
   } catch (err) {
     console.error(err)
   } finally {
