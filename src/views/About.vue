@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import SEO from '@/lib/seo/SEO.vue'
 import Loading from '@/components/Loading.vue'
 import type { SEOMetadata } from '@/lib/seo/types'
 
@@ -19,9 +20,8 @@ onMounted(() => {
 })
 </script>
 <template>
+  <SEO :metadata="metadata" />
   <div class="container mx-auto px-4 py-12">
-    <SEO :metadata="metadata" />
-
     <h1 class="mb-8 text-4xl font-bold">About Kratosgado</h1>
 
     <div class="prose mb-16 max-w-none lg:prose-xl">

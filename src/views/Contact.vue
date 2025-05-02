@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SEOMetadata } from '@/lib/seo/types'
 import { emailAddress } from '@/lib/utils/constants'
+import SEO from '@/lib/seo/SEO.vue'
 import { ref } from 'vue'
 
 const metadata: SEOMetadata = {
@@ -45,9 +46,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+  <SEO :metadata="metadata" />
   <div class="container mx-auto py-12 px-4">
-    <SEO :metadata="metadata" />
-
     <h1 class="text-4xl font-bold mb-8">Contact Us</h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">

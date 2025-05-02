@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeMount } from 'vue'
 import Loading from '@/components/Loading.vue' // Adjust path as needed
 import PostOverview from '@/components/PostOverview.vue'
 import SEO from '@/lib/seo/SEO.vue'
 import { type SEOMetadata } from '@/lib/seo/types'
 import { getRecentPosts } from '@/lib/backend/post.query'
 import type { Post } from '@/lib/utils/types'
+import { isLoading } from '@/stores/isLoading'
 
 // Reactive state
 const posts = ref<Post[]>([])
-const loading = ref(true)
-const error = ref<string | null>(null)
 
 // SEO metadata
 const metadata: SEOMetadata = {
@@ -25,24 +24,23 @@ const metadata: SEOMetadata = {
 }
 
 // Fetch data on mount
-onMounted(async () => {
+onBeforeMount(async () => {
   try {
-    loading.value = true
+    isLoading.value = true
     const postsData = await getRecentPosts(6, null, false)
 
     posts.value = postsData.posts
   } catch (err) {
     console.error(err)
-    error.value = 'Failed to load data'
   } finally {
-    loading.value = false
+    isLoading.value = false
   }
 })
 </script>
 <template>
+  <SEO :metadata="metadata" />
   <div class="flex min-h-screen flex-col">
     <!-- SEO Component -->
-    <SEO :metadata="metadata" />
 
     <!-- Hero Section -->
     <div class="hero min-h-[35vh] bg-base-200">
@@ -66,9 +64,7 @@ onMounted(async () => {
           <router-link to="/" class="btn btn-outline btn-sm">View All</router-link>
         </div>
 
-        <Loading v-if="loading" />
-        <div v-else-if="error" class="text-center text-error">{{ error }}</div>
-        <div v-else class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <PostOverview v-for="post in posts" :key="post.slug" :post="post" />
         </div>
       </section>

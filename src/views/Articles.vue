@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeMount } from 'vue'
 import PostOverview from '@/components/PostOverview.vue'
 import { getRecentPosts } from '@/lib/backend/post.query'
+import SEO from '@/lib/seo/SEO.vue'
 import type { SEOMetadata } from '@/lib/seo/types'
 import type { Post } from '@/lib/utils/types'
+import { isLoading } from '@/stores/isLoading'
 
 const metadata: SEOMetadata = {
   title: 'Articles - Kratosgado',
@@ -13,17 +15,18 @@ const metadata: SEOMetadata = {
 
 const posts = ref<Post[]>([])
 const selectedCategory = ref('all')
-const loading = ref(true)
 
 // Fetch posts on mount
-onMounted(async () => {
+onBeforeMount(async () => {
   try {
+    isLoading.value = true
     const { posts: fetchedPosts } = await getRecentPosts(6, null, true)
     posts.value = fetchedPosts
+    console.log('here')
   } catch (err) {
     console.error(err)
   } finally {
-    loading.value = false
+    isLoading.value = false
   }
 })
 
@@ -42,9 +45,8 @@ const filteredPosts = computed(() =>
 </script>
 
 <template>
+  <SEO :metadata="metadata" />
   <div class="container mx-auto py-12 px-4">
-    <SEO :metadata="metadata" />
-
     <h1 class="text-4xl font-bold mb-8">Articles</h1>
 
     <!-- Category Filter -->
@@ -57,8 +59,7 @@ const filteredPosts = computed(() =>
       </div>
     </div>
 
-    <Loading v-if="loading" />
-    <div v-else-if="filteredPosts.length === 0" class="text-center py-12">
+    <div v-if="filteredPosts.length === 0" class="text-center py-12">
       <h3 class="text-2xl font-bold mb-4">No articles found</h3>
       <p>There are no articles in this category yet.</p>
     </div>
