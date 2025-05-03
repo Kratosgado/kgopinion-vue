@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { facebookLink, githubLink, linkedInLink, twitterLink } from '@/lib/utils/constants'
-import { IconLinkedIn, IconFacebook, IconGithub, IconTwitter } from '@/components/icons'
+import IconGithub from './icons/IconGithub.vue'
+import IconTwitter from './icons/IconTwitter.vue'
+import IconFacebook from './icons/IconFacebook.vue'
+import IconLinkedIn from './icons/IconLinkedIn.vue'
 </script>
 
 <template>
