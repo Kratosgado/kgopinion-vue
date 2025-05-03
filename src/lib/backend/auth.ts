@@ -13,7 +13,7 @@ import type { Author } from '@/lib/utils/types'
 
 // Define AuthState type
 export type AuthState = {
-  user: Author | null
+  user: Author | undefined
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
@@ -21,7 +21,7 @@ export type AuthState = {
 
 // Initial state
 const initialState: AuthState = {
-  user: null,
+  user: undefined,
   isAuthenticated: false,
   isLoading: true,
   error: null,
@@ -39,7 +39,6 @@ export const useAuth = () => {
     try {
       if (u) {
         if (!(await getAuthor(u.uid))) {
-          console.log('adding author')
           await addAuthor(u)
         }
         const user = (await getAuthor(u.uid)) || null
@@ -184,7 +183,6 @@ export const useAuth = () => {
     if (typeof window !== 'undefined') {
       firebaseAuth.onAuthStateChanged((user) => {
         initialize(user)
-        console.log('initialize')
       })
     }
   })

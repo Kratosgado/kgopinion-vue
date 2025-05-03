@@ -1,7 +1,6 @@
 import type { Post } from '@/lib/utils/types'
 import { reactive } from 'vue'
 
-
 export const post: Post = reactive({
   title: 'Untitled Blog',
   content: '',

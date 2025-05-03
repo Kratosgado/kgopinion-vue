@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
-import { EditorContent, Editor, type AnyExtension, useEditor } from '@tiptap/vue-3'
-// import { extensions, YoutubeModal, LinkModal, ImageModal } from '@/components'
+import { EditorContent, useEditor } from '@tiptap/vue-3'
 import { post } from '@/stores/extra'
+import LinkModal from '@/components/editor/LinkModal.vue'
+import ImageModal from '@/components/editor/ImageModal.vue'
+import YoutubeModal from '@/components/editor/YoutubeModal.vue'
 import { extensions } from '@/components/editor/extensions'
 
 const characterCount = ref(0)
@@ -28,10 +30,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="editor-container relative">
-    <div v-if="editor" class="character-count mb-2 text-sm text-gray-500">
-      Characters: {{ characterCount }}
-    </div>
+  <div v-if="editor" class="editor-container relative">
+    <div class="character-count mb-2 text-sm text-gray-500">Characters: {{ characterCount }}</div>
     <div class="toolbar mb-4 flex gap-2">
       <!-- <button v-for="command in commands" :key="command.title" class="btn btn-sm" -->
       <!--   :class="{ 'btn-primary': editor?.isActive(command.title.toLowerCase()) }" -->

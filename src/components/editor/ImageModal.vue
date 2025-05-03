@@ -252,131 +252,134 @@ async function deleteLibraryImage(image: ImageType, event: Event) {
 </script>
 
 <template>
-  <div v-if="extra.showImageModal" class="modal modal-open">
-    <div class="modal-box max-w-2xl">
-      <h3 class="font-bold text-lg">Insert Image</h3>
+  <Teleport to="body">
+    <div v-if="extra.showImageModal" class="modal modal-open">
+      <div class="modal-box max-w-2xl">
+        <h3 class="font-bold text-lg">Insert Image</h3>
 
-      <!-- Tabs -->
-      <div class="tabs tabs-boxed mt-4">
-        <button :class="`tab ${activeTab === 'url' ? 'tab-active' : ''}`" @click="activeTab = 'url'">
-          URL
-        </button>
-        <button :class="`tab ${activeTab === 'upload' ? 'tab-active' : ''}`" @click="activeTab = 'upload'">
-          Upload
-        </button>
-        <button :class="`tab ${activeTab === 'library' ? 'tab-active' : ''}`" @click="activeTab = 'library'">
-          Library
-        </button>
-      </div>
+        <!-- Tabs -->
+        <div class="tabs tabs-boxed mt-4">
+          <button :class="`tab ${activeTab === 'url' ? 'tab-active' : ''}`" @click="activeTab = 'url'">
+            URL
+          </button>
+          <button :class="`tab ${activeTab === 'upload' ? 'tab-active' : ''}`" @click="activeTab = 'upload'">
+            Upload
+          </button>
+          <button :class="`tab ${activeTab === 'library' ? 'tab-active' : ''}`" @click="activeTab = 'library'">
+            Library
+          </button>
+        </div>
 
-      <!-- Error Messages -->
-      <div v-if="errorMessage" class="alert alert-error mt-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current shrink-0" fill="none" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span>{{ errorMessage }}</span>
-      </div>
+        <!-- Error Messages -->
+        <div v-if="errorMessage" class="alert alert-error mt-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current shrink-0" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{{ errorMessage }}</span>
+        </div>
 
-      <div class="mt-4">
-        <!-- URL Tab -->
-        <div v-if="activeTab === 'url'">
+        <div class="mt-4">
+          <!-- URL Tab -->
+          <div v-if="activeTab === 'url'">
+            <div class="form-control w-full">
+              <label for="" class="label">
+                <span class="label-text">Image URL</span>
+              </label>
+              <input type="text" v-model="imageUrl" placeholder="https://example.com/image.jpg"
+                class="input input-bordered w-full" />
+            </div>
+          </div>
+
+          <!-- Upload Tab -->
+          <div v-if="activeTab === 'upload'">
+            <div class="form-control w-full">
+              <label for="" class="label">
+                <span class="label-text">Upload Image</span>
+              </label>
+              <input type="file" accept="image/*" @change="handleFileSelect" ref="fileInput"
+                class="file-input file-input-bordered w-full" />
+
+              <div v-if="isUploading" class="mt-2">
+                <progress class="progress progress-primary w-full" :value="uploadProgress" max="100"></progress>
+                <p class="text-sm mt-1">Uploading: {{ uploadProgress }}%</p>
+              </div>
+
+              <div v-if="uploadedImageUrl" class="mt-4">
+                <img :src="uploadedImageUrl" alt="Preview" class="max-h-40 rounded-md shadow-md" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Library Tab -->
+          <div v-if="activeTab === 'library'">
+            <div v-if="isLoadingLibrary" class="flex justify-center items-center p-8">
+              <span class="loading loading-spinner loading-lg"></span>
+            </div>
+            <div v-else-if="imageLibrary.length === 0" class="p-8 text-center text-gray-500">
+              <p>No images found in the library</p>
+            </div>
+            <div v-else class="grid grid-cols-3 gap-2 mt-2 max-h-60 overflow-y-auto">
+              <div v-for="image in imageLibrary" :key="image.id" aria-roledescription="url" :class="`relative cursor-pointer border rounded-md p-2 group ${selectedLibraryImage?.id === image.id
+                  ? 'border-primary border-2'
+                  : 'border-gray-200'
+                }`" @click="selectLibraryImage(image)">
+                <img :src="image.thumbnail" :alt="image.alt" class="w-full h-24 object-cover" />
+                <p class="text-xs mt-1 truncate">{{ image.alt }}</p>
+
+                <!-- Delete button -->
+                <button aria-label="delete"
+                  class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  @click.stop="deleteLibraryImage(image, $event)" :disabled="isDeleting" title="Delete image">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Common Fields for All Tabs -->
+        <div class="form-control w-full mt-4">
+          <label for="" class="label">
+            <span class="label-text">Alt Text</span>
+          </label>
+          <input type="text" v-model="imageAlt" placeholder="Image description" class="input input-bordered w-full" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-2">
           <div class="form-control w-full">
             <label for="" class="label">
-              <span class="label-text">Image URL</span>
+              <span class="label-text">Width (optional)</span>
             </label>
-            <input type="text" v-model="imageUrl" placeholder="https://example.com/image.jpg"
+            <input type="text" v-model="imageWidth" placeholder="e.g., 300px or 50%"
               class="input input-bordered w-full" />
           </div>
-        </div>
-
-        <!-- Upload Tab -->
-        <div v-if="activeTab === 'upload'">
           <div class="form-control w-full">
             <label for="" class="label">
-              <span class="label-text">Upload Image</span>
+              <span class="label-text">Height (optional)</span>
             </label>
-            <input type="file" accept="image/*" @change="handleFileSelect" ref="fileInput"
-              class="file-input file-input-bordered w-full" />
-
-            <div v-if="isUploading" class="mt-2">
-              <progress class="progress progress-primary w-full" :value="uploadProgress" max="100"></progress>
-              <p class="text-sm mt-1">Uploading: {{ uploadProgress }}%</p>
-            </div>
-
-            <div v-if="uploadedImageUrl" class="mt-4">
-              <img :src="uploadedImageUrl" alt="Preview" class="max-h-40 rounded-md shadow-md" />
-            </div>
+            <input type="text" v-model="imageHeight" placeholder="e.g., 200px" class="input input-bordered w-full" />
           </div>
         </div>
 
-        <!-- Library Tab -->
-        <div v-if="activeTab === 'library'">
-          <div v-if="isLoadingLibrary" class="flex justify-center items-center p-8">
-            <span class="loading loading-spinner loading-lg"></span>
-          </div>
-          <div v-else-if="imageLibrary.length === 0" class="p-8 text-center text-gray-500">
-            <p>No images found in the library</p>
-          </div>
-          <div v-else class="grid grid-cols-3 gap-2 mt-2 max-h-60 overflow-y-auto">
-            <div v-for="image in imageLibrary" :key="image.id" aria-roledescription="url" :class="`relative cursor-pointer border rounded-md p-2 group ${selectedLibraryImage?.id === image.id
-                ? 'border-primary border-2'
-                : 'border-gray-200'
-              }`" @click="selectLibraryImage(image)">
-              <img :src="image.thumbnail" :alt="image.alt" class="w-full h-24 object-cover" />
-              <p class="text-xs mt-1 truncate">{{ image.alt }}</p>
-
-              <!-- Delete button -->
-              <button aria-label="delete"
-                class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                @click.stop="deleteLibraryImage(image, $event)" :disabled="isDeleting" title="Delete image">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
+        <div class="modal-action">
+          <button class="btn" @click="resetForm">Cancel</button>
+          <button class="btn btn-primary" @click="insertImage" :disabled="(activeTab === 'url' && !imageUrl) ||
+            (activeTab === 'upload' && !uploadedImageUrl) ||
+            (activeTab === 'library' && !selectedLibraryImage) ||
+            isUploading ||
+            isDeleting
+            ">
+            Insert
+          </button>
         </div>
-      </div>
-
-      <!-- Common Fields for All Tabs -->
-      <div class="form-control w-full mt-4">
-        <label for="" class="label">
-          <span class="label-text">Alt Text</span>
-        </label>
-        <input type="text" v-model="imageAlt" placeholder="Image description" class="input input-bordered w-full" />
-      </div>
-
-      <div class="grid grid-cols-2 gap-4 mt-2">
-        <div class="form-control w-full">
-          <label for="" class="label">
-            <span class="label-text">Width (optional)</span>
-          </label>
-          <input type="text" v-model="imageWidth" placeholder="e.g., 300px or 50%"
-            class="input input-bordered w-full" />
-        </div>
-        <div class="form-control w-full">
-          <label for="" class="label">
-            <span class="label-text">Height (optional)</span>
-          </label>
-          <input type="text" v-model="imageHeight" placeholder="e.g., 200px" class="input input-bordered w-full" />
-        </div>
-      </div>
-
-      <div class="modal-action">
-        <button class="btn" @click="resetForm">Cancel</button>
-        <button class="btn btn-primary" @click="insertImage" :disabled="(activeTab === 'url' && !imageUrl) ||
-          (activeTab === 'upload' && !uploadedImageUrl) ||
-          (activeTab === 'library' && !selectedLibraryImage) ||
-          isUploading ||
-          isDeleting
-          ">
-          Insert
-        </button>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>

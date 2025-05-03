@@ -6,8 +6,10 @@ import Preview from './Preview.vue'
 import { getPostBySlug } from '@/lib/backend/post.query'
 import { useRoute } from 'vue-router'
 import { post } from '@/stores/extra'
+import { useAuth } from '@/lib/backend/auth'
 
 const showPreview = ref(false)
+const { state } = useAuth();
 
 onBeforeMount(async () => {
   const route = useRoute()
@@ -16,6 +18,7 @@ onBeforeMount(async () => {
   if (slug != 'new') {
     const edit = (await getPostBySlug(route.params.slug as string))!
     post.slug = edit.slug
+    post.author = state.user
     post.title = edit.slug
     post.authorId = edit.authorId
     post.author = edit.author
