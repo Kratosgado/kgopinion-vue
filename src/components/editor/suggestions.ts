@@ -140,6 +140,10 @@ export const suggestions = (editor: Editor) =>
           updateSelection()
           event.preventDefault()
         }
+        if (event.key === 'Escape') {
+          popup.remove()
+          document.removeEventListener('keydown', onKeyDown)
+        }
 
         if (event.key === 'Tab') {
           items[selectedIndex]?.click()
@@ -151,9 +155,9 @@ export const suggestions = (editor: Editor) =>
         items.forEach((item, index) => {
           const a = item.getElementsByTagName('a')
           if (index === selectedIndex) {
-            a[0].classList.add('focus')
+            a[0].classList.add('menu-active')
           } else {
-            a[0].classList.remove('focus')
+            a[0].classList.remove('menu-active')
           }
         })
       }
@@ -179,12 +183,13 @@ export const suggestions = (editor: Editor) =>
             a.textContent = item.title
             // button.textContent = item.title;
             li.addEventListener('click', () => {
-              item.command({ editor, range: props.range, props: {} })
+              item.command({ editor, range: props.range, props: props })
               props.editor.commands.focus()
             })
 
             if (index === selectedIndex) {
-              a.classList.add('focus')
+              a.classList.add('menu-active')
+              a.focus()
             }
 
             li.appendChild(a)
@@ -222,7 +227,7 @@ export const suggestions = (editor: Editor) =>
             const a = document.createElement('a')
             a.textContent = item.title
             if (index === selectedIndex) {
-              a.classList.add('focus')
+              a.classList.add('menu-active')
             }
             li.appendChild(a)
 
@@ -232,14 +237,14 @@ export const suggestions = (editor: Editor) =>
           items.forEach((item) => popup.appendChild(item))
         },
 
-        onKeyDown: (props) => {
-          if (props.event.key === 'Escape') {
-            props.event.preventDefault()
-            return true
-          }
-
-          return false
-        },
+        // onKeyDown: (props) => {
+        //   if (props.event.key === 'Escape') {
+        //     props.event.preventDefault()
+        //     return true
+        //   }
+        //
+        //   return false
+        // },
 
         onExit: () => {
           popup.remove()

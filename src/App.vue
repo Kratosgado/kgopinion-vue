@@ -27,13 +27,14 @@ const ProfileDropdown = defineAsyncComponent(() => import('./components/ProfileD
           <RouterLink to="/" class="text-xl font-bold">Kratosgado</RouterLink>
         </div>
         <div class="hidden flex-none lg:block">
-          <ul class="menu menu-horizontal items-center">
+          <ul class="menu lg:menu-horizontal items-center rounded-box">
             <!-- Public navigation -->
             <li>
               <RouterLink to="/" :class="{ active: $route.path === '/' }">Home</RouterLink>
             </li>
             <li>
-              <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }">Articles</RouterLink>
+              <RouterLink to="/articles" :class="{ active: $route.path === '/articles' }">Articles
+              </RouterLink>
             </li>
             <li>
               <RouterLink to="/articles/categories" :class="{ active: $route.path === '/articles/categories' }">

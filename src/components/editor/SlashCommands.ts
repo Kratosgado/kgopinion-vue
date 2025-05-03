@@ -3,7 +3,7 @@ import { suggestions } from './suggestions'
 import type { TiptapCommandType } from '@/lib/utils/types'
 
 export default Extension.create({
-  name: 'commands',
+  name: 'slashcommands',
 
   addOptions() {
     return {
