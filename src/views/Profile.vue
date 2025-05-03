@@ -298,7 +298,7 @@ const ensureSocialExists = () => {
           <div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
             <div class="avatar">
               <div class="w-24 h-24 rounded-full">
-                <img :src="authState.user!.avatar || '/placeholder.svg'" :alt="authState.user!.name" />
+                <img :src="authState.user!.avatar || '/favicon.ico'" :alt="authState.user!.name" />
               </div>
             </div>
             <div class="flex-1">

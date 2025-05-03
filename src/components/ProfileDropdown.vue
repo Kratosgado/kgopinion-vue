@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { useAuth } from '@/lib/backend/auth'
+import { useRouter } from 'vue-router'
 
 const { state: authState, signOut } = useAuth()
+if (!authState.isLoading && !authState.isAuthenticated) {
+  const router = useRouter()
+  const returnUrl = router.currentRoute.value.path
+  router.replace('/auth?returnUrl=' + returnUrl)
+}
 </script>
 <template v-if="authState?.isAuthenticated && authState.user">
   <li>

@@ -39,6 +39,7 @@ const draftCount = computed(() => posts.value.filter((post) => !post.published).
 // Fetch posts
 onMounted(async () => {
   try {
+    isLoading.value = true
     posts.value = await getPostsByAuthor(undefined, false, undefined)
   } catch (err) {
     console.error(err)
@@ -48,11 +49,11 @@ onMounted(async () => {
 })
 
 const createNewPost = () => {
-  router.push('/editor/new')
+  router.push('/auth/editor/new')
 }
 
 const editPost = (slug: string) => {
-  router.push(`/editor/${slug}`)
+  router.push(`/auth/editor/${slug}`)
 }
 
 const viewPost = (slug: string) => {

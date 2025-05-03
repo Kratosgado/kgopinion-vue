@@ -1,5 +1,5 @@
 // src/composables/useAuth.ts
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, onBeforeMount } from 'vue'
 import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -180,10 +180,11 @@ export const useAuth = () => {
   }
 
   // Initialize auth state on mount (client-side only)
-  onMounted(() => {
+  onBeforeMount(() => {
     if (typeof window !== 'undefined') {
       firebaseAuth.onAuthStateChanged((user) => {
         initialize(user)
+        console.log('initialize')
       })
     }
   })

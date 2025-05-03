@@ -5,7 +5,7 @@ import { defineAsyncComponent } from 'vue'
 import { isLoading } from './stores/isLoading'
 import LoadingPage from './components/LoadingPage.vue'
 
-const ProfileDropDown = defineAsyncComponent(() => import('./components/ProfileDropdown.vue'))
+const ProfileDropdown = defineAsyncComponent(() => import('./components/ProfileDropdown.vue'))
 </script>
 
 <template>
@@ -45,9 +45,7 @@ const ProfileDropDown = defineAsyncComponent(() => import('./components/ProfileD
             <li>
               <RouterLink to="/contact" :class="{ active: $route.path === '/contact' }">Contact</RouterLink>
             </li>
-            <component :is="$route.path.startsWith('/auth')">
-              <ProfileDropDown />
-            </component>
+            <ProfileDropdown v-if="$route.path.startsWith('/auth')" />
           </ul>
         </div>
       </div>
