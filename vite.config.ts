@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 // import { visualizer } from 'rollup-plugin-visualizer'
 import { VitePWA } from 'vite-plugin-pwa'
-import cssnanoPlugin from 'cssnano'
+import post from '@tailwindcss/postcss'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -26,7 +26,7 @@ export default defineConfig({
   },
   css: {
     postcss: {
-      plugins: [cssnanoPlugin()],
+      plugins: [post()],
     },
   },
   build: {

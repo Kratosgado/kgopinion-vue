@@ -127,29 +127,7 @@ export const suggestions = (editor: Editor) =>
       let items: HTMLLIElement[]
       let selectedIndex = 0
 
-      const onKeyDown = (event: KeyboardEvent) => {
-        console.info(event.key)
-        if (event.key === 'ArrowUp') {
-          selectedIndex = (selectedIndex - 1 + items.length) % items.length
-          updateSelection()
-          event.preventDefault()
-        }
-
-        if (event.key === 'ArrowDown') {
-          selectedIndex = (selectedIndex + 1) % items.length
-          updateSelection()
-          event.preventDefault()
-        }
-        if (event.key === 'Escape') {
-          popup.remove()
-          document.removeEventListener('keydown', onKeyDown)
-        }
-
-        if (event.key === 'Tab') {
-          items[selectedIndex]?.click()
-          event.preventDefault()
-        }
-      }
+      const onKeyDown = (event: KeyboardEvent) => {}
 
       const updateSelection = () => {
         items.forEach((item, index) => {
@@ -237,14 +215,38 @@ export const suggestions = (editor: Editor) =>
           items.forEach((item) => popup.appendChild(item))
         },
 
-        // onKeyDown: (props) => {
-        //   if (props.event.key === 'Escape') {
-        //     props.event.preventDefault()
-        //     return true
-        //   }
-        //
-        //   return false
-        // },
+        onKeyDown: ({ event }) => {
+          if (event.key === 'Escape') {
+            event.preventDefault()
+            return true
+          }
+          if (event.key === 'ArrowUp') {
+            selectedIndex = (selectedIndex - 1 + items.length) % items.length
+            updateSelection()
+            event.preventDefault()
+            return true
+          }
+
+          if (event.key === 'ArrowDown') {
+            selectedIndex = (selectedIndex + 1) % items.length
+            updateSelection()
+            event.preventDefault()
+            return true
+          }
+          if (event.key === 'Escape') {
+            popup.remove()
+            document.removeEventListener('keydown', onKeyDown)
+            return true
+          }
+
+          if (event.key === 'Tab') {
+            items[selectedIndex]?.click()
+            event.preventDefault()
+            return true
+          }
+
+          return false
+        },
 
         onExit: () => {
           popup.remove()
