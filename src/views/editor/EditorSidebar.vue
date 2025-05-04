@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useEditorStore } from '../../stores/editorStore'
 import { useSeoStore } from '@/stores/seoStore'
 import { useEditor } from '@/components/editor/useEditor'
+import BadgeButton from '@/components/BadgeButton.vue'
 
 const editorStore = useEditorStore()
 const seoStore = useSeoStore()
@@ -273,7 +274,7 @@ editorStore.$subscribe((mutation, state) => {
 })
 </script>
 <template>
-  <div class="editor-sidebar w-64 bg-white border-r border-gray-200 overflow-y-auto h-full">
+  <div class="editor-sidebar bg-base w-64 border-r border-gray-200 overflow-y-auto h-full">
     <div class="p-4">
       <!-- Blog Post Settings -->
       <div class="mb-6">
@@ -281,12 +282,8 @@ editorStore.$subscribe((mutation, state) => {
 
         <!-- Status -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <select
-            v-model="status"
-            @change="updateStatus"
-            class="w-full p-2 border border-gray-300 rounded-md"
-          >
+          <label class="block text-sm font-medium text-gray-400 mb-1">Status</label>
+          <select v-model="status" @change="updateStatus" class="select select-info">
             <option value="draft">Draft</option>
             <option value="published">Published</option>
             <option value="scheduled">Scheduled</option>
@@ -295,29 +292,24 @@ editorStore.$subscribe((mutation, state) => {
 
         <!-- Publish Date (show if scheduled) -->
         <div class="mb-4" v-if="status === 'scheduled'">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Publish Date</label>
+          <label class="block text-sm font-medium text-gray-400 mb-1">Publish Date</label>
           <input
             type="datetime-local"
             v-model="publishDate"
             @change="updatePublishDate"
-            class="w-full p-2 border border-gray-300 rounded-md"
+            class="input input-info"
           />
         </div>
 
         <!-- Slug -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-          <input
-            type="text"
-            v-model="slug"
-            @input="updateSlug"
-            class="w-full p-2 border border-gray-300 rounded-md"
-          />
+          <label class="block text-sm font-medium text-gray-400 mb-1">Slug</label>
+          <input type="text" v-model="slug" @input="updateSlug" class="input input-info" />
         </div>
 
         <!-- Featured Image -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Featured Image</label>
+          <label class="block text-sm font-medium text-gray-400 mb-1">Featured Image</label>
           <div v-if="featuredImage" class="mb-2">
             <img :src="featuredImage" class="w-full h-auto rounded-md" alt="Featured Image" />
             <button @click="removeFeaturedImage" class="text-red-500 text-sm mt-1">Remove</button>
@@ -329,11 +321,11 @@ editorStore.$subscribe((mutation, state) => {
 
         <!-- Excerpt -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+          <label class="block text-sm font-medium text-gray-400 mb-1">Excerpt</label>
           <textarea
             v-model="excerpt"
             @input="updateExcerpt"
-            class="w-full p-2 border border-gray-300 rounded-md"
+            class="textarea textarea-info"
             rows="3"
             placeholder="Brief summary of your post"
           ></textarea>
@@ -348,22 +340,17 @@ editorStore.$subscribe((mutation, state) => {
             type="text"
             v-model="newCategory"
             @keyup.enter="addCategory"
-            class="flex-1 p-2 border border-gray-300 rounded-l-md"
+            class="input input-info"
             placeholder="Add category"
           />
-          <button @click="addCategory" class="p-2 bg-primary text-white rounded-r-md">Add</button>
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
-          <div
+          <BadgeButton
             v-for="category in categories"
             :key="category"
-            class="bg-gray-100 text-gray-700 text-sm px-2 py-1 rounded-md flex items-center"
-          >
-            {{ category }}
-            <button @click="removeCategory(category)" class="ml-1 text-gray-500 hover:text-red-500">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
+            :value="category"
+            :cb="removeCategory"
+          />
         </div>
       </div>
 
@@ -375,22 +362,12 @@ editorStore.$subscribe((mutation, state) => {
             type="text"
             v-model="newTag"
             @keyup.enter="addTag"
-            class="flex-1 p-2 border border-gray-300 rounded-l-md"
+            class="input input-info"
             placeholder="Add tag"
           />
-          <button @click="addTag" class="p-2 bg-primary text-white rounded-r-md">Add</button>
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
-          <div
-            v-for="tag in tags"
-            :key="tag"
-            class="bg-blue-100 text-blue-700 text-sm px-2 py-1 rounded-md flex items-center"
-          >
-            {{ tag }}
-            <button @click="removeTag(tag)" class="ml-1 text-gray-500 hover:text-red-500">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
+          <BadgeButton v-for="tag in tags" :key="tag" :value="tag" :cb="removeTag" />
         </div>
       </div>
 
@@ -398,34 +375,19 @@ editorStore.$subscribe((mutation, state) => {
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">Templates</h3>
         <div class="space-y-2">
-          <button
-            @click="insertTemplate('cta')"
-            class="w-full p-2 text-left border border-gray-300 rounded-md hover:bg-gray-50"
-          >
+          <button @click="insertTemplate('cta')" class="btn btn-info btn-soft w-full">
             Call to Action
           </button>
-          <button
-            @click="insertTemplate('testimonial')"
-            class="w-full p-2 text-left border border-gray-300 rounded-md hover:bg-gray-50"
-          >
+          <button @click="insertTemplate('testimonial')" class="btn btn-info btn-soft w-full">
             Testimonial
           </button>
-          <button
-            @click="insertTemplate('productFeature')"
-            class="w-full p-2 text-left border border-gray-300 rounded-md hover:bg-gray-50"
-          >
+          <button @click="insertTemplate('productFeature')" class="btn btn-info btn-soft w-full">
             Product Feature
           </button>
-          <button
-            @click="insertTemplate('faq')"
-            class="w-full p-2 text-left border border-gray-300 rounded-md hover:bg-gray-50"
-          >
+          <button @click="insertTemplate('faq')" class="btn btn-info btn-soft w-full">
             FAQ Section
           </button>
-          <button
-            @click="insertTemplate('pricing')"
-            class="w-full p-2 text-left border border-gray-300 rounded-md hover:bg-gray-50"
-          >
+          <button @click="insertTemplate('pricing')" class="btn btn-info btn-soft w-full">
             Pricing Table
           </button>
         </div>
@@ -435,7 +397,7 @@ editorStore.$subscribe((mutation, state) => {
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">SEO & Readability</h3>
         <div class="space-y-2">
-          <div class="p-2 border border-gray-200 rounded-md">
+          <div class="p-2 border border-info rounded-md">
             <div class="flex justify-between items-center">
               <span class="font-medium">Readability</span>
               <div class="flex items-center">
@@ -452,7 +414,7 @@ editorStore.$subscribe((mutation, state) => {
               </div>
             </div>
           </div>
-          <div class="p-2 border border-gray-200 rounded-md">
+          <div class="p-2 border border-info rounded-md">
             <div class="flex justify-between items-center">
               <span class="font-medium">SEO Score</span>
               <div class="flex items-center">
@@ -475,13 +437,13 @@ editorStore.$subscribe((mutation, state) => {
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">Stats</h3>
         <div class="grid grid-cols-2 gap-2">
-          <div class="p-2 bg-gray-50 rounded-md">
-            <div class="text-sm text-gray-600">Words</div>
-            <div class="text-xl font-bold">{{ editorStore.wordCount }}</div>
+          <div class="p-2 rounded-md border border-success">
+            <div class="text-sm text-gray-400">Words</div>
+            <div class="text-lg font-bold">{{ editorStore.wordCount }}</div>
           </div>
-          <div class="p-2 bg-gray-50 rounded-md">
-            <div class="text-sm text-gray-600">Reading time</div>
-            <div class="text-xl font-bold">{{ editorStore.readingTime }}</div>
+          <div class="p-2 rounded-md border border-success">
+            <div class="text-sm text-gray-400">Reading time</div>
+            <div class="text-lg font-bold">{{ editorStore.readingTime }}</div>
           </div>
         </div>
       </div>

@@ -139,9 +139,7 @@ watch(
         <div class="mb-6">
           <div class="flex justify-between mb-2">
             <span class="font-medium">Readability</span>
-            <span :class="scoreClass(seoStore.readabilityScore)"
-              >{{ seoStore.readabilityScore }}/100</span
-            >
+            <span :class="scoreClass(seoStore.readabilityScore)">{{ seoStore.readabilityScore }}/100</span>
           </div>
           <Progress :value="seoStore.readabilityScore" />
         </div>
@@ -149,13 +147,8 @@ watch(
         <!-- Focus Keyword -->
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-400 mb-1">Focus Keyword</label>
-          <input
-            type="text"
-            v-model="focusKeyword"
-            @input="updateFocusKeyword"
-            class="input input-info p-2 rounded-md"
-            placeholder="Enter focus keyword"
-          />
+          <input type="text" v-model="focusKeyword" @input="updateFocusKeyword" class="input input-info p-2 rounded-md"
+            placeholder="Enter focus keyword" />
         </div>
 
         <!-- Meta Title -->
@@ -164,30 +157,18 @@ watch(
             Meta Title
             <span :class="metaTitleLengthClass">{{ seoStore.analysis.titleLength }}/60</span>
           </label>
-          <input
-            type="text"
-            v-model="metaTitle"
-            @input="updateMetaTitle"
-            class="input input-info"
-            placeholder="Enter meta title"
-          />
+          <input type="text" v-model="metaTitle" @input="updateMetaTitle" class="input input-info"
+            placeholder="Enter meta title" />
         </div>
 
         <!-- Meta Description -->
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-400 mb-1">
             Meta Description
-            <span :class="metaDescriptionLengthClass"
-              >{{ seoStore.analysis.descriptionLength }}/155</span
-            >
+            <span :class="metaDescriptionLengthClass">{{ seoStore.analysis.descriptionLength }}/155</span>
           </label>
-          <textarea
-            v-model="metaDescription"
-            @input="updateMetaDescription"
-            class="textarea textarea-info"
-            rows="3"
-            placeholder="Enter meta description"
-          ></textarea>
+          <textarea v-model="metaDescription" @input="updateMetaDescription" class="textarea textarea-info" rows="3"
+            placeholder="Enter meta description"></textarea>
         </div>
 
         <!-- SEO Preview -->
@@ -200,7 +181,7 @@ watch(
               {{
                 metaDescription ||
                 'This is an example of how your page might appear in Google search results.' +
-                  'Write a compelling meta description to improve click - through rates.'
+                'Write a compelling meta description to improve click - through rates.'
               }}
             </div>
           </div>
@@ -211,85 +192,46 @@ watch(
           <h3 class="text-sm font-medium mb-2">SEO Analysis</h3>
 
           <div v-if="seoStore.analysis.improvements.length > 0">
-            <AlertError
-              v-for="(improvement, index) in seoStore.analysis.improvements"
-              :key="index"
-              :msg="improvement"
-              class="alert-soft"
-            />
+            <AlertError v-for="(improvement, index) in seoStore.analysis.improvements" :key="index" :msg="improvement"
+              class="alert-soft" />
           </div>
           <AlertSuccess v-else class="alert-soft" msg="Great job! No SEO improvements needed" />
         </div>
 
         <!-- Social Media Preview Tabs -->
         <div class="mb-6">
-          <div class="tabs tabs-boxed mb-2">
-            <a
-              class="tab"
-              :class="{ 'tab-active': activeTab === 'facebook' }"
-              @click="activeTab = 'facebook'"
-              >Facebook</a
-            >
-            <a
-              class="tab"
-              :class="{ 'tab-active': activeTab === 'twitter' }"
-              @click="activeTab = 'twitter'"
-              >Twitter</a
-            >
+          <div role="tablist" class="tabs tabs-border mb-2">
+            <a class="tab" :class="{ 'tab-active': activeTab === 'facebook' }"
+              @click="activeTab = 'facebook'">Facebook</a>
+            <a class="tab" :class="{ 'tab-active': activeTab === 'twitter' }" @click="activeTab = 'twitter'">Twitter</a>
           </div>
 
           <div v-show="activeTab === 'facebook'" class="p-3 border border-gray-500 rounded-md">
             <label class="block text-sm font-medium text-gray-400 mb-1">OG Title</label>
-            <input
-              type="text"
-              v-model="openGraph.title"
-              @input="updateOpenGraph('title', $event)"
-              class="input input-info"
-            />
+            <input type="text" v-model="openGraph.title" @input="updateOpenGraph('title', $event)"
+              class="input input-info" />
 
             <label class="block text-sm font-medium text-gray-400 mb-1">OG Description</label>
-            <textarea
-              v-model="openGraph.description"
-              @input="updateOpenGraph('description', $event)"
-              class="textarea textarea-info"
-              rows="2"
-            ></textarea>
+            <textarea v-model="openGraph.description" @input="updateOpenGraph('description', $event)"
+              class="textarea textarea-info" rows="2"></textarea>
 
             <label class="block text-sm font-medium text-gray-400 mb-1">OG Image</label>
-            <input
-              type="text"
-              v-model="openGraph.image"
-              @input="updateOpenGraph('image', $event)"
-              class="input input-info"
-              placeholder="Image URL"
-            />
+            <input type="text" v-model="openGraph.image" @input="updateOpenGraph('image', $event)"
+              class="input input-info" placeholder="Image URL" />
           </div>
 
           <div v-show="activeTab === 'twitter'" class="p-3 border border-gray-500 rounded-md">
             <label class="block text-sm font-medium text-gray-400 mb-1">Twitter Title</label>
-            <input
-              type="text"
-              v-model="twitter.title"
-              @input="updateTwitter('title', $event)"
-              class="input input-info"
-            />
+            <input type="text" v-model="twitter.title" @input="updateTwitter('title', $event)"
+              class="input input-info" />
 
             <label class="block text-sm font-medium text-gray-400 mb-1">Twitter Description</label>
-            <textarea
-              v-model="twitter.description"
-              @input="updateTwitter('description', $event)"
-              class="textarea textarea-info"
-              rows="2"
-            ></textarea>
+            <textarea v-model="twitter.description" @input="updateTwitter('description', $event)"
+              class="textarea textarea-info" rows="2"></textarea>
 
             <label class="block text-sm font-medium text-gray-400 mb-1">Twitter Image</label>
-            <input
-              type="text"
-              v-model="twitter.image"
-              @input="updateTwitter('image', $event)"
-              class="input input-info"
-              placeholder="Image URL"
-            />
+            <input type="text" v-model="twitter.image" @input="updateTwitter('image', $event)" class="input input-info"
+              placeholder="Image URL" />
           </div>
         </div>
       </div>
