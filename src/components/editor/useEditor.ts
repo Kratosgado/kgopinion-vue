@@ -106,9 +106,9 @@ export function useEditor() {
             levels: [1, 2, 3, 4, 5, 6],
           },
         }) as AnyExtension,
-        Document,
-        Paragraph,
-        Text,
+        // Document,
+        // Paragraph,
+        // Text,
         Underline,
         Link.configure({
           openOnClick: false,
@@ -147,7 +147,7 @@ export function useEditor() {
         TaskList,
         TaskItem,
         CharacterCount,
-        Dropcursor,
+        // Dropcursor,
         Focus.configure({
           className: 'has-focus',
           mode: 'all',
@@ -155,10 +155,10 @@ export function useEditor() {
         Shortcode,
         Widget,
       ],
-      content: editorStore.content || '',
-      autofocus: 'end',
+      content: editorStore.content || 'Hello',
+      autofocus: true,
       editable: true,
-      injectCSS: false,
+      injectCSS: true,
       onUpdate: ({ editor }) => {
         editorStore.setContent(editor.getHTML())
       },

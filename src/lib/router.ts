@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/auth', component: () => import('../views/Auth.vue') },
   { path: '/auth/profile', component: () => import('../views/Profile.vue') },
   { path: '/auth/dashboard', component: () => import('../views/Dashboard.vue') },
-  { path: '/auth/editor/:slug', component: () => import('../views/editor/Main.vue') },
+  // { path: '/auth/editor/:slug', component: () => import('../views/editor/Main.vue') },
   { path: '/tiptap', component: () => import('../views/editor/Claude.vue') },
 ]
 
