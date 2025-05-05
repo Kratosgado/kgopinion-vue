@@ -28,6 +28,7 @@ import {
   Document,
   Shortcode,
   Widget,
+  CodeBlockLowlight,
 } from './extensions'
 
 export function useBlogEditor() {
@@ -69,7 +70,7 @@ export function useBlogEditor() {
         placeholder: 'Start writing your amazing blog post...',
       }),
       // CodeBlockLowlight.configure({
-      //   lowlight,
+      //   // lowlight,
       // }),
       TextStyle,
       Color,
