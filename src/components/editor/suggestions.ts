@@ -2,7 +2,6 @@ import { extra } from '@/stores/extra'
 import Suggestion from '@tiptap/suggestion'
 import type { Editor } from '@tiptap/vue-3'
 
-import { extensions } from './extensions'
 import { OrderedList } from '@tiptap/extension-ordered-list'
 import { CodeBlock } from '@tiptap/extension-code-block'
 import { ListItem } from '@tiptap/extension-list-item'

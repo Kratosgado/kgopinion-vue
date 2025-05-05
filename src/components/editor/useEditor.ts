@@ -1,4 +1,4 @@
-import { ref, shallowRef } from 'vue'
+import { nextTick, ref, shallowRef } from 'vue'
 import { Editor, Node, useEditor, type AnyExtension } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -25,6 +25,8 @@ import Dropcursor from '@tiptap/extension-dropcursor'
 import Focus from '@tiptap/extension-focus'
 import { useEditorStore, type EditorState } from '@/stores/editorStore'
 import { common } from 'lowlight'
+import SlashCommands from './SlashCommands'
+// import BubbleMenu from '@tiptap/extension-bubble-menu'
 const { lowlight } = common
 
 // Custom extension for shortcodes
@@ -106,6 +108,12 @@ export function useBlogEditor() {
       // Paragraph,
       // Text,
       Underline,
+      // BubbleMenu.configure({
+      //   element: document.querySelector('#bubblemenu') as any,
+      //   shouldShow: ({ editor, view, state, oldState, from, to }) => {
+      //     return editor.isActive('myMark')
+      //   },
+      // }),
       Link.configure({
         openOnClick: false,
         linkOnPaste: true,
@@ -120,6 +128,7 @@ export function useBlogEditor() {
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       }),
+      SlashCommands,
       Placeholder.configure({
         placeholder: 'Start writing your amazing blog post...',
       }),

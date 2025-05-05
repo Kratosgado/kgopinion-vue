@@ -41,11 +41,11 @@ editorStore.$subscribe((mutation, state) => {
     <EditorTopBar />
     <div class="flex-1 flex overflow-hidden">
       <EditorSidebar />
-      <main class="flex-1 overflow-auto p-6">
+      <section class="flex-1 overflow-auto p-6">
         <div class="max-w-4xl mx-auto bg-base-200 shadow-md rounded-lg">
           <EditorContent />
         </div>
-      </main>
+      </section>
       <SeoPanel />
     </div>
   </div>

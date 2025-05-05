@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { BubbleMenu } from '@tiptap/vue-3'
-
 const { editor } = defineProps<{ editor: any }>()
 
 const showColorPicker = ref(false)
@@ -62,7 +61,7 @@ const setTextColor = (color: any) => {
 </script>
 
 <template>
-  <BubbleMenu v-if="editor" :editor="editor" :tippy-options="{ duration: 100 }">
+  <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }">
     <div class="flex items-center bg-white shadow-lg rounded-lg border border-gray-200 p-1">
       <!-- Basic Text Formatting -->
       <button class="p-1 rounded hover:bg-gray-100" :class="{ 'bg-primary text-white': editor.isActive('bold') }"
@@ -117,5 +116,5 @@ const setTextColor = (color: any) => {
         <i class="fas fa-eraser text-sm"></i>
       </button>
     </div>
-  </BubbleMenu>
+  </bubble-menu>
 </template>
