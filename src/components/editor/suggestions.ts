@@ -2,12 +2,8 @@ import { extra } from '@/stores/extra'
 import Suggestion from '@tiptap/suggestion'
 import type { Editor } from '@tiptap/vue-3'
 
-import { OrderedList } from '@tiptap/extension-ordered-list'
-import { CodeBlock } from '@tiptap/extension-code-block'
-import { ListItem } from '@tiptap/extension-list-item'
-import { HorizontalRule } from '@tiptap/extension-horizontal-rule'
-import { Typography } from '@tiptap/extension-typography'
 import type { TiptapCommandType } from '@/lib/utils/types'
+import './extensions'
 
 // Command suggestion configuration
 export const suggestions = (editor: Editor) =>
@@ -23,6 +19,36 @@ export const suggestions = (editor: Editor) =>
           title: 'Heading 1',
           command: ({ editor, range }: TiptapCommandType) => {
             editor.chain().focus().deleteRange(range).setHeading({ level: 1 }).run()
+          },
+        },
+        {
+          title: 'Heading 2',
+          command: ({ editor, range }) => {
+            editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run()
+          },
+        },
+        {
+          title: 'Heading 3',
+          command: ({ editor, range }) => {
+            editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run()
+          },
+        },
+        {
+          title: 'Heading 4',
+          command: ({ editor, range }: TiptapCommandType) => {
+            editor.chain().focus().deleteRange(range).setHeading({ level: 4 }).run()
+          },
+        },
+        {
+          title: 'Heading 5',
+          command: ({ editor, range }) => {
+            editor.chain().focus().deleteRange(range).setHeading({ level: 5 }).run()
+          },
+        },
+        {
+          title: 'Heading 6',
+          command: ({ editor, range }) => {
+            editor.chain().focus().deleteRange(range).setHeading({ level: 6 }).run()
           },
         },
         {
@@ -45,18 +71,7 @@ export const suggestions = (editor: Editor) =>
             extra.showImageModal = true
           },
         },
-        {
-          title: 'Heading 2',
-          command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run()
-          },
-        },
-        {
-          title: 'Heading 3',
-          command: ({ editor, range }) => {
-            editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run()
-          },
-        },
+
         {
           title: 'Bullet List',
           command: ({ editor, range }) => {

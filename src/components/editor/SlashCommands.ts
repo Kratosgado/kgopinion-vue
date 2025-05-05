@@ -2,7 +2,7 @@ import { Extension } from '@tiptap/vue-3'
 import { suggestions } from './suggestions'
 import type { TiptapCommandType } from '@/lib/utils/types'
 
-export default Extension.create({
+export const SlashCommands = Extension.create({
   name: 'slashcommands',
 
   addOptions() {

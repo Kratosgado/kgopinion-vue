@@ -5,7 +5,7 @@ import { useEditorStore } from '../../stores/editorStore'
 import { useSeoStore } from '../../stores/seoStore'
 import { useBlogEditor } from '@/components/editor/useEditor'
 import MenuBar from './MenuBar.vue'
-import EditorBubbleMenu from './EditorBubbleMenu.vue'
+// import EditorBubbleMenu from './EditorBubbleMenu.vue'
 
 const editorStore = useEditorStore()
 const seoStore = useSeoStore()
