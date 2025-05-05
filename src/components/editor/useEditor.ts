@@ -23,7 +23,7 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import Dropcursor from '@tiptap/extension-dropcursor'
 import Focus from '@tiptap/extension-focus'
-import { useEditorStore } from '@/stores/editorStore'
+import { useEditorStore, type EditorState } from '@/stores/editorStore'
 import { common } from 'lowlight'
 const { lowlight } = common
 
@@ -154,9 +154,9 @@ export function useBlogEditor() {
     content: editorStore.content || '',
     autofocus: 'end',
     editable: true,
-    injectCSS: false,
+    injectCSS: true,
     onUpdate: ({ editor }) => {
-      editorStore.setContent(editor.getHTML())
+      // editorStore.setContent(editor.getHTML())
     },
     onFocus: () => {
       console.log('Editor focused')

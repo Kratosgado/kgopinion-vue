@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { FloatingMenu } from '@tiptap/vue-3'
+
+const { editor } = defineProps<{ editor: any }>()
+
+const addImage = () => {
+  const url = window.prompt('Image URL')
+
+  if (url) {
+    editor.chain().focus().setImage({ src: url }).run()
+  }
+}
+</script>
+
 <template>
   <FloatingMenu v-if="editor" :editor="editor" :tippy-options="{ duration: 100 }">
     <div class="bg-white rounded-md shadow-lg p-2 flex border border-gray-200">
@@ -31,22 +45,3 @@
     </div>
   </FloatingMenu>
 </template>
-
-<script setup lang="ts">
-import { FloatingMenu } from '@tiptap/vue-3'
-
-const props = defineProps({
-  editor: {
-    type: Object,
-    required: true,
-  },
-})
-
-const addImage = () => {
-  const url = window.prompt('Image URL')
-
-  if (url) {
-    props.editor.chain().focus().setImage({ src: url }).run()
-  }
-}
-</script>

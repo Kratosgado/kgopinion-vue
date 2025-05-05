@@ -2,7 +2,6 @@
 import { useBlogEditor } from '@/components/editor/useEditor'
 import { useSeo } from '@/components/editor/useSeo'
 import { useEditorStore } from '@/stores/editorStore'
-import { useSeoStore } from '@/stores/seoStore'
 import { MutationType } from 'pinia'
 import { onMounted, onBeforeUnmount } from 'vue'
 import EditorContent from './EditorContent.vue'
@@ -11,7 +10,6 @@ import EditorSidebar from './EditorSidebar.vue'
 import EditorTopBar from './EditorTopBar.vue'
 
 const editorStore = useEditorStore()
-const seoStore = useSeoStore()
 const { initEditor, destroyEditor } = useBlogEditor()
 const { analyzeSeo } = useSeo()
 
@@ -32,7 +30,7 @@ onMounted(() => {
 
 // Watch editor content and analyze SEO when content changes
 editorStore.$subscribe((mutation, state) => {
-  if (mutation.type === MutationType.direct) {
+  if (mutation.type === MutationType.patchObject) {
     analyzeSeo(state.content)
   }
 })

@@ -1,3 +1,66 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { BubbleMenu } from '@tiptap/vue-3'
+
+const { editor } = defineProps<{ editor: any }>()
+
+const showColorPicker = ref(false)
+
+const textColors = [
+  '#000000',
+  '#434343',
+  '#666666',
+  '#999999',
+  '#b7b7b7',
+  '#cccccc',
+  '#d9d9d9',
+  '#efefef',
+  '#f3f3f3',
+  '#ffffff',
+  '#980000',
+  '#ff0000',
+  '#ff9900',
+  '#ffff00',
+  '#00ff00',
+  '#00ffff',
+  '#4a86e8',
+  '#0000ff',
+  '#9900ff',
+  '#ff00ff',
+]
+
+const setLink = () => {
+  const previousUrl = editor.getAttributes('link').href
+  const url = window.prompt('URL', previousUrl)
+
+  // cancelled
+  if (url === null) {
+    return
+  }
+
+  // empty
+  if (url === '') {
+    editor.chain().focus().extendMarkRange('link').unsetLink().run()
+    return
+  }
+
+  // add http:// if it doesn't exist
+  const fullUrl = url.match(/^https?:\/\//) ? url : `https://${url}`
+
+  // update link
+  editor.chain().focus().extendMarkRange('link').setLink({ href: fullUrl }).run()
+}
+
+const toggleColorPicker = () => {
+  showColorPicker.value = !showColorPicker.value
+}
+
+const setTextColor = (color: any) => {
+  editor.chain().focus().setColor(color).run()
+  showColorPicker.value = false
+}
+</script>
+
 <template>
   <BubbleMenu v-if="editor" :editor="editor" :tippy-options="{ duration: 100 }">
     <div class="flex items-center bg-white shadow-lg rounded-lg border border-gray-200 p-1">
@@ -56,71 +119,3 @@
     </div>
   </BubbleMenu>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { BubbleMenu } from '@tiptap/vue-3'
-
-const props = defineProps({
-  editor: {
-    type: Object,
-    required: true,
-  },
-})
-
-const showColorPicker = ref(false)
-
-const textColors = [
-  '#000000',
-  '#434343',
-  '#666666',
-  '#999999',
-  '#b7b7b7',
-  '#cccccc',
-  '#d9d9d9',
-  '#efefef',
-  '#f3f3f3',
-  '#ffffff',
-  '#980000',
-  '#ff0000',
-  '#ff9900',
-  '#ffff00',
-  '#00ff00',
-  '#00ffff',
-  '#4a86e8',
-  '#0000ff',
-  '#9900ff',
-  '#ff00ff',
-]
-
-const setLink = () => {
-  const previousUrl = props.editor.getAttributes('link').href
-  const url = window.prompt('URL', previousUrl)
-
-  // cancelled
-  if (url === null) {
-    return
-  }
-
-  // empty
-  if (url === '') {
-    props.editor.chain().focus().extendMarkRange('link').unsetLink().run()
-    return
-  }
-
-  // add http:// if it doesn't exist
-  const fullUrl = url.match(/^https?:\/\//) ? url : `https://${url}`
-
-  // update link
-  props.editor.chain().focus().extendMarkRange('link').setLink({ href: fullUrl }).run()
-}
-
-const toggleColorPicker = () => {
-  showColorPicker.value = !showColorPicker.value
-}
-
-const setTextColor = (color) => {
-  props.editor.chain().focus().setColor(color).run()
-  showColorPicker.value = false
-}
-</script>

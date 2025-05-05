@@ -4,7 +4,6 @@ import { EditorContent } from '@tiptap/vue-3'
 import { useEditorStore } from '../../stores/editorStore'
 import { useSeoStore } from '../../stores/seoStore'
 import { useBlogEditor } from '@/components/editor/useEditor'
-// import EditorBubbleMenu from './EditorBubbleMenu.vue'
 import MenuBar from './MenuBar.vue'
 import EditorFloatingMenu from './EditorFloatingMenu.vue'
 import EditorBubbleMenu from './EditorBubbleMenu.vue'
@@ -29,16 +28,16 @@ watch(
   },
 )
 
-// Watch for content changes
-watch(
-  () => editor.value?.getHTML(),
-  (newContent) => {
-    if (newContent) {
-      editorStore.setContent(newContent)
-    }
-  },
-  { deep: true },
-)
+// // Watch for content changes
+// watch(
+//   () => editor.value?.getHTML(),
+//   (newContent) => {
+//     if (newContent) {
+//       editorStore.setContent(newContent)
+//     }
+//   },
+//   { deep: true },
+// )
 
 onMounted(() => {
   // If we have stored title, use it
@@ -64,7 +63,7 @@ onMounted(() => {
 }
 
 /* Add some spacing between blocks */
-.ProseMirror > * + * {
+.ProseMirror>*+* {
   margin-top: 0.75em;
 }
 
@@ -79,23 +78,19 @@ onMounted(() => {
 </style>
 
 <template>
-  <div class="editor-container">
+  <div class="editor-container" v-if="editor">
     <div class="px-4 py-3 border-b border-gray-200">
-      <input
-        v-model="title"
-        class="w-full text-3xl font-bold outline-none input input-xl"
-        placeholder="Add Title"
-        @input="updateTitle"
-      />
+      <input v-model="title" class="w-full text-3xl font-bold outline-none input input-xl" placeholder="Add Title"
+        @input="updateTitle" />
     </div>
 
-    <MenuBar v-if="editor" :editor="editor" />
+    <MenuBar :editor="editor" />
 
     <div class="px-6 py-4 min-h-[500px]">
       <EditorContent :editor="editor" class="prose max-w-none" />
     </div>
 
-    <EditorFloatingMenu v-if="editor" :editor="editor" />
-    <EditorBubbleMenu v-if="editor" :editor="editor" />
+    <!-- <EditorFloatingMenu v-if="editor" :editor="editor" /> -->
+    <EditorBubbleMenu :editor="editor" />
   </div>
 </template>
