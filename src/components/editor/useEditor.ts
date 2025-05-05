@@ -1,5 +1,5 @@
 import { ref, shallowRef } from 'vue'
-import { Editor, Node, type AnyExtension } from '@tiptap/vue-3'
+import { Editor, Node, useEditor, type AnyExtension } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
 import Link from '@tiptap/extension-link'
@@ -93,83 +93,81 @@ const Widget = Node.create({
   },
 })
 
-export function useEditor() {
+export function useBlogEditor() {
   const editorStore = useEditorStore()
-  const editor = shallowRef<Editor | undefined>(undefined)
+  let editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3, 4, 5, 6],
+        },
+      }) as AnyExtension,
+      // Document,
+      // Paragraph,
+      // Text,
+      Underline,
+      Link.configure({
+        openOnClick: false,
+        linkOnPaste: true,
+        HTMLAttributes: {
+          class: 'text-primary underline',
+        },
+      }),
+      Image.configure({
+        allowBase64: true,
+        inline: true,
+      }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Placeholder.configure({
+        placeholder: 'Start writing your amazing blog post...',
+      }),
+      // CodeBlockLowlight.configure({
+      //   lowlight,
+      // }),
+      TextStyle,
+      Color,
+      Highlight,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableCell,
+      TableHeader,
+      Youtube.configure({
+        width: 640,
+        height: 480,
+        controls: true,
+      }),
+      TaskList,
+      TaskItem,
+      CharacterCount,
+      // Dropcursor,
+      Focus.configure({
+        className: 'has-focus',
+        mode: 'all',
+      }),
+      Shortcode,
+      Widget,
+    ],
+    content: editorStore.content || '',
+    autofocus: 'end',
+    editable: true,
+    injectCSS: false,
+    onUpdate: ({ editor }) => {
+      editorStore.setContent(editor.getHTML())
+    },
+    onFocus: () => {
+      console.log('Editor focused')
+    },
+    onBlur: () => {
+      console.log('Editor blurred')
+    },
+  })
   const isEditorReady = ref(false)
 
   const initEditor = () => {
-    editor.value = new Editor({
-      extensions: [
-        StarterKit.configure({
-          heading: {
-            levels: [1, 2, 3, 4, 5, 6],
-          },
-        }) as AnyExtension,
-        // Document,
-        // Paragraph,
-        // Text,
-        Underline,
-        Link.configure({
-          openOnClick: false,
-          linkOnPaste: true,
-          HTMLAttributes: {
-            class: 'text-primary underline',
-          },
-        }),
-        Image.configure({
-          allowBase64: true,
-          inline: true,
-        }),
-        TextAlign.configure({
-          types: ['heading', 'paragraph'],
-        }),
-        Placeholder.configure({
-          placeholder: 'Start writing your amazing blog post...',
-        }),
-        // CodeBlockLowlight.configure({
-        //   lowlight,
-        // }),
-        TextStyle,
-        Color,
-        Highlight,
-        Table.configure({
-          resizable: true,
-        }),
-        TableRow,
-        TableCell,
-        TableHeader,
-        Youtube.configure({
-          width: 640,
-          height: 480,
-          controls: true,
-        }),
-        TaskList,
-        TaskItem,
-        CharacterCount,
-        // Dropcursor,
-        Focus.configure({
-          className: 'has-focus',
-          mode: 'all',
-        }),
-        Shortcode,
-        Widget,
-      ],
-      content: editorStore.content || 'Hello',
-      autofocus: true,
-      editable: true,
-      injectCSS: true,
-      onUpdate: ({ editor }) => {
-        editorStore.setContent(editor.getHTML())
-      },
-      onFocus: () => {
-        console.log('Editor focused')
-      },
-      onBlur: () => {
-        console.log('Editor blurred')
-      },
-    })
-
     isEditorReady.value = true
   }
 

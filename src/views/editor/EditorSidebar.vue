@@ -2,12 +2,12 @@
 import { ref, onMounted } from 'vue'
 import { useEditorStore } from '../../stores/editorStore'
 import { useSeoStore } from '@/stores/seoStore'
-import { useEditor } from '@/components/editor/useEditor'
+import { useBlogEditor } from '@/components/editor/useEditor'
 import BadgeButton from '@/components/BadgeButton.vue'
 
 const editorStore = useEditorStore()
 const seoStore = useSeoStore()
-const { editor, insertTemplate: insertEditorTemplate } = useEditor()
+const { editor, insertTemplate: insertEditorTemplate } = useBlogEditor()
 
 // Form fields
 const status = ref(editorStore.status)
@@ -293,12 +293,7 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Publish Date (show if scheduled) -->
         <div class="mb-4" v-if="status === 'scheduled'">
           <label class="block text-sm font-medium text-gray-400 mb-1">Publish Date</label>
-          <input
-            type="datetime-local"
-            v-model="publishDate"
-            @change="updatePublishDate"
-            class="input input-info"
-          />
+          <input type="datetime-local" v-model="publishDate" @change="updatePublishDate" class="input input-info" />
         </div>
 
         <!-- Slug -->
@@ -322,13 +317,8 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Excerpt -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-400 mb-1">Excerpt</label>
-          <textarea
-            v-model="excerpt"
-            @input="updateExcerpt"
-            class="textarea textarea-info"
-            rows="3"
-            placeholder="Brief summary of your post"
-          ></textarea>
+          <textarea v-model="excerpt" @input="updateExcerpt" class="textarea textarea-info" rows="3"
+            placeholder="Brief summary of your post"></textarea>
         </div>
       </div>
 
@@ -336,21 +326,11 @@ editorStore.$subscribe((mutation, state) => {
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">Categories</h3>
         <div class="mb-2 flex">
-          <input
-            type="text"
-            v-model="newCategory"
-            @keyup.enter="addCategory"
-            class="input input-info"
-            placeholder="Add category"
-          />
+          <input type="text" v-model="newCategory" @keyup.enter="addCategory" class="input input-info"
+            placeholder="Add category" />
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
-          <BadgeButton
-            v-for="category in categories"
-            :key="category"
-            :value="category"
-            :cb="removeCategory"
-          />
+          <BadgeButton v-for="category in categories" :key="category" :value="category" :cb="removeCategory" />
         </div>
       </div>
 
@@ -358,13 +338,7 @@ editorStore.$subscribe((mutation, state) => {
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">Tags</h3>
         <div class="mb-2 flex">
-          <input
-            type="text"
-            v-model="newTag"
-            @keyup.enter="addTag"
-            class="input input-info"
-            placeholder="Add tag"
-          />
+          <input type="text" v-model="newTag" @keyup.enter="addTag" class="input input-info" placeholder="Add tag" />
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
           <BadgeButton v-for="tag in tags" :key="tag" :value="tag" :cb="removeTag" />
@@ -401,15 +375,12 @@ editorStore.$subscribe((mutation, state) => {
             <div class="flex justify-between items-center">
               <span class="font-medium">Readability</span>
               <div class="flex items-center">
-                <div
-                  class="w-2 h-2 rounded-full mr-1"
-                  :class="{
-                    'bg-red-500': seoStore.readabilityScore < 40,
-                    'bg-yellow-500':
-                      seoStore.readabilityScore >= 40 && seoStore.readabilityScore < 70,
-                    'bg-green-500': seoStore.readabilityScore >= 70,
-                  }"
-                ></div>
+                <div class="w-2 h-2 rounded-full mr-1" :class="{
+                  'bg-red-500': seoStore.readabilityScore < 40,
+                  'bg-yellow-500':
+                    seoStore.readabilityScore >= 40 && seoStore.readabilityScore < 70,
+                  'bg-green-500': seoStore.readabilityScore >= 70,
+                }"></div>
                 <span>{{ seoStore.readabilityScore }}</span>
               </div>
             </div>
@@ -418,14 +389,11 @@ editorStore.$subscribe((mutation, state) => {
             <div class="flex justify-between items-center">
               <span class="font-medium">SEO Score</span>
               <div class="flex items-center">
-                <div
-                  class="w-2 h-2 rounded-full mr-1"
-                  :class="{
-                    'bg-red-500': seoStore.seoScore < 40,
-                    'bg-yellow-500': seoStore.seoScore >= 40 && seoStore.seoScore < 70,
-                    'bg-green-500': seoStore.seoScore >= 70,
-                  }"
-                ></div>
+                <div class="w-2 h-2 rounded-full mr-1" :class="{
+                  'bg-red-500': seoStore.seoScore < 40,
+                  'bg-yellow-500': seoStore.seoScore >= 40 && seoStore.seoScore < 70,
+                  'bg-green-500': seoStore.seoScore >= 70,
+                }"></div>
                 <span>{{ seoStore.seoScore }}</span>
               </div>
             </div>

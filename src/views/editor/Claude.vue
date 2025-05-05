@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEditor } from '@/components/editor/useEditor'
+import { useBlogEditor } from '@/components/editor/useEditor'
 import { useSeo } from '@/components/editor/useSeo'
 import { useEditorStore } from '@/stores/editorStore'
 import { useSeoStore } from '@/stores/seoStore'
@@ -12,7 +12,7 @@ import EditorTopBar from './EditorTopBar.vue'
 
 const editorStore = useEditorStore()
 const seoStore = useSeoStore()
-const { initEditor, destroyEditor } = useEditor()
+const { initEditor, destroyEditor } = useBlogEditor()
 const { analyzeSeo } = useSeo()
 
 onMounted(() => {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useEditor } from '@/components/editor/useEditor'
+import { useBlogEditor } from '@/components/editor/useEditor'
 import { useEditorStore } from '@/stores/editorStore'
 import { ref, computed, onMounted, watch } from 'vue'
 
 // Get editor state and methods from composable
-const { editor } = useEditor()
+const { editor } = useBlogEditor()
 const { title } = useEditorStore()
 
 // Local state

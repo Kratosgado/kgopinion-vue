@@ -3,7 +3,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { EditorContent } from '@tiptap/vue-3'
 import { useEditorStore } from '../../stores/editorStore'
 import { useSeoStore } from '../../stores/seoStore'
-import { useEditor } from '@/components/editor/useEditor'
+import { useBlogEditor } from '@/components/editor/useEditor'
 // import EditorBubbleMenu from './EditorBubbleMenu.vue'
 import MenuBar from './MenuBar.vue'
 import EditorFloatingMenu from './EditorFloatingMenu.vue'
@@ -13,7 +13,7 @@ const editorStore = useEditorStore()
 const seoStore = useSeoStore()
 const title = ref('')
 
-const { editor } = useEditor()
+const { editor } = useBlogEditor()
 
 // Update title in store
 const updateTitle = () => {
@@ -64,7 +64,7 @@ onMounted(() => {
 }
 
 /* Add some spacing between blocks */
-.ProseMirror>*+* {
+.ProseMirror > * + * {
   margin-top: 0.75em;
 }
 
@@ -81,8 +81,12 @@ onMounted(() => {
 <template>
   <div class="editor-container">
     <div class="px-4 py-3 border-b border-gray-200">
-      <input v-model="title" class="w-full text-3xl font-bold outline-none input input-xl" placeholder="Add Title"
-        @input="updateTitle" />
+      <input
+        v-model="title"
+        class="w-full text-3xl font-bold outline-none input input-xl"
+        placeholder="Add Title"
+        @input="updateTitle"
+      />
     </div>
 
     <MenuBar v-if="editor" :editor="editor" />

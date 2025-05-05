@@ -145,43 +145,77 @@ const insertTabs = () => {
 }
 </script>
 <template>
-  <div class="editor-menu-bar border-b border-gray-200 bg-gray-50 p-2 flex flex-wrap gap-1 sticky top-0 z-10">
+  <div
+    class="editor-menu-bar border-b border-gray-200 bg-gray-50 p-2 flex flex-wrap gap-1 sticky top-0 z-10"
+  >
     <!-- Basic Text Formatting -->
     <div class="flex space-x-1">
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('bold') }"
-        @click="editor.chain().focus().toggleBold().run()" title="Bold">
-        <i class="fas fa-bold"></i>
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('bold') }"
+        @click="editor.chain().focus().toggleBold().run()"
+        title="Bold"
+      >
+        <i class="fas fa-bold">B</i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('italic') }"
-        @click="editor.chain().focus().toggleItalic().run()" title="Italic">
-        <i class="fas fa-italic"></i>
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('italic') }"
+        @click="editor.chain().focus().toggleItalic().run()"
+        title="Italic"
+      >
+        <i class="fas fa-italic">I</i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('underline') }"
-        @click="editor.chain().focus().toggleUnderline().run()" title="Underline">
-        <i class="fas fa-underline"></i>
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('underline') }"
+        @click="editor.chain().focus().toggleUnderline().run()"
+        title="Underline"
+      >
+        <i class="fas fa-underline">U</i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('strike') }"
-        @click="editor.chain().focus().toggleStrike().run()" title="Strike">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('strike') }"
+        @click="editor.chain().focus().toggleStrike().run()"
+        title="Strike"
+      >
         <i class="fas fa-strikethrough"></i>
       </button>
     </div>
 
     <!-- Text Alignment -->
     <div class="flex space-x-1">
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive({ textAlign: 'left' }) }"
-        @click="editor.chain().focus().setTextAlign('left').run()" title="Align Left">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'left' }) }"
+        @click="editor.chain().focus().setTextAlign('left').run()"
+        title="Align Left"
+      >
         <i class="fas fa-align-left"></i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive({ textAlign: 'center' }) }"
-        @click="editor.chain().focus().setTextAlign('center').run()" title="Align Center">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'center' }) }"
+        @click="editor.chain().focus().setTextAlign('center').run()"
+        title="Align Center"
+      >
         <i class="fas fa-align-center"></i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive({ textAlign: 'right' }) }"
-        @click="editor.chain().focus().setTextAlign('right').run()" title="Align Right">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'right' }) }"
+        @click="editor.chain().focus().setTextAlign('right').run()"
+        title="Align Right"
+      >
         <i class="fas fa-align-right"></i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive({ textAlign: 'justify' }) }"
-        @click="editor.chain().focus().setTextAlign('justify').run()" title="Justify">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'justify' }) }"
+        @click="editor.chain().focus().setTextAlign('justify').run()"
+        title="Justify"
+      >
         <i class="fas fa-align-justify"></i>
       </button>
     </div>
@@ -209,12 +243,20 @@ const insertTabs = () => {
 
     <!-- Lists -->
     <div class="flex space-x-1">
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('bulletList') }"
-        @click="editor.chain().focus().toggleBulletList().run()" title="Bullet List">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('bulletList') }"
+        @click="editor.chain().focus().toggleBulletList().run()"
+        title="Bullet List"
+      >
         <i class="fas fa-list-ul"></i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('orderedList') }"
-        @click="editor.chain().focus().toggleOrderedList().run()" title="Numbered List">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('orderedList') }"
+        @click="editor.chain().focus().toggleOrderedList().run()"
+        title="Numbered List"
+      >
         <i class="fas fa-list-ol"></i>
       </button>
     </div>
@@ -223,7 +265,12 @@ const insertTabs = () => {
 
     <!-- Links and Media -->
     <div class="flex space-x-1">
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('link') }" @click="setLink" title="Add Link">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('link') }"
+        @click="setLink"
+        title="Add Link"
+      >
         <i class="fas fa-link"></i>
       </button>
       <button class="btn btn-sm" @click="addImage" title="Add Image">
@@ -258,20 +305,33 @@ const insertTabs = () => {
       </label>
       <div tabindex="0" class="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52">
         <div class="grid grid-cols-5 gap-1">
-          <button v-for="color in textColors" :key="color" class="w-6 h-6 rounded-full"
-            :style="{ backgroundColor: color }" @click="editor.chain().focus().setColor(color).run()"></button>
+          <button
+            v-for="color in textColors"
+            :key="color"
+            class="w-6 h-6 rounded-full"
+            :style="{ backgroundColor: color }"
+            @click="editor.chain().focus().setColor(color).run()"
+          ></button>
         </div>
       </div>
     </div>
 
     <!-- Undo/Redo -->
     <div class="flex space-x-1 ml-auto">
-      <button class="btn btn-sm" @click="editor.chain().focus().undo().run()" :disabled="!editor.can().undo()"
-        title="Undo">
+      <button
+        class="btn btn-sm"
+        @click="editor.chain().focus().undo().run()"
+        :disabled="!editor.can().undo()"
+        title="Undo"
+      >
         <i class="fas fa-undo"></i>
       </button>
-      <button class="btn btn-sm" @click="editor.chain().focus().redo().run()" :disabled="!editor.can().redo()"
-        title="Redo">
+      <button
+        class="btn btn-sm"
+        @click="editor.chain().focus().redo().run()"
+        :disabled="!editor.can().redo()"
+        title="Redo"
+      >
         <i class="fas fa-redo"></i>
       </button>
     </div>
