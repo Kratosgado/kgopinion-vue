@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { Node, useEditor, extensions as ext, type AnyExtension } from '@tiptap/vue-3'
+import { useEditor, type AnyExtension } from '@tiptap/vue-3'
 import Focus from '@tiptap/extension-focus'
 import { useEditorStore } from '@/stores/editorStore'
 import { common } from 'lowlight'
@@ -9,7 +9,6 @@ import {
   Image,
   Highlight,
   TaskItem,
-  Text,
   Underline,
   Link,
   TextAlign,
@@ -24,11 +23,9 @@ import {
   TaskList,
   CharacterCount,
   SlashCommands,
-  Paragraph,
-  Document,
   Shortcode,
   Widget,
-  CodeBlockLowlight,
+  HorizontalRule,
 } from './extensions'
 
 export function useBlogEditor() {
@@ -41,9 +38,6 @@ export function useBlogEditor() {
         },
       }) as AnyExtension,
       SlashCommands,
-      Document,
-      Paragraph,
-      Text,
       Underline,
       // BubbleMenu.configure({
       //   element: document.querySelector('#bubblemenu') as any,
@@ -102,7 +96,7 @@ export function useBlogEditor() {
     editable: true,
     injectCSS: true,
     onUpdate: ({ editor }) => {
-      // editorStore.setContent(editor.getHTML())
+      editorStore.setContent(editor.getHTML())
     },
     onFocus: () => {
       console.log('Editor focused')

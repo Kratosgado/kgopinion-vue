@@ -29,10 +29,6 @@ const updatePublishDate = () => {
   editorStore.setPublishDate(publishDate.value)
 }
 
-const updateSlug = () => {
-  editorStore.setSlug(slug.value)
-}
-
 const updateExcerpt = () => {
   editorStore.setExcerpt(excerpt.value)
 }
@@ -299,7 +295,7 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Slug -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-400 mb-1">Slug</label>
-          <input type="text" v-model="slug" @input="updateSlug" class="input input-info" />
+          <div type="text" class="btn btn-info btn-soft w-full">{{ editorStore.slug }}</div>
         </div>
 
         <!-- Featured Image -->

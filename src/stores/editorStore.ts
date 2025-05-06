@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
+
+export type PostStatus = 'draft' | 'published' | 'scheduled'
 
 export interface EditorState {
   title: string
@@ -10,7 +11,7 @@ export interface EditorState {
   featuredImage: string
   categories: string[]
   tags: string[]
-  status: 'draft' | 'published' | 'scheduled'
+  status: PostStatus
   publishDate: string
   lastSaved: string | null
   version: number
@@ -55,11 +56,12 @@ export const useEditorStore = defineStore('editor', {
     setTitle(title: string) {
       this.title = title
       this.isDirty = true
-
-      // Auto-generate slug if empty
-      if (!this.slug) {
-        this.setSlug(this.generateSlug(title))
-      }
+      this.slug = title
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '')
     },
     setContent(content: string) {
       this.content = content
@@ -67,10 +69,6 @@ export const useEditorStore = defineStore('editor', {
     },
     setExcerpt(excerpt: string) {
       this.excerpt = excerpt
-      this.isDirty = true
-    },
-    setSlug(slug: string) {
-      this.slug = slug
       this.isDirty = true
     },
     setFeaturedImage(url: string) {
@@ -105,7 +103,7 @@ export const useEditorStore = defineStore('editor', {
       this.publishDate = date
       this.isDirty = true
     },
-    saveContent() {
+    saveContent(status: PostStatus) {
       // Create a snapshot for history
       if (this.content) {
         this.history.push({
@@ -152,14 +150,6 @@ export const useEditorStore = defineStore('editor', {
       this.version = 1
       this.history = []
       this.isDirty = false
-    },
-    generateSlug(text: string): string {
-      return text
-        .toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '')
     },
   },
 })

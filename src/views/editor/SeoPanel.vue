@@ -42,7 +42,7 @@ const metaDescriptionLengthClass = computed(() => {
 })
 
 const previewUrl = computed(() => {
-  const baseUrl = 'example.com/'
+  const baseUrl = 'kratosgado.pages.dev/articles/'
   const slug = editorStore.slug || 'sample-post'
   return baseUrl + slug
 })

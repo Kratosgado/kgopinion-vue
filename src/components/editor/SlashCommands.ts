@@ -8,7 +8,7 @@ export const SlashCommands = Extension.create({
   addOptions() {
     return {
       suggestion: {
-        char: '/',
+        // char: '/',
         command: ({ editor, range, props }: TiptapCommandType) => {
           props.command({ editor, range })
         },

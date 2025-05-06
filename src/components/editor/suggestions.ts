@@ -99,7 +99,7 @@ export const suggestions = (editor: Editor) =>
         {
           title: 'Blockquote',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).toggleBlockquote().run()
+            ;(editor.chain().focus().deleteRange(range) as any).toggleBlockquote().run()
           },
         },
         {
@@ -111,7 +111,7 @@ export const suggestions = (editor: Editor) =>
         {
           title: 'Table',
           command: ({ editor, range }) => {
-            // editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run()
+            editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3 }).run()
           },
         },
         {

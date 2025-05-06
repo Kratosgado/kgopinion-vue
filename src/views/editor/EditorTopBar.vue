@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { useBlogEditor } from '@/components/editor/useEditor'
-import { useEditorStore } from '@/stores/editorStore'
+import { useSeo } from '@/components/editor/useSeo'
+import { useEditorStore, type PostStatus } from '@/stores/editorStore'
+import { useSeoStore } from '@/stores/seoStore'
 import { ref, computed, onMounted, watch } from 'vue'
 
 // Get editor state and methods from composable
-const { editor } = useBlogEditor()
-const { title } = useEditorStore()
+const editorStore = useEditorStore()
+const seoStore = useSeoStore()
 
 // Local state
 const currentView = ref('editor')
 const devicePreview = ref('desktop')
-const postTitle = computed(() => title || '')
-const seoScore = computed(() => calculateSeoScore())
-const isDirty = false
 
 // Methods
 const toggleSidebar = () => {
@@ -56,8 +55,9 @@ const openExcerpt = () => {
   emit('open-modal', 'excerpt')
 }
 
-const savePost = (status: any) => {
-  // savePostAction(status)
+const savePost = (status: PostStatus) => {
+  //TODO: display save status
+  editorStore.saveContent(status)
 }
 
 const showTemplateLibrary = () => {
@@ -68,21 +68,19 @@ const showTemplateLibrary = () => {
 const emit = defineEmits(['toggle-sidebar', 'change-view', 'change-device', 'open-modal'])
 
 // Watch for changes
-watch(postTitle, (newTitle) => {
-  // Update document title
-  document.title = newTitle ? `${newTitle} - Editor` : 'Blog Editor'
-})
+watch(
+  () => editorStore.title,
+  (newTitle) => {
+    // Update document title
+    document.title = newTitle ? `${newTitle} - Editor` : 'Blog Editor'
+  },
+)
 
 // Lifecycle
 onMounted(() => {
   // Initial setup
-  document.title = postTitle.value ? `${postTitle.value} - Editor` : 'Blog Editor'
+  document.title = editorStore.title ? `${editorStore.title} - Editor` : 'Blog Editor'
 })
-
-function calculateSeoScore(): any {
-  return 80
-  // throw new Error('Function not implemented.')
-}
 </script>
 <!-- src/components/editor/EditorTopBar.vue -->
 <template>
@@ -98,8 +96,8 @@ function calculateSeoScore(): any {
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       </button>
-      <div class="font-bold">{{ postTitle || 'Untitled Post' }}</div>
-      <div class="badge badge-outline">{{ isDirty ? 'Unsaved' : 'Saved' }}</div>
+      <div class="font-bold">{{ editorStore.title || 'Untitled Post' }}</div>
+      <div class="badge badge-outline">{{ editorStore.isDirty ? 'Unsaved' : 'Saved' }}</div>
     </div>
 
     <!-- Center section: Format/View controls -->
@@ -165,9 +163,9 @@ function calculateSeoScore(): any {
     <!-- Right section: Actions -->
     <div class="flex items-center gap-2">
       <button @click="openSeoSettings" class="btn btn-sm btn-outline gap-1" :class="{
-        'btn-success': seoScore >= 80,
-        'btn-warning': seoScore >= 50 && seoScore < 80,
-        'btn-error': seoScore < 50,
+        'btn-success': seoStore.seoScore >= 80,
+        'btn-warning': seoStore.seoScore >= 50 && seoStore.seoScore < 80,
+        'btn-error': seoStore.seoScore < 50,
       }">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -175,7 +173,7 @@ function calculateSeoScore(): any {
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
         </svg>
         SEO
-        <div class="badge badge-sm">{{ seoScore }}</div>
+        <div class="badge badge-sm">{{ seoStore.seoScore }}</div>
       </button>
 
       <div class="dropdown dropdown-end">
@@ -205,8 +203,8 @@ function calculateSeoScore(): any {
         </label>
         <ul tabindex="0" class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-52">
           <li><a @click="savePost('draft')">Save as Draft</a></li>
-          <li><a @click="savePost('publish')">Publish</a></li>
-          <li><a @click="savePost('schedule')">Schedule</a></li>
+          <li><a @click="savePost('published')">Publish</a></li>
+          <li><a @click="savePost('scheduled')">Schedule</a></li>
         </ul>
       </div>
 

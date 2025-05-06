@@ -19,14 +19,6 @@ const updateTitle = () => {
   seoStore.updateMetaTitle(title.value)
 }
 
-// Watch for title changes from the store
-watch(
-  () => editorStore.title,
-  (newTitle) => {
-    title.value = newTitle
-  },
-)
-
 // // Watch for content changes
 // watch(
 //   () => editor.value?.getHTML(),
@@ -62,7 +54,7 @@ onMounted(() => {
 }
 
 /* Add some spacing between blocks */
-.ProseMirror>*+* {
+.ProseMirror > * + * {
   margin-top: 0.75em;
 }
 
@@ -79,8 +71,12 @@ onMounted(() => {
 <template>
   <div class="editor-container" v-if="editor">
     <div class="px-4 py-3 border-b border-gray-200">
-      <input v-model="title" class="w-full text-3xl font-bold outline-none input input-xl" placeholder="Add Title"
-        @input="updateTitle" />
+      <input
+        v-model="title"
+        class="w-full text-3xl font-bold outline-none input input-xl"
+        placeholder="Add Title"
+        @input="updateTitle"
+      />
     </div>
 
     <MenuBar :editor="editor" />
