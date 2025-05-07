@@ -271,7 +271,7 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Publish Date (show if scheduled) -->
         <div class="mb-4" v-if="status === 'scheduled'">
           <label class="block text-sm font-medium text-gray-400 mb-1">Publish Date</label>
-          <input type="datetime-local" v-model="editorStore.publishDate" class="input input-info" />
+          <input type="datetime-local" v-model="editorStore.publishedAt" class="input input-info" />
         </div>
 
         <!-- Slug -->

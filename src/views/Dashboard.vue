@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getPostsByAuthor } from '@/lib/backend/post.query'
-import type { Post } from '@/lib/utils/types'
+import type { Post, PostStatus } from '@/lib/utils/types'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -9,15 +9,15 @@ const router = useRouter()
 // State
 const posts = ref<Post[]>([])
 const isLoading = ref(true)
-const activeTab = ref('published')
+const activeTab = ref<PostStatus | undefined>('published')
 const searchQuery = ref('')
 
 // Computed properties
 const filteredPosts = computed(() => {
   return posts.value.filter((post) => {
     // Filter by tab
-    if (activeTab.value === 'published' && !post.published) return false
-    if (activeTab.value === 'drafts' && post.published) return false
+    if (activeTab.value === 'published' && !(post.status === 'published')) return false
+    if (activeTab.value === 'draft' && post.status === 'published') return false
 
     // Filter by search query
     if (searchQuery.value) {
@@ -33,8 +33,12 @@ const filteredPosts = computed(() => {
   })
 })
 
-const publishedCount = computed(() => posts.value.filter((post) => post.published).length)
-const draftCount = computed(() => posts.value.filter((post) => !post.published).length)
+const publishedCount = computed(
+  () => posts.value.filter((post) => post.status === 'published').length,
+)
+const draftCount = computed(
+  () => posts.value.filter((post) => !(post.status === 'published')).length,
+)
 
 // Fetch posts
 onMounted(async () => {
@@ -61,12 +65,12 @@ const viewPost = (slug: string) => {
 }
 
 const togglePublishStatus = async (post: Post) => {
-  post.published = !post.published
-  if (post.published) {
-    post.publishedAt = new Date()
-  } else {
-    post.publishedAt = undefined
-  }
+  // post.published = !post.published
+  // if (post.published) {
+  //   post.publishedAt = new Date()
+  // } else {
+  //   post.publishedAt = undefined
+  // }
   posts.value = [...posts.value]
 }
 
@@ -122,10 +126,13 @@ const deletePost = async (postToDelete: Post) => {
         <button class="tab" :class="{ 'tab-active': activeTab === 'published' }" @click="activeTab = 'published'">
           Published ({{ publishedCount }})
         </button>
-        <button class="tab" :class="{ 'tab-active': activeTab === 'drafts' }" @click="activeTab = 'drafts'">
+        <button class="tab" :class="{ 'tab-active': activeTab === 'draft' }" @click="activeTab = 'draft'">
           Drafts ({{ draftCount }})
         </button>
-        <button class="tab" :class="{ 'tab-active': activeTab === 'all' }" @click="activeTab = 'all'">
+        <button class="tab" :class="{ 'tab-active': activeTab === 'scheduled' }" @click="activeTab = 'scheduled'">
+          Drafts ({{ draftCount }})
+        </button>
+        <button class="tab" :class="{ 'tab-active': activeTab === undefined }" @click="activeTab = undefined">
           All Posts ({{ posts.length }})
         </button>
       </div>
@@ -156,7 +163,7 @@ const deletePost = async (postToDelete: Post) => {
             Create Your First Post
           </button>
         </template>
-        <template v-else-if="activeTab === 'drafts'">
+        <template v-else-if="activeTab === 'draft'">
           <p>You don't have any drafts.</p>
           <button class="btn btn-primary mt-4 mx-auto" @click="createNewPost">
             Create New Post
@@ -199,7 +206,7 @@ const deletePost = async (postToDelete: Post) => {
             </td>
             <td class="hidden md:table-cell">
               {{
-                post.published
+                post.status === 'published'
                   ? `Published on ${post.publishedAt?.toLocaleDateString()}`
                   : `Last updated ${post.updatedAt.toLocaleDateString()}`
               }}
@@ -245,8 +252,8 @@ const deletePost = async (postToDelete: Post) => {
               </div>
             </td>
             <td>
-              <div :class="`badge ${post.published ? 'badge-success' : 'badge-secondary'}`">
-                {{ post.published ? 'Published' : 'Draft' }}
+              <div :class="`badge ${post.status === 'published' ? 'badge-success' : 'badge-secondary'}`">
+                {{ post.status === 'published' ? 'Published' : 'Draft' }}
               </div>
             </td>
             <td>
@@ -261,10 +268,12 @@ const deletePost = async (postToDelete: Post) => {
                 </label>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                   <li><button @click="editPost(post.slug)">Edit</button></li>
-                  <li v-if="post.published"><button @click="viewPost(post.slug)">View</button></li>
+                  <li v-if="post.status === 'published'">
+                    <button @click="viewPost(post.slug)">View</button>
+                  </li>
                   <li>
                     <button @click="togglePublishStatus(post)">
-                      {{ post.published ? 'Unpublish' : 'Publish' }}
+                      {{ post.status === 'published' ? 'Unpublish' : 'Publish' }}
                     </button>
                   </li>
                   <li><button class="text-error" @click="deletePost(post)">Delete</button></li>

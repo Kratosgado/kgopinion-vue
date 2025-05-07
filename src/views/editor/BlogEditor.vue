@@ -10,12 +10,10 @@ import EditorSidebar from './EditorSidebar.vue'
 import EditorTopBar from './EditorTopBar.vue'
 
 const editorStore = useEditorStore()
-const { initEditor, destroyEditor } = useBlogEditor()
+const { destroyEditor } = useBlogEditor()
 const { analyzeSeo } = useSeo()
 
 onMounted(() => {
-  initEditor()
-
   // Auto-save every 30 seconds
   const autoSaveInterval = setInterval(() => {
     editorStore.saveContent('draft')

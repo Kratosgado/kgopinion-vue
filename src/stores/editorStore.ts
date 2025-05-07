@@ -1,8 +1,10 @@
+import { getPostBySlug } from '@/lib/backend/post.query'
+import type { Post, PostStatus } from '@/lib/utils/types'
 import { defineStore } from 'pinia'
+import { onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router'
 
-export type PostStatus = 'draft' | 'published' | 'scheduled'
-
-export interface EditorState {
+export type EditorState = {
   title: string
   content: string
   wordCount: number
@@ -12,9 +14,8 @@ export interface EditorState {
   categories: string[]
   tags: string[]
   status: PostStatus
-  publishDate: string
+  publishedAt: string
   lastSaved: string | null
-  version: number
   history: Array<{
     content: string
     timestamp: string
@@ -23,22 +24,33 @@ export interface EditorState {
 }
 
 export const useEditorStore = defineStore('editor', {
-  state: (): EditorState => ({
-    title: '',
-    content: '',
-    excerpt: '',
-    slug: '',
-    featuredImage: '',
-    categories: [],
-    tags: [],
-    status: 'draft',
-    publishDate: new Date().toISOString(),
-    lastSaved: null,
-    version: 1,
-    wordCount: 0,
-    history: [],
-    isDirty: false,
-  }),
+  state: (): EditorState => {
+    let post: Post | any = {
+      title: '',
+      content: '',
+      readTime: 0,
+      excerpt: '',
+      slug: '',
+      featuredImage: '',
+      categories: [],
+      tags: [],
+      status: 'draft',
+      publishedAt: new Date(),
+    }
+    onBeforeMount(async () => {
+      const slug = useRoute().params.slug as string
+      if (slug === 'new') return
+
+      post = await getPostBySlug(slug)
+    })
+    return {
+      ...post,
+      lastSaved: null,
+      isDirty: false,
+      wordCount: 0,
+      history: [],
+    }
+  },
   getters: {
     wordCount: (state) => {
       if (!state.content) return 0
@@ -100,7 +112,7 @@ export const useEditorStore = defineStore('editor', {
       this.isDirty = true
     },
     setPublishDate(date: string) {
-      this.publishDate = date
+      this.publishedAt = date
       this.isDirty = true
     },
     saveContent(status: PostStatus) {
@@ -118,7 +130,6 @@ export const useEditorStore = defineStore('editor', {
       }
 
       this.lastSaved = new Date().toISOString()
-      this.version += 1
       this.isDirty = false
 
       // TODO: save to backend
@@ -144,9 +155,8 @@ export const useEditorStore = defineStore('editor', {
       this.categories = []
       this.tags = []
       this.status = 'draft'
-      this.publishDate = new Date().toISOString()
+      this.publishedAt = new Date().toISOString()
       this.lastSaved = null
-      this.version = 1
       this.history = []
       this.isDirty = false
     },

@@ -30,7 +30,7 @@ export async function savePostOrUpdate(postData: Post): Promise<string> {
     {
       ...postData,
       slug,
-      createdAt: postData.createdAt || serverTimestamp(),
+      createdAt: postData.publishedAt || serverTimestamp(),
       updatedAt: serverTimestamp(),
     },
     { merge: true },
@@ -216,7 +216,7 @@ export const searchPosts = async (
         data.title.toLowerCase().includes(searchTermLower) ||
         data.content.toLowerCase().includes(searchTermLower) ||
         data.excerpt.toLowerCase().includes(searchTermLower) ||
-        data.keywords.some((keyword) => keyword.toLowerCase().includes(searchTermLower))
+        data.tags.some((keyword) => keyword.toLowerCase().includes(searchTermLower))
       )
     })
     .map((doc) => parseDate(doc.data()))

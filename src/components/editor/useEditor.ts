@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { useEditor, type AnyExtension } from '@tiptap/vue-3'
 import Focus from '@tiptap/extension-focus'
 import { useEditorStore } from '@/stores/editorStore'
@@ -104,17 +103,11 @@ export function useBlogEditor() {
       console.log('Editor blurred')
     },
   })
-  const isEditorReady = ref(false)
-
-  const initEditor = () => {
-    isEditorReady.value = true
-  }
 
   const destroyEditor = () => {
     if (editor.value) {
       editor.value.destroy()
       editor.value = undefined
-      isEditorReady.value = false
     }
   }
 
@@ -150,8 +143,6 @@ export function useBlogEditor() {
 
   return {
     editor,
-    isEditorReady,
-    initEditor,
     destroyEditor,
     insertTemplate,
     insertShortcode,
