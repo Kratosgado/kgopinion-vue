@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export interface SeoState {
+export type SeoState = {
   metaTitle: string
   metaDescription: string
   focusKeyword: string

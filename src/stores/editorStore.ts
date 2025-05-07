@@ -121,8 +121,8 @@ export const useEditorStore = defineStore('editor', {
       this.version += 1
       this.isDirty = false
 
-      // Here you would typically save to a backend
-      console.log('Content saved', this.title)
+      // TODO: save to backend
+
 
       return {
         success: true,

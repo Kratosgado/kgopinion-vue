@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useEditorStore } from '../../stores/editorStore'
 import { useSeoStore } from '@/stores/seoStore'
 import { useBlogEditor } from '@/components/editor/useEditor'
@@ -31,6 +31,7 @@ const updatePublishDate = () => {
 
 const updateExcerpt = () => {
   editorStore.setExcerpt(excerpt.value)
+  seoStore.updateMetaDescription(excerpt.value)
 }
 
 const selectFeaturedImage = () => {
@@ -340,7 +341,20 @@ editorStore.$subscribe((mutation, state) => {
           <BadgeButton v-for="tag in tags" :key="tag" :value="tag" :cb="removeTag" />
         </div>
       </div>
-
+      <!-- Word Count Stats -->
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-3">Stats</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="p-2 rounded-md border border-success">
+            <div class="text-sm text-gray-400">Words</div>
+            <div class="text-lg font-bold">{{ editorStore.wordCount }}</div>
+          </div>
+          <div class="p-2 rounded-md border border-success">
+            <div class="text-sm text-gray-400">Reading time</div>
+            <div class="text-lg font-bold">{{ editorStore.readingTime }}</div>
+          </div>
+        </div>
+      </div>
       <!-- Templates -->
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">Templates</h3>
@@ -363,54 +377,6 @@ editorStore.$subscribe((mutation, state) => {
         </div>
       </div>
 
-      <!-- SEO & Readability -->
-      <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-3">SEO & Readability</h3>
-        <div class="space-y-2">
-          <div class="p-2 border border-info rounded-md">
-            <div class="flex justify-between items-center">
-              <span class="font-medium">Readability</span>
-              <div class="flex items-center">
-                <div class="w-2 h-2 rounded-full mr-1" :class="{
-                  'bg-red-500': seoStore.readabilityScore < 40,
-                  'bg-yellow-500':
-                    seoStore.readabilityScore >= 40 && seoStore.readabilityScore < 70,
-                  'bg-green-500': seoStore.readabilityScore >= 70,
-                }"></div>
-                <span>{{ seoStore.readabilityScore }}</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-2 border border-info rounded-md">
-            <div class="flex justify-between items-center">
-              <span class="font-medium">SEO Score</span>
-              <div class="flex items-center">
-                <div class="w-2 h-2 rounded-full mr-1" :class="{
-                  'bg-red-500': seoStore.seoScore < 40,
-                  'bg-yellow-500': seoStore.seoScore >= 40 && seoStore.seoScore < 70,
-                  'bg-green-500': seoStore.seoScore >= 70,
-                }"></div>
-                <span>{{ seoStore.seoScore }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Word Count Stats -->
-      <div class="mb-6">
-        <h3 class="text-lg font-semibold mb-3">Stats</h3>
-        <div class="grid grid-cols-2 gap-2">
-          <div class="p-2 rounded-md border border-success">
-            <div class="text-sm text-gray-400">Words</div>
-            <div class="text-lg font-bold">{{ editorStore.wordCount }}</div>
-          </div>
-          <div class="p-2 rounded-md border border-success">
-            <div class="text-sm text-gray-400">Reading time</div>
-            <div class="text-lg font-bold">{{ editorStore.readingTime }}</div>
-          </div>
-        </div>
-      </div>
 
       <!-- Revision History -->
       <div class="mb-6">

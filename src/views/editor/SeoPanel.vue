@@ -10,7 +10,6 @@ const seoStore = useSeoStore()
 const editorStore = useEditorStore()
 
 const metaTitle = ref(seoStore.metaTitle)
-const metaDescription = ref(seoStore.metaDescription)
 const focusKeyword = ref(seoStore.focusKeyword)
 const activeTab = ref('facebook')
 
@@ -34,13 +33,6 @@ const metaTitleLengthClass = computed(() => {
   return 'text-green-500'
 })
 
-const metaDescriptionLengthClass = computed(() => {
-  const length = seoStore.analysis.descriptionLength
-  if (length === 0) return 'text-gray-500'
-  if (length < 120 || length > 155) return 'text-red-500'
-  return 'text-green-500'
-})
-
 const previewUrl = computed(() => {
   const baseUrl = 'kratosgado.pages.dev/articles/'
   const slug = editorStore.slug || 'sample-post'
@@ -57,10 +49,6 @@ const scoreClass = (score: number) => {
 // Update functions
 const updateMetaTitle = () => {
   seoStore.updateMetaTitle(metaTitle.value)
-}
-
-const updateMetaDescription = () => {
-  seoStore.updateMetaDescription(metaDescription.value)
 }
 
 const updateFocusKeyword = () => {
@@ -84,13 +72,6 @@ watch(
   () => seoStore.metaTitle,
   (newValue) => {
     metaTitle.value = newValue
-  },
-)
-
-watch(
-  () => seoStore.metaDescription,
-  (newValue) => {
-    metaDescription.value = newValue
   },
 )
 
@@ -161,16 +142,6 @@ watch(
             placeholder="Enter meta title" />
         </div>
 
-        <!-- Meta Description -->
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-400 mb-1">
-            Meta Description
-            <span :class="metaDescriptionLengthClass">{{ seoStore.analysis.descriptionLength }}/155</span>
-          </label>
-          <textarea v-model="metaDescription" @input="updateMetaDescription" class="textarea textarea-info" rows="3"
-            placeholder="Enter meta description"></textarea>
-        </div>
-
         <!-- SEO Preview -->
         <div class="mb-6 p-3 border border-gray-500 rounded-md">
           <h3 class="text-sm font-medium mb-2">Google Preview</h3>
@@ -179,7 +150,7 @@ watch(
             <div class="text-green-700 text-sm">{{ previewUrl }}</div>
             <div class="text-gray-400 text-sm line-clamp-2">
               {{
-                metaDescription ||
+                editorStore.excerpt ||
                 'This is an example of how your page might appear in Google search results.' +
                 'Write a compelling meta description to improve click - through rates.'
               }}

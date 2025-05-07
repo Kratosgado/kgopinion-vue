@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useBlogEditor } from '@/components/editor/useEditor'
 import { useSeo } from '@/components/editor/useSeo'
+import Toast from '@/components/Toast.vue'
 import { useEditorStore, type PostStatus } from '@/stores/editorStore'
 import { useSeoStore } from '@/stores/seoStore'
 import { ref, computed, onMounted, watch } from 'vue'

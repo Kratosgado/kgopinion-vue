@@ -18,7 +18,7 @@ onMounted(() => {
 
   // Auto-save every 30 seconds
   const autoSaveInterval = setInterval(() => {
-    editorStore.saveContent()
+    editorStore.saveContent('draft')
   }, 30000)
 
   // Clean up on unmount
@@ -30,7 +30,7 @@ onMounted(() => {
 
 // Watch editor content and analyze SEO when content changes
 editorStore.$subscribe((mutation, state) => {
-  if (mutation.type === MutationType.patchObject) {
+  if (mutation.type === MutationType.direct) {
     analyzeSeo(state.content)
   }
 })
