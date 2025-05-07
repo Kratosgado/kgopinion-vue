@@ -13,7 +13,6 @@ const { editor, insertTemplate: insertEditorTemplate } = useBlogEditor()
 const status = ref(editorStore.status)
 const publishDate = ref(editorStore.publishDate)
 const slug = ref(editorStore.slug)
-const featuredImage = ref(editorStore.featuredImage)
 const excerpt = ref(editorStore.excerpt)
 const categories = ref([...editorStore.categories])
 const tags = ref([...editorStore.tags])
@@ -39,13 +38,11 @@ const selectFeaturedImage = () => {
   const url = prompt('Enter image URL')
   if (url) {
     editorStore.setFeaturedImage(url)
-    featuredImage.value = url
   }
 }
 
 const removeFeaturedImage = () => {
   editorStore.setFeaturedImage('')
-  featuredImage.value = ''
 }
 
 const addCategory = () => {
@@ -263,7 +260,6 @@ editorStore.$subscribe((mutation, state) => {
     status.value = state.status
     publishDate.value = state.publishDate
     slug.value = state.slug
-    featuredImage.value = state.featuredImage
     excerpt.value = state.excerpt
     categories.value = [...state.categories]
     tags.value = [...state.tags]
@@ -302,12 +298,12 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Featured Image -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-400 mb-1">Featured Image</label>
-          <div v-if="featuredImage" class="mb-2">
-            <img :src="featuredImage" class="w-full h-auto rounded-md" alt="Featured Image" />
+          <div v-if="editorStore.featuredImage" class="mb-2">
+            <img :src="editorStore.featuredImage" class="w-full h-auto rounded-md" alt="Featured Image" />
             <button @click="removeFeaturedImage" class="text-red-500 text-sm mt-1">Remove</button>
           </div>
           <button @click="selectFeaturedImage" class="btn btn-sm btn-outline w-full">
-            {{ featuredImage ? 'Change Image' : 'Add Image' }}
+            {{ editorStore.featuredImage ? 'Change Image' : 'Add Image' }}
           </button>
         </div>
 
@@ -376,7 +372,6 @@ editorStore.$subscribe((mutation, state) => {
           </button>
         </div>
       </div>
-
 
       <!-- Revision History -->
       <div class="mb-6">

@@ -13,18 +13,6 @@ const metaTitle = ref(seoStore.metaTitle)
 const focusKeyword = ref(seoStore.focusKeyword)
 const activeTab = ref('facebook')
 
-const openGraph = ref({
-  title: seoStore.openGraph.title,
-  description: seoStore.openGraph.description,
-  image: seoStore.openGraph.image,
-})
-
-const twitter = ref({
-  title: seoStore.twitter.title,
-  description: seoStore.twitter.description,
-  image: seoStore.twitter.image,
-})
-
 // Computed properties for styling
 const metaTitleLengthClass = computed(() => {
   const length = seoStore.analysis.titleLength
@@ -55,18 +43,6 @@ const updateFocusKeyword = () => {
   seoStore.updateFocusKeyword(focusKeyword.value)
 }
 
-const updateOpenGraph = (field: keyof typeof openGraph.value, event: Event) => {
-  const value = (event.target as HTMLInputElement).value
-  openGraph.value[field] = value
-  seoStore.updateOpenGraph({ [field]: value })
-}
-
-const updateTwitter = (field: keyof typeof twitter.value, event: Event) => {
-  const value = (event.target as HTMLInputElement).value
-  twitter.value[field] = value
-  seoStore.updateTwitter({ [field]: value })
-}
-
 // Watch for changes from the store
 watch(
   () => seoStore.metaTitle,
@@ -80,22 +56,6 @@ watch(
   (newValue) => {
     focusKeyword.value = newValue
   },
-)
-
-watch(
-  () => seoStore.openGraph,
-  (newValue) => {
-    openGraph.value = { ...newValue }
-  },
-  { deep: true },
-)
-
-watch(
-  () => seoStore.twitter,
-  (newValue) => {
-    twitter.value = { ...newValue }
-  },
-  { deep: true },
 )
 </script>
 
@@ -167,43 +127,6 @@ watch(
               class="alert-soft" />
           </div>
           <AlertSuccess v-else class="alert-soft" msg="Great job! No SEO improvements needed" />
-        </div>
-
-        <!-- Social Media Preview Tabs -->
-        <div class="mb-6">
-          <div role="tablist" class="tabs tabs-border mb-2">
-            <a class="tab" :class="{ 'tab-active': activeTab === 'facebook' }"
-              @click="activeTab = 'facebook'">Facebook</a>
-            <a class="tab" :class="{ 'tab-active': activeTab === 'twitter' }" @click="activeTab = 'twitter'">Twitter</a>
-          </div>
-
-          <div v-show="activeTab === 'facebook'" class="p-3 border border-gray-500 rounded-md">
-            <label class="block text-sm font-medium text-gray-400 mb-1">OG Title</label>
-            <input type="text" v-model="openGraph.title" @input="updateOpenGraph('title', $event)"
-              class="input input-info" />
-
-            <label class="block text-sm font-medium text-gray-400 mb-1">OG Description</label>
-            <textarea v-model="openGraph.description" @input="updateOpenGraph('description', $event)"
-              class="textarea textarea-info" rows="2"></textarea>
-
-            <label class="block text-sm font-medium text-gray-400 mb-1">OG Image</label>
-            <input type="text" v-model="openGraph.image" @input="updateOpenGraph('image', $event)"
-              class="input input-info" placeholder="Image URL" />
-          </div>
-
-          <div v-show="activeTab === 'twitter'" class="p-3 border border-gray-500 rounded-md">
-            <label class="block text-sm font-medium text-gray-400 mb-1">Twitter Title</label>
-            <input type="text" v-model="twitter.title" @input="updateTwitter('title', $event)"
-              class="input input-info" />
-
-            <label class="block text-sm font-medium text-gray-400 mb-1">Twitter Description</label>
-            <textarea v-model="twitter.description" @input="updateTwitter('description', $event)"
-              class="textarea textarea-info" rows="2"></textarea>
-
-            <label class="block text-sm font-medium text-gray-400 mb-1">Twitter Image</label>
-            <input type="text" v-model="twitter.image" @input="updateTwitter('image', $event)" class="input input-info"
-              placeholder="Image URL" />
-          </div>
         </div>
       </div>
     </div>

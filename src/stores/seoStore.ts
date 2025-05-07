@@ -6,16 +6,6 @@ export type SeoState = {
   focusKeyword: string
   seoScore: number
   readabilityScore: number
-  openGraph: {
-    title: string
-    description: string
-    image: string
-  }
-  twitter: {
-    title: string
-    description: string
-    image: string
-  }
   analysis: {
     keywordDensity: number
     keywordInTitle: boolean
@@ -40,16 +30,6 @@ export const useSeoStore = defineStore('seo', {
     focusKeyword: '',
     seoScore: 0,
     readabilityScore: 0,
-    openGraph: {
-      title: '',
-      description: '',
-      image: '',
-    },
-    twitter: {
-      title: '',
-      description: '',
-      image: '',
-    },
     analysis: {
       keywordDensity: 0,
       keywordInTitle: false,
@@ -69,25 +49,15 @@ export const useSeoStore = defineStore('seo', {
   actions: {
     updateMetaTitle(title: string) {
       this.metaTitle = title
-      this.openGraph.title = title
-      this.twitter.title = title
       this.updateSeoScore()
     },
     updateMetaDescription(description: string) {
       this.metaDescription = description
-      this.openGraph.description = description
-      this.twitter.description = description
       this.updateSeoScore()
     },
     updateFocusKeyword(keyword: string) {
       this.focusKeyword = keyword
       this.updateSeoScore()
-    },
-    updateOpenGraph(data: Partial<SeoState['openGraph']>) {
-      this.openGraph = { ...this.openGraph, ...data }
-    },
-    updateTwitter(data: Partial<SeoState['twitter']>) {
-      this.twitter = { ...this.twitter, ...data }
     },
     updateAnalysis(analysis: Partial<SeoState['analysis']>) {
       this.analysis = { ...this.analysis, ...analysis }

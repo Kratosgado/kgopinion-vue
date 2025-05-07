@@ -123,7 +123,6 @@ export const useEditorStore = defineStore('editor', {
 
       // TODO: save to backend
 
-
       return {
         success: true,
         timestamp: this.lastSaved,
