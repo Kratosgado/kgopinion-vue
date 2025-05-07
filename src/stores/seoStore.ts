@@ -53,7 +53,6 @@ export const useSeoStore = defineStore('seo', {
     },
     updateMetaDescription(description: string) {
       this.metaDescription = description
-      this.updateSeoScore()
     },
     updateFocusKeyword(keyword: string) {
       this.focusKeyword = keyword

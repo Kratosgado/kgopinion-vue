@@ -25,7 +25,7 @@ export function useSeo() {
   // Analyze the SEO of the content
   const analyzeSeo = (content: string) => {
     const plainText = content ? content.replace(/<\/?[^>]+(>|$)/g, ' ') : ''
-    const { focusKeyword, metaTitle, metaDescription } = seoStore
+    const { focusKeyword, metaTitle } = seoStore
     const firstParagraph = getFirstParagraph(content)
     const headings = getHeadings(content)
 
@@ -54,6 +54,7 @@ export function useSeo() {
     // Check readability metrics
     const { readingEase, passiveVoice, sentenceLength, paragraphLength, transitionWords } =
       calculateReadability(plainText)
+    seoStore.updateMetaDescription(editorStore.excerpt)
 
     // Update SEO analysis
     seoStore.updateAnalysis({
@@ -63,7 +64,7 @@ export function useSeo() {
       keywordInHeadings,
       keywordInUrl: editorStore.slug.toLowerCase().includes((focusKeyword || '').toLowerCase()),
       titleLength: metaTitle.length,
-      descriptionLength: metaDescription.length,
+      descriptionLength: editorStore.excerpt.length,
       readingEase,
       passiveVoice,
       sentenceLength,

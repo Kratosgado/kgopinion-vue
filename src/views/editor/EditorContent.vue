@@ -20,15 +20,13 @@ const updateTitle = () => {
 }
 
 // // Watch for content changes
-// watch(
-//   () => editor.value?.getHTML(),
-//   (newContent) => {
-//     if (newContent) {
-//       editorStore.setContent(newContent)
-//     }
-//   },
-//   { deep: true },
-// )
+watch(
+  () => editorStore.excerpt,
+  (excerpt) => {
+    seoStore.updateMetaDescription(excerpt)
+  },
+  { deep: true },
+)
 
 onMounted(() => {
   // If we have stored title, use it
@@ -54,7 +52,7 @@ onMounted(() => {
 }
 
 /* Add some spacing between blocks */
-.ProseMirror > * + * {
+.ProseMirror>*+* {
   margin-top: 0.75em;
 }
 
@@ -71,12 +69,8 @@ onMounted(() => {
 <template>
   <div class="editor-container" v-if="editor">
     <div class="px-4 py-3 border-b border-gray-200">
-      <input
-        v-model="title"
-        class="w-full text-3xl font-bold outline-none input input-xl"
-        placeholder="Add Title"
-        @input="updateTitle"
-      />
+      <input v-model="title" class="w-full text-3xl font-bold outline-none input input-xl" placeholder="Add Title"
+        @input="updateTitle" />
     </div>
 
     <MenuBar :editor="editor" />

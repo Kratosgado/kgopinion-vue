@@ -11,9 +11,6 @@ const { editor, insertTemplate: insertEditorTemplate } = useBlogEditor()
 
 // Form fields
 const status = ref(editorStore.status)
-const publishDate = ref(editorStore.publishDate)
-const slug = ref(editorStore.slug)
-const excerpt = ref(editorStore.excerpt)
 const categories = ref([...editorStore.categories])
 const tags = ref([...editorStore.tags])
 const newCategory = ref('')
@@ -22,15 +19,6 @@ const newTag = ref('')
 // Update methods
 const updateStatus = () => {
   editorStore.setStatus(status.value as 'draft' | 'published' | 'scheduled')
-}
-
-const updatePublishDate = () => {
-  editorStore.setPublishDate(publishDate.value)
-}
-
-const updateExcerpt = () => {
-  editorStore.setExcerpt(excerpt.value)
-  seoStore.updateMetaDescription(excerpt.value)
 }
 
 const selectFeaturedImage = () => {
@@ -258,9 +246,6 @@ const viewRevisions = () => {
 editorStore.$subscribe((mutation, state) => {
   if (mutation.type.includes('set')) {
     status.value = state.status
-    publishDate.value = state.publishDate
-    slug.value = state.slug
-    excerpt.value = state.excerpt
     categories.value = [...state.categories]
     tags.value = [...state.tags]
   }
@@ -286,7 +271,7 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Publish Date (show if scheduled) -->
         <div class="mb-4" v-if="status === 'scheduled'">
           <label class="block text-sm font-medium text-gray-400 mb-1">Publish Date</label>
-          <input type="datetime-local" v-model="publishDate" @change="updatePublishDate" class="input input-info" />
+          <input type="datetime-local" v-model="editorStore.publishDate" class="input input-info" />
         </div>
 
         <!-- Slug -->
@@ -310,7 +295,7 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Excerpt -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-400 mb-1">Excerpt</label>
-          <textarea v-model="excerpt" @input="updateExcerpt" class="textarea textarea-info" rows="3"
+          <textarea v-model="editorStore.excerpt" class="textarea textarea-info" rows="3"
             placeholder="Brief summary of your post"></textarea>
         </div>
       </div>

@@ -25,7 +25,6 @@ import {
   SlashCommands,
   Shortcode,
   Widget,
-  HorizontalRule,
 } from './extensions'
 
 export function useBlogEditor() {
