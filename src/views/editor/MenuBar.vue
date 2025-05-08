@@ -9,13 +9,14 @@ import IconRedo from '@/components/icons/IconRedo.vue'
 import IconRightAlign from '@/components/icons/IconRightAlign.vue'
 import IconStrikeThrough from '@/components/icons/IconStrikeThrough.vue'
 import IconUndo from '@/components/icons/IconUndo.vue'
+import { getTemplate, templates } from '@/lib/utils/templates'
 import { useEditorStore } from '@/stores/editorStore'
-import type { Editor } from '@tiptap/vue-3'
 import { computed, watch } from 'vue'
 
 const editorStore = useEditorStore()
-const { editor } = defineProps<{ editor: Editor }>()
+// const { editor } = defineProps<{ editor: Editor }>()
 
+const { editor } = defineProps<{ editor: any }>()
 watch(
   () => editorStore.content,
   (content) => {
@@ -23,6 +24,10 @@ watch(
   },
   { once: true },
 )
+
+function insertTemplate(type: string) {
+  editor.commands.insertContent(getTemplate(type))
+}
 
 const textColors = [
   '#000000',
@@ -57,43 +62,43 @@ const currentHeading = computed(() => {
   return null
 })
 
-const setLink = () => {
-  const previousUrl = editor.getAttributes('link').href
-  const url = window.prompt('URL', previousUrl)
+// const setLink = () => {
+//   const previousUrl = editor.getAttributes('link').href
+//   const url = window.prompt('URL', previousUrl)
+//
+//   // cancelled
+//   if (url === null) {
+//     return
+//   }
+//
+//   // empty
+//   if (url === '') {
+//     editor.chain().focus().extendMarkRange('link').unsetLink().run()
+//     return
+//   }
+//
+//   // add http:// if it doesn't exist
+//   const fullUrl = url.match(/^https?:\/\//) ? url : `https://${url}`
+//
+//   // update link
+//   editor.chain().focus().extendMarkRange('link').setLink({ href: fullUrl }).run()
+// }
 
-  // cancelled
-  if (url === null) {
-    return
-  }
+// const addImage = () => {
+//   const url = window.prompt('Image URL')
+//
+//   if (url) {
+//     editor.chain().focus().setImage({ src: url }).run()
+//   }
+// }
 
-  // empty
-  if (url === '') {
-    editor.chain().focus().extendMarkRange('link').unsetLink().run()
-    return
-  }
-
-  // add http:// if it doesn't exist
-  const fullUrl = url.match(/^https?:\/\//) ? url : `https://${url}`
-
-  // update link
-  editor.chain().focus().extendMarkRange('link').setLink({ href: fullUrl }).run()
-}
-
-const addImage = () => {
-  const url = window.prompt('Image URL')
-
-  if (url) {
-    editor.chain().focus().setImage({ src: url }).run()
-  }
-}
-
-const addVideo = () => {
-  const url = window.prompt('YouTube Video URL')
-
-  if (url) {
-    editor.chain().focus().setYoutubeVideo({ src: url }).run()
-  }
-}
+// const addVideo = () => {
+//   const url = window.prompt('YouTube Video URL')
+//
+//   if (url) {
+//     editor.chain().focus().setYoutubeVideo({ src: url }).run()
+//   }
+// }
 
 const insertTable = () => {
   editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
@@ -161,77 +166,43 @@ const insertTabs = () => {
 }
 </script>
 <template>
-  <div
-    class="editor-menu-bar border-b border-success bg-neutral-50 p-2 flex flex-wrap gap-1 sticky top-0 z-10"
-  >
+  <div class="editor-menu-bar border-b border-success bg-neutral-50 p-2 flex flex-wrap gap-1 sticky top-0 z-10">
     <!-- Basic Text Formatting -->
     <div class="flex space-x-1">
-      <button
-        class="btn btn-sm"
-        :class="{ 'btn-primary': editor.isActive('bold') }"
-        @click="editor.chain().focus().toggleBold().run()"
-        title="Bold"
-      >
+      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('bold') }"
+        @click="editor.chain().focus().toggleBold().run()" title="Bold">
         <i class="fas fa-bold">B</i>
       </button>
-      <button
-        class="btn btn-sm"
-        :class="{ 'btn-primary': editor.isActive('italic') }"
-        @click="editor.chain().focus().toggleItalic().run()"
-        title="Italic"
-      >
+      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('italic') }"
+        @click="editor.chain().focus().toggleItalic().run()" title="Italic">
         <i class="fas fa-italic">I</i>
       </button>
-      <button
-        class="btn btn-sm"
-        :class="{ 'btn-primary': editor.isActive('underline') }"
-        @click="editor.chain().focus().toggleUnderline().run()"
-        title="Underline"
-      >
+      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('underline') }"
+        @click="editor.chain().focus().toggleUnderline().run()" title="Underline">
         <i class="fas fa-underline">U</i>
       </button>
-      <button
-        class="btn btn-sm p-2"
-        :class="{ 'btn-primary': editor.isActive('strike') }"
-        @click="editor.chain().focus().toggleStrike().run()"
-        title="Strike"
-      >
+      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive('strike') }"
+        @click="editor.chain().focus().toggleStrike().run()" title="Strike">
         <IconStrikeThrough />
       </button>
     </div>
 
     <!-- Text Alignment -->
     <div class="flex space-x-1">
-      <button
-        class="btn btn-sm p-2"
-        :class="{ 'btn-primary': editor.isActive({ textAlign: 'left' }) }"
-        @click="editor.chain().focus().setTextAlign('left').run()"
-        title="Align Left"
-      >
+      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'left' }) }"
+        @click="editor.chain().focus().setTextAlign('left').run()" title="Align Left">
         <IconLeftAlign />
       </button>
-      <button
-        class="btn btn-sm p-2"
-        :class="{ 'btn-primary': editor.isActive({ textAlign: 'center' }) }"
-        @click="editor.chain().focus().setTextAlign('center').run()"
-        title="Align Center"
-      >
+      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'center' }) }"
+        @click="editor.chain().focus().setTextAlign('center').run()" title="Align Center">
         <IconCenterAlign />
       </button>
-      <button
-        class="btn btn-sm p-2"
-        :class="{ 'btn-primary': editor.isActive({ textAlign: 'right' }) }"
-        @click="editor.chain().focus().setTextAlign('right').run()"
-        title="Align Right"
-      >
+      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'right' }) }"
+        @click="editor.chain().focus().setTextAlign('right').run()" title="Align Right">
         <IconRightAlign />
       </button>
-      <button
-        class="btn btn-sm p-2"
-        :class="{ 'btn-primary': editor.isActive({ textAlign: 'justify' }) }"
-        @click="editor.chain().focus().setTextAlign('justify').run()"
-        title="Justify"
-      >
+      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'justify' }) }"
+        @click="editor.chain().focus().setTextAlign('justify').run()" title="Justify">
         <IconJustifyAlign />
       </button>
     </div>
@@ -259,20 +230,12 @@ const insertTabs = () => {
 
     <!-- Lists -->
     <div class="flex space-x-1">
-      <button
-        class="btn btn-sm p-2"
-        :class="{ 'btn-primary': editor.isActive('bulletList') }"
-        @click="editor.chain().focus().toggleBulletList().run()"
-        title="Bullet List"
-      >
+      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive('bulletList') }"
+        @click="editor.chain().focus().toggleBulletList().run()" title="Bullet List">
         <IconBullets />
       </button>
-      <button
-        class="btn btn-sm p-2"
-        :class="{ 'btn-primary': editor.isActive('orderedList') }"
-        @click="editor.chain().focus().toggleOrderedList().run()"
-        title="Numbered List"
-      >
+      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive('orderedList') }"
+        @click="editor.chain().focus().toggleOrderedList().run()" title="Numbered List">
         <IconNumbered />
       </button>
     </div>
@@ -316,33 +279,36 @@ const insertTabs = () => {
       </label>
       <div tabindex="0" class="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52">
         <div class="grid grid-cols-5 gap-1">
-          <button
-            v-for="color in textColors"
-            :key="color"
-            class="w-6 h-6 rounded-full"
-            :style="{ backgroundColor: color }"
-            @click="editor.chain().focus().setColor(color).run()"
-          ></button>
+          <button v-for="color in textColors" :key="color" class="w-6 h-6 rounded-full"
+            :style="{ backgroundColor: color }" @click="editor.chain().focus().setColor(color).run()"></button>
         </div>
       </div>
     </div>
 
+    <div class="dropdown dropdown-hover">
+      <label for="templates" class="btn btn-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="9" y1="3" x2="9" y2="21"></line>
+        </svg>
+        Templates</label>
+
+      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+        <li v-for="t in templates">
+          <a @click="insertTemplate(t)">{{ t }}</a>
+        </li>
+      </ul>
+    </div>
+
     <!-- Undo/Redo -->
     <div class="flex space-x-1 ml-auto">
-      <button
-        class="btn btn-sm p-2"
-        @click="editor.chain().focus().undo().run()"
-        :disabled="!editor.can().undo()"
-        title="Undo"
-      >
+      <button class="btn btn-sm p-2" @click="editor.chain().focus().undo().run()" :disabled="!editor.can().undo()"
+        title="Undo">
         <IconUndo />
       </button>
-      <button
-        class="btn btn-sm p-2"
-        @click="editor.chain().focus().redo().run()"
-        :disabled="!editor.can().redo()"
-        title="Redo"
-      >
+      <button class="btn btn-sm p-2" @click="editor.chain().focus().redo().run()" :disabled="!editor.can().redo()"
+        title="Redo">
         <IconRedo />
       </button>
     </div>

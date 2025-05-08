@@ -1,8 +1,6 @@
 import { getPostBySlug } from '@/lib/backend/post.query'
-import type { Post, PostStatus } from '@/lib/utils/types'
+import type {  PostStatus } from '@/lib/utils/types'
 import { defineStore } from 'pinia'
-import { onBeforeMount } from 'vue'
-import { useRoute } from 'vue-router'
 
 export type EditorState = {
   title: string
@@ -69,17 +67,13 @@ export const useEditorStore = defineStore('editor', {
       this.content = content
       this.isDirty = true
     },
-    setExcerpt(excerpt: string) {
-      this.excerpt = excerpt
-      this.isDirty = true
-    },
     setFeaturedImage(url: string) {
       this.featuredImage = url
       this.isDirty = true
     },
-    addCategory(category: string) {
-      if (!this.categories.includes(category)) {
-        this.categories.push(category)
+    addCategory(cat: string) {
+      if (!this.categories.includes(cat)) {
+        this.categories.push(cat)
         this.isDirty = true
       }
     },
@@ -137,7 +131,7 @@ export const useEditorStore = defineStore('editor', {
       this.publishedAt = edit.publishedAt
       this.status = edit.status
       this.excerpt = edit.excerpt
-      this.tags = edit.tags
+      this.tags = edit.tags || []
       this.categories = edit.categories
       this.featuredImage = edit.featuredImage
     },

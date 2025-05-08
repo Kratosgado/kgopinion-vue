@@ -8,7 +8,7 @@ export function generateArticleSchema(post: Post) {
     headline: post.title,
     description: post.excerpt,
     image: post.featuredImage,
-    datePublished: post.publishDate,
+    datePublished: post.publishedAt,
     dateModified: post.updatedAt,
     author: {
       '@type': 'Person',

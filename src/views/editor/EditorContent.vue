@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
 import { EditorContent } from '@tiptap/vue-3'
 import { useEditorStore } from '../../stores/editorStore'
-import { useSeoStore } from '../../stores/seoStore'
 import { useBlogEditor } from '@/components/editor/useEditor'
 import MenuBar from './MenuBar.vue'
-// import EditorBubbleMenu from './EditorBubbleMenu.vue'
 
 const editorStore = useEditorStore()
-// const seoStore = useSeoStore()
 
 const { editor } = useBlogEditor()
 </script>
@@ -29,7 +25,7 @@ const { editor } = useBlogEditor()
 }
 
 /* Add some spacing between blocks */
-.ProseMirror > * + * {
+.ProseMirror>*+* {
   margin-top: 0.75em;
 }
 
@@ -46,11 +42,8 @@ const { editor } = useBlogEditor()
 <template>
   <div class="editor-container" v-if="editor">
     <div class="px-4 py-3 border-b border-gray-200">
-      <input
-        v-model="editorStore.title"
-        class="w-full text-3xl font-bold outline-none input input-xl"
-        placeholder="Add Title"
-      />
+      <input v-model="editorStore.title" class="w-full text-3xl font-bold outline-none input input-xl"
+        placeholder="Add Title" />
     </div>
 
     <MenuBar :editor="editor" />
