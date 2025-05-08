@@ -18,15 +18,13 @@ import IconLinkedIn from './icons/IconLinkedIn.vue'
       <h6 class="footer-title">Company</h6>
       <router-link to="/about" class="link link-hover">About</router-link>
       <router-link to="/contact" class="link link-hover">Contact</router-link>
-      <router-link to="/terms" class="link link-hover">Terms of Service</router-link>
-      <router-link to="/privacy" class="link link-hover">Privacy Policy</router-link>
+      <!-- <router-link to="/terms" class="link link-hover">Terms of Service</router-link> -->
+      <!-- <router-link to="/privacy" class="link link-hover">Privacy Policy</router-link> -->
     </nav>
     <nav>
       <h6 class="footer-title">Explore</h6>
       <router-link to="/articles" class="link link-hover">Articles</router-link>
       <router-link to="/articles/categories" class="link link-hover">Categories</router-link>
-      <router-link to="/authors" class="link link-hover">Authors</router-link>
-      <router-link to="/tags" class="link link-hover">Tags</router-link>
     </nav>
     <nav>
       <h6 class="footer-title">Social</h6>

@@ -36,9 +36,8 @@ const filteredPosts = computed(() => {
 const publishedCount = computed(
   () => posts.value.filter((post) => post.status === 'published').length,
 )
-const draftCount = computed(
-  () => posts.value.filter((post) => !(post.status === 'published')).length,
-)
+const draftCount = computed(() => posts.value.filter((p) => p.status === 'draft').length)
+const scheduledCount = computed(() => posts.value.filter((p) => p.status === 'scheduled').length)
 
 // Fetch posts
 onMounted(async () => {
@@ -100,27 +99,6 @@ const deletePost = async (postToDelete: Post) => {
       </button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="card bg-primary text-primary-content">
-        <div class="card-body">
-          <h2 class="card-title">Total Posts</h2>
-          <p class="text-4xl font-bold">{{ posts.length }}</p>
-        </div>
-      </div>
-      <div class="card bg-success text-success-content">
-        <div class="card-body">
-          <h2 class="card-title">Published</h2>
-          <p class="text-4xl font-bold">{{ publishedCount }}</p>
-        </div>
-      </div>
-      <div class="card bg-secondary text-secondary-content">
-        <div class="card-body">
-          <h2 class="card-title">Drafts</h2>
-          <p class="text-4xl font-bold">{{ draftCount }}</p>
-        </div>
-      </div>
-    </div>
-
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
       <div class="tabs tabs-boxed">
         <button class="tab" :class="{ 'tab-active': activeTab === 'published' }" @click="activeTab = 'published'">
@@ -130,7 +108,7 @@ const deletePost = async (postToDelete: Post) => {
           Drafts ({{ draftCount }})
         </button>
         <button class="tab" :class="{ 'tab-active': activeTab === 'scheduled' }" @click="activeTab = 'scheduled'">
-          Drafts ({{ draftCount }})
+          Scheduled ({{ scheduledCount }})
         </button>
         <button class="tab" :class="{ 'tab-active': activeTab === undefined }" @click="activeTab = undefined">
           All Posts ({{ posts.length }})

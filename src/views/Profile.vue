@@ -3,6 +3,8 @@ import { useAuth } from '@/lib/backend/auth'
 import type { Author } from '@/lib/utils/types'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Status from '@/components/Status.vue'
+import Loading from '@/components/Loading.vue'
 
 const router = useRouter()
 
@@ -30,7 +32,7 @@ if (!authState.value.isLoading && !authState.value.isAuthenticated) {
   const returnUrl = encodeURIComponent(window.location.pathname)
   router.push(`/auth?returnUrl=${returnUrl}`)
 }
-editedAuthor.value = JSON.parse(JSON.stringify(authState.value.user))
+editedAuthor.value = authState.value.user
 
 const toggleEditMode = () => {
   if (editMode.value) {
@@ -74,7 +76,8 @@ const ensureSocialExists = () => {
 </script>
 
 <template>
-  <div class="container mx-auto py-12 px-4">
+  <Loading v-if="!authState.user" />
+  <div v-else class="container mx-auto py-12 px-4">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-4xl font-bold">My Profile</h1>
       <button v-if="!authState.isLoading && !editMode" class="btn btn-primary" @click="toggleEditMode">
@@ -84,8 +87,7 @@ const ensureSocialExists = () => {
 
     <Status :success="success" :error="error" />
 
-    <Loading v-if="authState.isLoading" />
-    <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2">
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
@@ -169,23 +171,23 @@ const ensureSocialExists = () => {
                   <div class="space-y-3">
                     <div>
                       <span class="text-gray-500">Name:</span>
-                      <span class="ml-2 font-medium">{{ authState.user!.name }}</span>
+                      <span class="ml-2 font-medium">{{ authState.user?.name }}</span>
                     </div>
                     <div>
                       <span class="text-gray-500">Email:</span>
-                      <span class="ml-2 font-medium">{{ authState.user!.email }}</span>
+                      <span class="ml-2 font-medium">{{ authState.user?.email }}</span>
                     </div>
-                    <div v-if="authState.user!.bio">
+                    <div v-if="authState.user?.bio">
                       <span class="text-gray-500">Bio:</span>
-                      <p class="mt-1">{{ authState.user!.bio }}</p>
+                      <p class="mt-1">{{ authState.user?.bio }}</p>
                     </div>
                   </div>
                 </div>
-                <div v-if="authState.user!.social">
+                <div v-if="authState.user?.social">
                   <h3 class="text-lg font-semibold mb-2">Social Media</h3>
                   <div class="flex flex-wrap gap-3">
-                    <a v-if="authState.user!.social.twitter"
-                      :href="`https://twitter.com/${authState.user!.social.twitter}`" target="_blank"
+                    <a v-if="authState.user?.social.twitter"
+                      :href="`https://twitter.com/${authState.user?.social.twitter}`" target="_blank"
                       rel="noopener noreferrer" class="btn btn-outline btn-sm gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -195,8 +197,8 @@ const ensureSocialExists = () => {
                       </svg>
                       Twitter
                     </a>
-                    <a v-if="authState.user!.social.github"
-                      :href="`https://github.com/${authState.user!.social.github}`" target="_blank"
+                    <a v-if="authState.user?.social.github"
+                      :href="`https://github.com/${authState.user?.social.github}`" target="_blank"
                       rel="noopener noreferrer" class="btn btn-outline btn-sm gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -206,8 +208,8 @@ const ensureSocialExists = () => {
                       </svg>
                       GitHub
                     </a>
-                    <a v-if="authState.user!.social.linkedIn"
-                      :href="`https://linkedin.com/in/${authState.user!.social.linkedIn}`" target="_blank"
+                    <a v-if="authState.user?.social.linkedIn"
+                      :href="`https://linkedin.com/in/${authState.user?.social.linkedIn}`" target="_blank"
                       rel="noopener noreferrer" class="btn btn-outline btn-sm gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -231,8 +233,8 @@ const ensureSocialExists = () => {
             <h2 class="card-title text-xl mb-4">Profile Picture</h2>
             <div class="avatar mb-4">
               <div class="w-32 h-32 rounded-full">
-                <img :src="editMode && newAvatarUrl ? newAvatarUrl : authState.user!.avatar"
-                  :alt="authState.user!.name" />
+                <img :src="editMode && newAvatarUrl ? newAvatarUrl : authState.user?.avatar"
+                  :alt="authState.user?.name" />
               </div>
             </div>
             <div v-if="editMode" class="form-control w-full">
@@ -298,15 +300,15 @@ const ensureSocialExists = () => {
           <div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
             <div class="avatar">
               <div class="w-24 h-24 rounded-full">
-                <img :src="authState.user!.avatar || '/favicon.ico'" :alt="authState.user!.name" />
+                <img :src="authState.user?.avatar || '/favicon.ico'" :alt="authState.user?.name" />
               </div>
             </div>
             <div class="flex-1">
-              <h3 class="text-xl font-bold">{{ authState.user!.name }}</h3>
-              <p v-if="authState.user!.bio" class="mt-2">{{ authState.user!.bio }}</p>
-              <div v-if="authState.user!.social" class="flex gap-3 mt-4">
-                <a v-if="authState.user!.social.twitter" aria-label="twitter"
-                  :href="`https://twitter.com/${authState.user!.social.twitter}`" target="_blank"
+              <h3 class="text-xl font-bold">{{ authState.user?.name }}</h3>
+              <p v-if="authState.user?.bio" class="mt-2">{{ authState.user!.bio }}</p>
+              <div v-if="authState.user?.social" class="flex gap-3 mt-4">
+                <a v-if="authState.user?.social.twitter" aria-label="twitter"
+                  :href="`https://twitter.com/${authState.user?.social.twitter}`" target="_blank"
                   rel="noopener noreferrer" class="btn btn-circle btn-sm btn-ghost">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -315,8 +317,8 @@ const ensureSocialExists = () => {
                     </path>
                   </svg>
                 </a>
-                <a v-if="authState.user!.social.github" aria-label="github"
-                  :href="`https://github.com/${authState.user!.social.github}`" target="_blank"
+                <a v-if="authState.user?.social.github" aria-label="github"
+                  :href="`https://github.com/${authState.user?.social.github}`" target="_blank"
                   rel="noopener noreferrer" class="btn btn-circle btn-sm btn-ghost">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -325,8 +327,8 @@ const ensureSocialExists = () => {
                     </path>
                   </svg>
                 </a>
-                <a v-if="authState.user!.social.linkedIn" aria-label="linkedin"
-                  :href="`https://linkedin.com/in/${authState.user!.social.linkedIn}`" target="_blank"
+                <a v-if="authState.user?.social.linkedIn" aria-label="linkedin"
+                  :href="`https://linkedin.com/in/${authState.user?.social.linkedIn}`" target="_blank"
                   rel="noopener noreferrer" class="btn btn-circle btn-sm btn-ghost">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
