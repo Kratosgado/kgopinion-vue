@@ -20,7 +20,6 @@ watch(
   () => editorStore.content,
   (content) => {
     editor.commands.setContent(content)
-    console.log('exec')
   },
   { once: true },
 )
