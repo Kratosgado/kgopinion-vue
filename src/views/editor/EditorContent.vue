@@ -8,32 +8,9 @@ import MenuBar from './MenuBar.vue'
 // import EditorBubbleMenu from './EditorBubbleMenu.vue'
 
 const editorStore = useEditorStore()
-const seoStore = useSeoStore()
-const title = ref('')
+// const seoStore = useSeoStore()
 
 const { editor } = useBlogEditor()
-
-// Update title in store
-const updateTitle = () => {
-  editorStore.setTitle(title.value)
-  seoStore.updateMetaTitle(title.value)
-}
-
-// // Watch for content changes
-watch(
-  () => editorStore.excerpt,
-  (excerpt) => {
-    seoStore.updateMetaDescription(excerpt)
-  },
-  { deep: true },
-)
-
-onMounted(() => {
-  // If we have stored title, use it
-  if (editorStore.title) {
-    title.value = editorStore.title
-  }
-})
 </script>
 
 <style>
@@ -52,7 +29,7 @@ onMounted(() => {
 }
 
 /* Add some spacing between blocks */
-.ProseMirror>*+* {
+.ProseMirror > * + * {
   margin-top: 0.75em;
 }
 
@@ -69,8 +46,11 @@ onMounted(() => {
 <template>
   <div class="editor-container" v-if="editor">
     <div class="px-4 py-3 border-b border-gray-200">
-      <input v-model="title" class="w-full text-3xl font-bold outline-none input input-xl" placeholder="Add Title"
-        @input="updateTitle" />
+      <input
+        v-model="editorStore.title"
+        class="w-full text-3xl font-bold outline-none input input-xl"
+        placeholder="Add Title"
+      />
     </div>
 
     <MenuBar :editor="editor" />

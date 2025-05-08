@@ -79,9 +79,7 @@ watch(
         <div class="mb-6">
           <div class="flex justify-between mb-2">
             <span class="font-medium">Readability</span>
-            <span :class="scoreClass(seoStore.readabilityScore)"
-              >{{ seoStore.readabilityScore }}/100</span
-            >
+            <span :class="scoreClass(seoStore.readabilityScore)">{{ seoStore.readabilityScore }}/100</span>
           </div>
           <Progress :value="seoStore.readabilityScore" />
         </div>
@@ -89,13 +87,8 @@ watch(
         <!-- Focus Keyword -->
         <div class="mb-6">
           <label class="block text-sm font-medium text-gray-400 mb-1">Focus Keyword</label>
-          <input
-            type="text"
-            v-model="focusKeyword"
-            @input="updateFocusKeyword"
-            class="input input-info p-2 rounded-md"
-            placeholder="Enter focus keyword"
-          />
+          <input type="text" v-model="focusKeyword" @input="updateFocusKeyword" class="input input-info p-2 rounded-md"
+            placeholder="Enter focus keyword" />
         </div>
 
         <!-- Meta Title -->
@@ -104,13 +97,8 @@ watch(
             Meta Title
             <span :class="metaTitleLengthClass">{{ seoStore.analysis.titleLength }}/60</span>
           </label>
-          <input
-            type="text"
-            v-model="metaTitle"
-            @input="updateMetaTitle"
-            class="input input-info"
-            placeholder="Enter meta title"
-          />
+          <input type="text" v-model="metaTitle" @input="updateMetaTitle" class="input input-info"
+            placeholder="Enter meta title" />
         </div>
 
         <!-- SEO Preview -->
@@ -123,7 +111,7 @@ watch(
               {{
                 editorStore.excerpt ||
                 'This is an example of how your page might appear in Google search results.' +
-                  'Write a compelling meta description to improve click - through rates.'
+                'Write a compelling meta description to improve click - through rates.'
               }}
             </div>
           </div>
@@ -134,12 +122,8 @@ watch(
           <h3 class="text-sm font-medium mb-2">SEO Analysis</h3>
 
           <div v-if="seoStore.analysis.improvements.length > 0">
-            <AlertError
-              v-for="(improvement, index) in seoStore.analysis.improvements"
-              :key="index"
-              :msg="improvement"
-              class="alert-soft"
-            />
+            <AlertError v-for="(improvement, index) in seoStore.analysis.improvements" :key="index" :msg="improvement"
+              class="alert-soft" />
           </div>
           <AlertSuccess v-else class="alert-soft" msg="Great job! No SEO improvements needed" />
         </div>

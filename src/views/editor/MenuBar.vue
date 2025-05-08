@@ -9,9 +9,21 @@ import IconRedo from '@/components/icons/IconRedo.vue'
 import IconRightAlign from '@/components/icons/IconRightAlign.vue'
 import IconStrikeThrough from '@/components/icons/IconStrikeThrough.vue'
 import IconUndo from '@/components/icons/IconUndo.vue'
-import { computed } from 'vue'
+import { useEditorStore } from '@/stores/editorStore'
+import type { Editor } from '@tiptap/vue-3'
+import { computed, watch } from 'vue'
 
-const { editor } = defineProps<{ editor: any }>()
+const editorStore = useEditorStore()
+const { editor } = defineProps<{ editor: Editor }>()
+
+watch(
+  () => editorStore.content,
+  (content) => {
+    editor.commands.setContent(content)
+    console.log('exec')
+  },
+  { once: true },
+)
 
 const textColors = [
   '#000000',
@@ -150,43 +162,77 @@ const insertTabs = () => {
 }
 </script>
 <template>
-  <div class="editor-menu-bar border-b border-success bg-neutral-50 p-2 flex flex-wrap gap-1 sticky top-0 z-10">
+  <div
+    class="editor-menu-bar border-b border-success bg-neutral-50 p-2 flex flex-wrap gap-1 sticky top-0 z-10"
+  >
     <!-- Basic Text Formatting -->
     <div class="flex space-x-1">
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('bold') }"
-        @click="editor.chain().focus().toggleBold().run()" title="Bold">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('bold') }"
+        @click="editor.chain().focus().toggleBold().run()"
+        title="Bold"
+      >
         <i class="fas fa-bold">B</i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('italic') }"
-        @click="editor.chain().focus().toggleItalic().run()" title="Italic">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('italic') }"
+        @click="editor.chain().focus().toggleItalic().run()"
+        title="Italic"
+      >
         <i class="fas fa-italic">I</i>
       </button>
-      <button class="btn btn-sm" :class="{ 'btn-primary': editor.isActive('underline') }"
-        @click="editor.chain().focus().toggleUnderline().run()" title="Underline">
+      <button
+        class="btn btn-sm"
+        :class="{ 'btn-primary': editor.isActive('underline') }"
+        @click="editor.chain().focus().toggleUnderline().run()"
+        title="Underline"
+      >
         <i class="fas fa-underline">U</i>
       </button>
-      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive('strike') }"
-        @click="editor.chain().focus().toggleStrike().run()" title="Strike">
+      <button
+        class="btn btn-sm p-2"
+        :class="{ 'btn-primary': editor.isActive('strike') }"
+        @click="editor.chain().focus().toggleStrike().run()"
+        title="Strike"
+      >
         <IconStrikeThrough />
       </button>
     </div>
 
     <!-- Text Alignment -->
     <div class="flex space-x-1">
-      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'left' }) }"
-        @click="editor.chain().focus().setTextAlign('left').run()" title="Align Left">
+      <button
+        class="btn btn-sm p-2"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'left' }) }"
+        @click="editor.chain().focus().setTextAlign('left').run()"
+        title="Align Left"
+      >
         <IconLeftAlign />
       </button>
-      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'center' }) }"
-        @click="editor.chain().focus().setTextAlign('center').run()" title="Align Center">
+      <button
+        class="btn btn-sm p-2"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'center' }) }"
+        @click="editor.chain().focus().setTextAlign('center').run()"
+        title="Align Center"
+      >
         <IconCenterAlign />
       </button>
-      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'right' }) }"
-        @click="editor.chain().focus().setTextAlign('right').run()" title="Align Right">
+      <button
+        class="btn btn-sm p-2"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'right' }) }"
+        @click="editor.chain().focus().setTextAlign('right').run()"
+        title="Align Right"
+      >
         <IconRightAlign />
       </button>
-      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive({ textAlign: 'justify' }) }"
-        @click="editor.chain().focus().setTextAlign('justify').run()" title="Justify">
+      <button
+        class="btn btn-sm p-2"
+        :class="{ 'btn-primary': editor.isActive({ textAlign: 'justify' }) }"
+        @click="editor.chain().focus().setTextAlign('justify').run()"
+        title="Justify"
+      >
         <IconJustifyAlign />
       </button>
     </div>
@@ -214,12 +260,20 @@ const insertTabs = () => {
 
     <!-- Lists -->
     <div class="flex space-x-1">
-      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive('bulletList') }"
-        @click="editor.chain().focus().toggleBulletList().run()" title="Bullet List">
+      <button
+        class="btn btn-sm p-2"
+        :class="{ 'btn-primary': editor.isActive('bulletList') }"
+        @click="editor.chain().focus().toggleBulletList().run()"
+        title="Bullet List"
+      >
         <IconBullets />
       </button>
-      <button class="btn btn-sm p-2" :class="{ 'btn-primary': editor.isActive('orderedList') }"
-        @click="editor.chain().focus().toggleOrderedList().run()" title="Numbered List">
+      <button
+        class="btn btn-sm p-2"
+        :class="{ 'btn-primary': editor.isActive('orderedList') }"
+        @click="editor.chain().focus().toggleOrderedList().run()"
+        title="Numbered List"
+      >
         <IconNumbered />
       </button>
     </div>
@@ -263,20 +317,33 @@ const insertTabs = () => {
       </label>
       <div tabindex="0" class="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52">
         <div class="grid grid-cols-5 gap-1">
-          <button v-for="color in textColors" :key="color" class="w-6 h-6 rounded-full"
-            :style="{ backgroundColor: color }" @click="editor.chain().focus().setColor(color).run()"></button>
+          <button
+            v-for="color in textColors"
+            :key="color"
+            class="w-6 h-6 rounded-full"
+            :style="{ backgroundColor: color }"
+            @click="editor.chain().focus().setColor(color).run()"
+          ></button>
         </div>
       </div>
     </div>
 
     <!-- Undo/Redo -->
     <div class="flex space-x-1 ml-auto">
-      <button class="btn btn-sm p-2" @click="editor.chain().focus().undo().run()" :disabled="!editor.can().undo()"
-        title="Undo">
+      <button
+        class="btn btn-sm p-2"
+        @click="editor.chain().focus().undo().run()"
+        :disabled="!editor.can().undo()"
+        title="Undo"
+      >
         <IconUndo />
       </button>
-      <button class="btn btn-sm p-2" @click="editor.chain().focus().redo().run()" :disabled="!editor.can().redo()"
-        title="Redo">
+      <button
+        class="btn btn-sm p-2"
+        @click="editor.chain().focus().redo().run()"
+        :disabled="!editor.can().redo()"
+        title="Redo"
+      >
         <IconRedo />
       </button>
     </div>

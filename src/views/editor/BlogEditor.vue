@@ -3,17 +3,22 @@ import { useBlogEditor } from '@/components/editor/useEditor'
 import { useSeo } from '@/components/editor/useSeo'
 import { useEditorStore } from '@/stores/editorStore'
 import { MutationType } from 'pinia'
-import { onMounted, onBeforeUnmount } from 'vue'
+import { onMounted, onBeforeUnmount, watch } from 'vue'
 import EditorContent from './EditorContent.vue'
 import SeoPanel from './SeoPanel.vue'
 import EditorSidebar from './EditorSidebar.vue'
 import EditorTopBar from './EditorTopBar.vue'
+import { useRoute } from 'vue-router'
 
 const editorStore = useEditorStore()
 const { destroyEditor } = useBlogEditor()
 const { analyzeSeo } = useSeo()
 
 onMounted(() => {
+  const slug = useRoute().params.slug as string;
+  if (slug !== 'new') {
+    editorStore.loadPost(slug)
+  }
   // Auto-save every 30 seconds
   const autoSaveInterval = setInterval(() => {
     editorStore.saveContent('draft')

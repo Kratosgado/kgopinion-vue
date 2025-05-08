@@ -96,8 +96,9 @@ export function useBlogEditor() {
     onUpdate: ({ editor }) => {
       editorStore.setContent(editor.getHTML())
     },
-    onFocus: () => {
+    onFocus: ({ editor }) => {
       console.log('Editor focused')
+      editor.commands.setContent(editorStore.content)
     },
     onBlur: () => {
       console.log('Editor blurred')

@@ -55,6 +55,7 @@ export function useSeo() {
     const { readingEase, passiveVoice, sentenceLength, paragraphLength, transitionWords } =
       calculateReadability(plainText)
     seoStore.updateMetaDescription(editorStore.excerpt)
+    seoStore.updateMetaTitle(editorStore.title)
 
     // Update SEO analysis
     seoStore.updateAnalysis({

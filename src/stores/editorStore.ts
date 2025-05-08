@@ -10,11 +10,11 @@ export type EditorState = {
   wordCount: number
   excerpt: string
   slug: string
-  featuredImage: string
+  featuredImage: string | undefined
   categories: string[]
   tags: string[]
   status: PostStatus
-  publishedAt: string
+  publishedAt: string | undefined
   lastSaved: string | null
   history: Array<{
     content: string
@@ -25,29 +25,19 @@ export type EditorState = {
 
 export const useEditorStore = defineStore('editor', {
   state: (): EditorState => {
-    let post: Post | any = {
+    return {
       title: '',
       content: '',
-      readTime: 0,
+      wordCount: 0,
       excerpt: '',
       slug: '',
       featuredImage: '',
       categories: [],
       tags: [],
       status: 'draft',
-      publishedAt: new Date(),
-    }
-    onBeforeMount(async () => {
-      const slug = useRoute().params.slug as string
-      if (slug === 'new') return
-
-      post = await getPostBySlug(slug)
-    })
-    return {
-      ...post,
+      publishedAt: new Date().toUTCString(),
       lastSaved: null,
       isDirty: false,
-      wordCount: 0,
       history: [],
     }
   },
@@ -138,6 +128,19 @@ export const useEditorStore = defineStore('editor', {
         success: true,
         timestamp: this.lastSaved,
       }
+    },
+    async loadPost(slug: string){
+      const edit = ( await getPostBySlug(slug) )!;
+      	this.slug = edit.slug;
+	this.title = edit.title;
+	this.content = edit.content;
+	this.publishedAt = edit.publishedAt?.toUTCString();
+	this.status = edit.status;
+	this.excerpt = edit.excerpt;
+	this.tags = edit.tags;
+	this.categories = edit.categories;
+	this.featuredImage = edit.featuredImage;
+
     },
     restoreVersion(index: number) {
       if (index >= 0 && index < this.history.length) {
