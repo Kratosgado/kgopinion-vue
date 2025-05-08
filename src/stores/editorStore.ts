@@ -14,7 +14,7 @@ export type EditorState = {
   categories: string[]
   tags: string[]
   status: PostStatus
-  publishedAt: string | undefined
+  publishedAt: Date | undefined
   lastSaved: string | null
   history: Array<{
     content: string
@@ -35,7 +35,7 @@ export const useEditorStore = defineStore('editor', {
       categories: [],
       tags: [],
       status: 'draft',
-      publishedAt: new Date().toUTCString(),
+      publishedAt: new Date(),
       lastSaved: null,
       isDirty: false,
       history: [],
@@ -51,7 +51,7 @@ export const useEditorStore = defineStore('editor', {
     readingTime: (state) => {
       // Average reading speed: 200 words per minute
       const minutes = Math.ceil(state.wordCount / 200)
-      return minutes === 1 ? '1 min read' : `${minutes} min read`
+      return minutes
     },
   },
   actions: {
@@ -101,7 +101,7 @@ export const useEditorStore = defineStore('editor', {
       this.status = status
       this.isDirty = true
     },
-    setPublishDate(date: string) {
+    setPublishDate(date: Date) {
       this.publishedAt = date
       this.isDirty = true
     },
@@ -129,18 +129,17 @@ export const useEditorStore = defineStore('editor', {
         timestamp: this.lastSaved,
       }
     },
-    async loadPost(slug: string){
-      const edit = ( await getPostBySlug(slug) )!;
-      	this.slug = edit.slug;
-	this.title = edit.title;
-	this.content = edit.content;
-	this.publishedAt = edit.publishedAt?.toUTCString();
-	this.status = edit.status;
-	this.excerpt = edit.excerpt;
-	this.tags = edit.tags;
-	this.categories = edit.categories;
-	this.featuredImage = edit.featuredImage;
-
+    async loadPost(slug: string) {
+      const edit = (await getPostBySlug(slug))!
+      this.slug = edit.slug
+      this.title = edit.title
+      this.content = edit.content
+      this.publishedAt = edit.publishedAt
+      this.status = edit.status
+      this.excerpt = edit.excerpt
+      this.tags = edit.tags
+      this.categories = edit.categories
+      this.featuredImage = edit.featuredImage
     },
     restoreVersion(index: number) {
       if (index >= 0 && index < this.history.length) {
@@ -158,7 +157,7 @@ export const useEditorStore = defineStore('editor', {
       this.categories = []
       this.tags = []
       this.status = 'draft'
-      this.publishedAt = new Date().toISOString()
+      this.publishedAt = new Date()
       this.lastSaved = null
       this.history = []
       this.isDirty = false

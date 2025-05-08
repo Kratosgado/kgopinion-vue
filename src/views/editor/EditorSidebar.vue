@@ -12,7 +12,6 @@ const { editor, insertTemplate: insertEditorTemplate } = useBlogEditor()
 // Form fields
 const status = ref(editorStore.status)
 const categories = ref([...editorStore.categories])
-const tags = ref([...editorStore.tags])
 const newCategory = ref('')
 const newTag = ref('')
 
@@ -49,14 +48,12 @@ const removeCategory = (category: string) => {
 const addTag = () => {
   if (newTag.value.trim()) {
     editorStore.addTag(newTag.value.trim())
-    tags.value = [...editorStore.tags]
     newTag.value = ''
   }
 }
 
 const removeTag = (tag: string) => {
   editorStore.removeTag(tag)
-  tags.value = [...editorStore.tags]
 }
 
 // Templates
@@ -247,7 +244,6 @@ editorStore.$subscribe((mutation, state) => {
   if (mutation.type.includes('set')) {
     status.value = state.status
     categories.value = [...state.categories]
-    tags.value = [...state.tags]
   }
 })
 </script>
@@ -284,7 +280,11 @@ editorStore.$subscribe((mutation, state) => {
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-400 mb-1">Featured Image</label>
           <div v-if="editorStore.featuredImage" class="mb-2">
-            <img :src="editorStore.featuredImage" class="w-full h-auto rounded-md" alt="Featured Image" />
+            <img
+              :src="editorStore.featuredImage"
+              class="w-full h-auto rounded-md"
+              alt="Featured Image"
+            />
             <button @click="removeFeaturedImage" class="text-red-500 text-sm mt-1">Remove</button>
           </div>
           <button @click="selectFeaturedImage" class="btn btn-sm btn-outline w-full">
@@ -295,8 +295,12 @@ editorStore.$subscribe((mutation, state) => {
         <!-- Excerpt -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-400 mb-1">Excerpt</label>
-          <textarea v-model="editorStore.excerpt" class="textarea textarea-info" rows="3"
-            placeholder="Brief summary of your post"></textarea>
+          <textarea
+            v-model="editorStore.excerpt"
+            class="textarea textarea-info"
+            rows="3"
+            placeholder="Brief summary of your post"
+          ></textarea>
         </div>
       </div>
 
@@ -304,11 +308,21 @@ editorStore.$subscribe((mutation, state) => {
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">Categories</h3>
         <div class="mb-2 flex">
-          <input type="text" v-model="newCategory" @keyup.enter="addCategory" class="input input-info"
-            placeholder="Add category" />
+          <input
+            type="text"
+            v-model="newCategory"
+            @keyup.enter="addCategory"
+            class="input input-info"
+            placeholder="Add category"
+          />
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
-          <BadgeButton v-for="category in categories" :key="category" :value="category" :cb="removeCategory" />
+          <BadgeButton
+            v-for="category in categories"
+            :key="category"
+            :value="category"
+            :cb="removeCategory"
+          />
         </div>
       </div>
 
@@ -316,10 +330,16 @@ editorStore.$subscribe((mutation, state) => {
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-3">Tags</h3>
         <div class="mb-2 flex">
-          <input type="text" v-model="newTag" @keyup.enter="addTag" class="input input-info" placeholder="Add tag" />
+          <input
+            type="text"
+            v-model="newTag"
+            @keyup.enter="addTag"
+            class="input input-info"
+            placeholder="Add tag"
+          />
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
-          <BadgeButton v-for="tag in tags" :key="tag" :value="tag" :cb="removeTag" />
+          <BadgeButton v-for="tag in editorStore.tags" :key="tag" :value="tag" :cb="removeTag" />
         </div>
       </div>
       <!-- Word Count Stats -->

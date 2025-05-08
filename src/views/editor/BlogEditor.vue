@@ -46,20 +46,16 @@ editorStore.$subscribe((mutation, state) => {
 </script>
 
 <template>
-  <div class="blog-editor-container h-screen flex flex-col">
+  <div class="blog-editor-container flex flex-col" :class="view !== 'preview' && 'h-screen'">
     <EditorTopBar @change-view="changeView" />
-    <div class="flex-1 flex overflow-hidden">
+
+    <Preview v-if="view === 'preview'" />
+    <div v-else class="flex-1 flex overflow-hidden">
       <EditorSidebar />
       <section class="flex-1 overflow-auto p-6">
         <div class="max-w-4xl mx-auto bg-base-200 shadow-md rounded-lg">
           <EditorContent v-if="view === 'editor'" />
-          <Preview v-else-if="view === 'preview'" />
-          <pre v-else><code>{{ editorStore.content }}</code></pre>
-          <!-- <textarea -->
-          <!--   v-if="view === 'code'" -->
-          <!--   class="input input-primary w-full" -->
-          <!--   v-model="editorStore.content" -->
-          <!-- /> -->
+          <pre v-else-if="view === 'code'"><code>{{ editorStore.content }}</code></pre>
         </div>
       </section>
       <SeoPanel />

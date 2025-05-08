@@ -54,7 +54,7 @@ export async function savePostOrUpdate(postData: Post): Promise<string> {
 export async function getPostBySlug(slug: string) {
   const ref = getDocRef('posts', slug)
   const postShot = await getDoc(ref)
-  if (!postShot.exists()) return null
+  if (!postShot.exists()) return undefined
 
   const post = parseDate<Post>(postShot.data())
   if (post.authorId) {
