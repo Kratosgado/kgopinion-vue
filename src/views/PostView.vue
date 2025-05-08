@@ -3,8 +3,13 @@ import { onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { type Post, type Comment } from '@/lib/utils/types'
 import { getPostBySlug, togglePostLike } from '@/lib/backend/post.query'
-import Loading from '@/components/Loading.vue'
 import type { SEOMetadata } from '@/lib/seo/types'
+import SEO from '@/lib/seo/SEO.vue'
+import { isLoading } from '@/stores/isLoading'
+import IconTwitter from '@/components/icons/IconTwitter.vue'
+import IconGithub from '@/components/icons/IconGithub.vue'
+import IconFacebook from '@/components/icons/IconFacebook.vue'
+import IconLinkedIn from '@/components/icons/IconLinkedIn.vue'
 
 const route = useRoute()
 let post: Post | null = null
@@ -24,6 +29,7 @@ const metadata = ref<SEOMetadata>({
 })
 
 const fetchPost = async () => {
+  isLoading.value = true
   try {
     post = await getPostBySlug(route.params.slug as string)
     if (post) {
@@ -40,6 +46,8 @@ const fetchPost = async () => {
     }
   } catch (err) {
     console.error(err)
+  } finally {
+    isLoading.value = false
   }
 }
 onBeforeMount(() => fetchPost())
@@ -79,7 +87,6 @@ const likeComment = (commentId: string) => {
 <template>
   <div>
     <SEO :metadata="metadata" />
-
     <div v-if="post" class="relative h-[40vh] w-full">
       <img
         :src="post.featuredImage || '/favicon.ico'"
@@ -112,10 +119,14 @@ const likeComment = (commentId: string) => {
       </div>
     </div>
 
-    <main v-if="post" class="container mx-auto px-4 py-10">
+    <section v-if="post" class="container mx-auto px-4 py-10">
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <!-- col 1 -->
+        <div>Table of content;</div>
+
+        <!-- col 2-->
         <div class="lg:col-span-2">
-          <article class="prose prose-lg max-w-none">
+          <article class="prose prose-lg max-w-none items-center">
             <p v-if="post.excerpt" class="lead text-xl font-medium italic">{{ post.excerpt }}</p>
             <hr v-if="post.excerpt" class="my-6" />
             <div v-html="post.content"></div>
@@ -162,71 +173,15 @@ const likeComment = (commentId: string) => {
             </div>
 
             <div class="mt-4 flex gap-2 sm:mt-0">
-              <a
-                :href="post.author?.social?.twitter"
-                aria-label="twitter"
-                class="btn btn-circle btn-ghost btn-sm"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
-                  ></path>
-                </svg>
-              </a>
-              <a
-                :href="post.author?.social?.twitter"
-                aria-label="twitter"
-                class="btn btn-circle btn-ghost btn-sm"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
-                  ></path>
-                </svg>
-              </a>
-              <a
-                :href="post.author?.social?.twitter"
-                aria-label="twitter"
-                class="btn btn-circle btn-ghost btn-sm"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
-                  ></path>
-                  <rect x="2" y="9" width="4" height="12"></rect>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-              </a>
+              <IconTwitter
+                v-if="post.author?.social?.twitter"
+                :link="post.author?.social?.twitter"
+              />
+              <IconGithub v-if="post.author?.social?.github" :link="post.author?.social?.github" />
+              <IconLinkedIn
+                v-if="post.author?.social?.linkedIn"
+                :link="post.author?.social?.linkedIn"
+              />
             </div>
           </div>
 
@@ -243,30 +198,18 @@ const likeComment = (commentId: string) => {
               <h3 class="mb-2 text-xl font-bold">About {{ post.author.name }}</h3>
               <p class="mb-4">{{ post.author.bio || 'No bio available.' }}</p>
               <div class="flex gap-2">
-                <a
-                  v-if="post.author.social?.twitter"
-                  :href="`https://twitter.com/${post.author.social.twitter}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-outline btn-sm"
-                  >Twitter</a
-                >
-                <a
-                  v-if="post.author.social?.github"
-                  :href="`https://github.com/${post.author.social.github}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-outline btn-sm"
-                  >GitHub</a
-                >
-                <a
-                  v-if="post.author.social?.linkedIn"
-                  :href="`https://linkedin.com/in/${post.author.social.linkedIn}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-outline btn-sm"
-                  >LinkedIn</a
-                >
+                <IconTwitter
+                  v-if="post.author?.social?.twitter"
+                  :link="post.author?.social?.twitter"
+                />
+                <IconGithub
+                  v-if="post.author?.social?.github"
+                  :link="post.author?.social?.github"
+                />
+                <IconLinkedIn
+                  v-if="post.author?.social?.linkedIn"
+                  :link="post.author?.social?.linkedIn"
+                />
               </div>
             </div>
           </div>
@@ -378,7 +321,9 @@ const likeComment = (commentId: string) => {
           </div>
         </div>
 
-        <div class="lg:col-span-1">
+        <!-- col 3 -->
+        <aside class="lg:col-span-1">
+          <div>dlfjdlf</div>
           <div v-if="post.tags?.length" class="mb-8 rounded-box bg-base-100 p-6 shadow-xl">
             <h3 class="mb-4 text-xl font-bold">Keywords</h3>
             <div class="flex flex-wrap gap-2">
@@ -428,13 +373,8 @@ const likeComment = (commentId: string) => {
               </div>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
-    </main>
-
-    <div v-else class="container mx-auto px-4 py-20 text-center">
-      <div class="loading loading-spinner loading-lg"></div>
-      <p class="mt-4">Loading post...</p>
-    </div>
+    </section>
   </div>
 </template>
