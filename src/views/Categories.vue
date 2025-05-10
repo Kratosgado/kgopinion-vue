@@ -8,6 +8,7 @@ import type { SEOMetadata } from '@/lib/seo/types'
 import type { Category } from '@/lib/utils/types'
 import { getCategoryColor } from '@/lib/utils/editor.functions'
 import { isLoading } from '@/stores/isLoading'
+import { Query } from '@/lib/backend/query'
 
 const metadata: SEOMetadata = {
   title: 'Categories - Kratosgado',
@@ -20,7 +21,7 @@ const categories = ref<Category[]>([])
 onMounted(async () => {
   try {
     isLoading.value = true
-    categories.value = await getAllCategories()
+    categories.value = await new Query('categories').get<Category[]>()
   } catch (err) {
     console.error(err)
   } finally {

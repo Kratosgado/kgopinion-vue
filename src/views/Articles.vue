@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import PostOverview from '@/components/PostOverview.vue'
-import { getRecentPosts } from '@/lib/backend/post.query'
 import SEO from '@/lib/seo/SEO.vue'
 import type { SEOMetadata } from '@/lib/seo/types'
 import type { Post } from '@/lib/utils/types'
 import { isLoading } from '@/stores/isLoading'
+import { Query } from '@/lib/backend/query'
 
 const metadata: SEOMetadata = {
   title: 'Articles - Kratosgado',
@@ -20,8 +20,8 @@ const selectedCategory = ref('all')
 onBeforeMount(async () => {
   try {
     isLoading.value = true
-    const { posts: fetchedPosts } = await getRecentPosts(6, null, true)
-    posts.value = fetchedPosts
+
+    posts.value = await new Query<Post>('posts').limit(10).get<Post[]>()
   } catch (err) {
     console.error(err)
   } finally {

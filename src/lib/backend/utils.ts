@@ -26,7 +26,14 @@ export function parseData(data: any) {
     } else if (v.timestampValue !== undefined) {
       result[k] = new Date(v.timestampValue)
     } else if (v.arrayValue !== undefined) {
-      result[k] = v.arrayValue.values ? v.arrayValue.values.map(parseData(v.mapValue.fields)) : []
+      result[k] = v.arrayValue.values
+        ? v.arrayValue.values.map((obj: any) => {
+            if (obj.stringValue) return obj.stringValue
+            if (obj.integerValue) return obj.integerValue
+            if (obj.booleanValue) return obj.booleanValue
+            if (obj.doubleValue) return obj.doubleValue
+          })
+        : []
     } else if (v.mapValue !== undefined) {
       result[k] = parseData(v.mapValue.fields)
     } else if (v.nullValue !== undefined) {

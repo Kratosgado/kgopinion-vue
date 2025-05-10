@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <div class="card bg-base-100 shadow-xl h-full hover:shadow-2xl transition-shadow">
     <figure>
-      <img :src="post.featuredImage || '/favicon.png'" :alt="post.title" class="h-48 w-full object-cover" />
+      <img :src="post.featuredImage || '/favicon.png'" alt="featured image" class="h-48 w-full object-cover" />
     </figure>
     <div class="card-body">
       <div class="flex flex-wrap gap-2 mb-2">
@@ -22,7 +22,7 @@ defineProps<{
       <p>{{ post.excerpt }}</p>
       <div class="flex justify-between items-center mt-4 text-sm text-gray-500">
         <div class="flex items-center gap-2">
-          <img :src="post.author?.avatar || '/favicon.png'" :alt="post.author?.name" class="w-6 h-6 rounded-full" />
+          <img :src="post.author?.avatar || '/favicon.png'" alt="author avatar" class="w-6 h-6 rounded-full" />
           <span>{{ post.author?.name }}</span>
         </div>
         <span>{{ post.readTime }} min read</span>

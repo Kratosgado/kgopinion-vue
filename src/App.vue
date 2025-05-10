@@ -53,7 +53,7 @@ const ProfileDropdown = defineAsyncComponent(() => import('./components/ProfileD
 
       <!-- Page content -->
       <main class="min-h-svh">
-        <LoadingPage v-if="isLoading" />
+        <LoadingPage v-show="isLoading" v-if="isLoading" />
         <RouterView v-show="!isLoading" />
       </main>
 

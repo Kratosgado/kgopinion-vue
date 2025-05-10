@@ -3,9 +3,9 @@ import { ref, onBeforeMount } from 'vue'
 import PostOverview from '@/components/PostOverview.vue'
 import SEO from '@/lib/seo/SEO.vue'
 import { type SEOMetadata } from '@/lib/seo/types'
-import { getRecentPosts } from '@/lib/backend/post.query'
 import type { Post } from '@/lib/utils/types'
 import { isLoading } from '@/stores/isLoading'
+import { Query } from '@/lib/backend/query'
 
 // Reactive state
 const posts = ref<Post[]>([])
@@ -26,9 +26,8 @@ const metadata: SEOMetadata = {
 onBeforeMount(async () => {
   try {
     isLoading.value = true
-    const postsData = await getRecentPosts(6, null, false)
-
-    posts.value = postsData.posts
+    // const postsData = await getRecentPosts(6, null, false)
+    posts.value = await new Query<Post>('posts').limit(6).get<Post[]>()
   } catch (err) {
     console.error(err)
   } finally {
@@ -37,8 +36,8 @@ onBeforeMount(async () => {
 })
 </script>
 <template>
-  <SEO :metadata="metadata" />
   <div class="flex min-h-screen flex-col">
+    <SEO :metadata="metadata" />
     <!-- SEO Component -->
 
     <!-- Hero Section -->
