@@ -1,5 +1,5 @@
 import { getPostBySlug, savePostOrUpdate } from '@/lib/backend/post.query'
-import type { Author, Post, PostStatus } from '@/lib/utils/types'
+import type { Post, PostStatus } from '@/lib/utils/types'
 import { defineStore } from 'pinia'
 
 export type EditorState = {
@@ -16,11 +16,24 @@ export type EditorState = {
   lastSaved: string | null
   likeCount: number
   commentCount: number
+  linkUrl: string
+  linkText: string
+  showImageModal: boolean
+  showLinkModal: boolean
+  showYoutubeModal: boolean
+  isFeatured: boolean
   history: Array<{
     content: string
     timestamp: string
   }>
   isDirty: boolean
+}
+
+export enum Modal {
+  link,
+  image,
+  imageFeatured,
+  youtube,
 }
 
 export const useEditorStore = defineStore('editor', {
@@ -41,6 +54,12 @@ export const useEditorStore = defineStore('editor', {
       likeCount: 0,
       isDirty: false,
       history: [],
+      linkUrl: '',
+      linkText: '',
+      showImageModal: false,
+      showLinkModal: false,
+      showYoutubeModal: false,
+      isFeatured: false,
     }
   },
   getters: {
@@ -54,6 +73,14 @@ export const useEditorStore = defineStore('editor', {
       // Average reading speed: 200 words per minute
       const minutes = Math.ceil(state.wordCount / 200)
       return minutes
+    },
+    getSlug: (state) => {
+      return state.title
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '')
     },
     getPost: (state) => {
       return {
@@ -75,10 +102,10 @@ export const useEditorStore = defineStore('editor', {
     },
   },
   actions: {
-    setTitle(title: string) {
-      this.title = title
+    setTitle() {
+      // this.title = title
       this.isDirty = true
-      this.slug = title
+      this.slug = this.title
         .toLowerCase()
         .trim()
         .replace(/[^\w\s-]/g, '')
@@ -183,6 +210,31 @@ export const useEditorStore = defineStore('editor', {
       }
       return false
     },
+    openModal(modal: Modal) {
+      switch (modal) {
+        case Modal.link:
+          this.showLinkModal = true
+          break
+        case Modal.image:
+          this.showImageModal = true
+          break
+        case Modal.imageFeatured:
+          this.showImageModal = true
+          this.isFeatured = true
+          break
+        case Modal.youtube:
+          this.showYoutubeModal = true
+          break
+      }
+    },
+    resetModal() {
+      this.showYoutubeModal = false
+      this.showLinkModal = false
+      this.showImageModal = false
+      this.linkUrl = ''
+      this.linkText = ''
+      this.isFeatured = false
+    },
     resetEditor() {
       this.title = ''
       this.content = ''
@@ -196,6 +248,7 @@ export const useEditorStore = defineStore('editor', {
       this.lastSaved = null
       this.history = []
       this.isDirty = false
+      this.resetModal()
     },
   },
 })

@@ -24,7 +24,7 @@ const setStatus = ({ err, succ }: { err?: string; succ?: string }) => {
   setTimeout(() => {
     error.value = ''
     success.value = ''
-  }, 8000)
+  }, 5000)
 }
 
 // Initialize authState

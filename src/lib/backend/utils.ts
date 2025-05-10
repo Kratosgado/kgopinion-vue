@@ -10,14 +10,6 @@ export function parseDate<T = Post>(data: any): T {
   return data
 }
 
-export function generateSlug(title: string) {
-  return title
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .trim()
-}
-
 export type Collections = 'posts' | 'categories' | 'comments' | 'admins'
 
 export function parseData(data: any) {

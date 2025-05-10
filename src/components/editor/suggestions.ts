@@ -1,9 +1,11 @@
-import { extra } from '@/stores/extra'
 import Suggestion from '@tiptap/suggestion'
 import type { Editor } from '@tiptap/vue-3'
 
 import type { TiptapCommandType } from '@/lib/utils/types'
 import './extensions'
+import { Modal, useEditorStore } from '@/stores/editorStore'
+
+const editorStore = useEditorStore()
 
 // Command suggestion configuration
 export const suggestions = (editor: Editor) =>
@@ -55,20 +57,20 @@ export const suggestions = (editor: Editor) =>
           title: 'Link',
           command({ editor }) {
             const { from, to } = editor.state.selection
-            extra.linkText = editor.state.doc.textBetween(from, to, ' ')
-            extra.showLinkModal = true
+            editorStore.linkText = editor.state.doc.textBetween(from, to, ' ')
+            editorStore.openModal(Modal.link)
           },
         },
         {
           title: 'Youtube',
           command() {
-            extra.showYoutubeModal = true
+            editorStore.openModal(Modal.youtube)
           },
         },
         {
           title: 'Image',
           command() {
-            extra.showImageModal = true
+            editorStore.openModal(Modal.image)
           },
         },
 

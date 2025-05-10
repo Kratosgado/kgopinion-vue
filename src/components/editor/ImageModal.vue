@@ -7,8 +7,8 @@ import {
   deleteObject,
 } from 'firebase/storage'
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
-import { extra } from '@/stores/extra'
 import { db, storage } from '@/lib/utils/firebase'
+import { useEditorStore } from '@/stores/editorStore'
 
 interface ImageType {
   id: string
@@ -18,6 +18,7 @@ interface ImageType {
   fileName: string
   storagePath: string
 }
+const editorStore = useEditorStore()
 
 const props = defineProps<{
   editor: any // Consider importing proper Editor type from @tiptap/core
@@ -91,7 +92,7 @@ function insertImage() {
     if (!imageAlt.value) imageAlt.value = selectedLibraryImage.value.alt
   }
 
-  if (src && !extra.isFeatured) {
+  if (src && !editorStore.isFeatured) {
     const attrs: Record<string, any> = {
       src,
       alt: imageAlt.value,
@@ -101,8 +102,8 @@ function insertImage() {
     if (imageHeight.value) attrs.height = imageHeight.value
 
     props.editor.chain().focus().setImage(attrs).run()
-  } else if (src && extra.isFeatured) {
-    emit('update-featured-image', src)
+  } else if (src && editorStore.isFeatured) {
+    editorStore.setFeaturedImage(src)
   }
 
   resetForm()
@@ -118,7 +119,7 @@ function resetForm() {
   uploadProgress.value = 0
   isUploading.value = false
   errorMessage.value = ''
-  emit('update:showImageModal', false)
+  editorStore.resetModal()
 }
 
 async function handleFileSelect(event: Event) {
@@ -253,7 +254,7 @@ async function deleteLibraryImage(image: ImageType, event: Event) {
 
 <template>
   <Teleport to="body">
-    <div v-if="extra.showImageModal" class="modal modal-open">
+    <div v-if="editorStore.showImageModal" class="modal modal-open">
       <div class="modal-box max-w-2xl">
         <h3 class="font-bold text-lg">Insert Image</h3>
 

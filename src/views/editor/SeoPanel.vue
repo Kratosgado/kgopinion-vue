@@ -9,7 +9,6 @@ import Progress from '@/components/Progress.vue'
 const seoStore = useSeoStore()
 const editorStore = useEditorStore()
 
-const metaTitle = ref(seoStore.metaTitle)
 const focusKeyword = ref(seoStore.focusKeyword)
 
 // Computed properties for styling
@@ -33,20 +32,16 @@ const scoreClass = (score: number) => {
   return 'text-red-600'
 }
 
-// Update functions
-const updateMetaTitle = () => {
-  seoStore.updateMetaTitle(metaTitle.value)
-}
-
 const updateFocusKeyword = () => {
   seoStore.updateFocusKeyword(focusKeyword.value)
 }
 
 // Watch for changes from the store
 watch(
-  () => seoStore.metaTitle,
+  () => editorStore.title,
   (newValue) => {
-    metaTitle.value = newValue
+    seoStore.updateMetaTitle(newValue)
+    editorStore.setTitle()
   },
 )
 
@@ -97,15 +92,16 @@ watch(
             Meta Title
             <span :class="metaTitleLengthClass">{{ seoStore.analysis.titleLength }}/60</span>
           </label>
-          <input type="text" v-model="metaTitle" @input="updateMetaTitle" class="input input-info"
-            placeholder="Enter meta title" />
+          <input type="text" v-model="editorStore.title" class="input input-info" placeholder="Enter meta title" />
         </div>
 
         <!-- SEO Preview -->
         <div class="mb-6 p-3 border border-gray-500 rounded-md">
           <h3 class="text-sm font-medium mb-2">Google Preview</h3>
           <div class="google-preview">
-            <div class="text-blue-600 text-lg truncate">{{ metaTitle || 'Title Example' }}</div>
+            <div class="text-blue-600 text-lg truncate">
+              {{ editorStore.title || 'Title Example' }}
+            </div>
             <div class="text-green-700 text-sm">{{ previewUrl }}</div>
             <div class="text-gray-400 text-sm line-clamp-2">
               {{

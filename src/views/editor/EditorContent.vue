@@ -3,6 +3,9 @@ import { EditorContent } from '@tiptap/vue-3'
 import { useEditorStore } from '../../stores/editorStore'
 import { useBlogEditor } from '@/components/editor/useEditor'
 import MenuBar from './MenuBar.vue'
+import LinkModal from '@/components/editor/LinkModal.vue'
+import ImageModal from '@/components/editor/ImageModal.vue'
+import YoutubeModal from '@/components/editor/YoutubeModal.vue'
 
 const editorStore = useEditorStore()
 
@@ -52,5 +55,8 @@ const { editor } = useBlogEditor()
       <!-- <EditorBubbleMenu :editor="editor" /> -->
       <EditorContent :editor="editor" class="prose max-w-none" />
     </div>
+    <LinkModal :editor />
+    <ImageModal :editor />
+    <YoutubeModal :editor />
   </div>
 </template>

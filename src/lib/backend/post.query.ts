@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore'
 import { getCollRef, getDocRef } from './helpers'
 import { getAuthor } from './user.query'
-import { generateSlug, parseDate } from './utils'
+import { parseDate } from './utils'
 import type { Post } from '../utils/types'
 import { db, firebaseAuth } from '../utils/firebase'
 
