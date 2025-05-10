@@ -19,9 +19,8 @@ import type { Post } from '../utils/types'
 import { db, firebaseAuth } from '../utils/firebase'
 
 export async function savePostOrUpdate(postData: Post): Promise<string> {
-  const slug = generateSlug(postData.title)
   // Update existing document.
-  const postRef = getDocRef('posts', slug)
+  const postRef = getDocRef('posts', `${postData.slug}-${postData.status}`)
   const postShot = await getDoc(postRef)
   const post = postShot.data() as Post
   delete postData.author
@@ -29,7 +28,7 @@ export async function savePostOrUpdate(postData: Post): Promise<string> {
     postRef,
     {
       ...postData,
-      slug,
+      slug: postData.slug,
       createdAt: postData.publishedAt || serverTimestamp(),
       updatedAt: serverTimestamp(),
     },

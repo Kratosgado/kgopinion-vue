@@ -1,5 +1,5 @@
-import { getPostBySlug } from '@/lib/backend/post.query'
-import type {  PostStatus } from '@/lib/utils/types'
+import { getPostBySlug, savePostOrUpdate } from '@/lib/backend/post.query'
+import type { Author, Post, PostStatus } from '@/lib/utils/types'
 import { defineStore } from 'pinia'
 
 export type EditorState = {
@@ -14,6 +14,8 @@ export type EditorState = {
   status: PostStatus
   publishedAt: Date | undefined
   lastSaved: string | null
+  likeCount: number
+  commentCount: number
   history: Array<{
     content: string
     timestamp: string
@@ -35,6 +37,8 @@ export const useEditorStore = defineStore('editor', {
       status: 'draft',
       publishedAt: new Date(),
       lastSaved: null,
+      commentCount: 0,
+      likeCount: 0,
       isDirty: false,
       history: [],
     }
@@ -51,6 +55,24 @@ export const useEditorStore = defineStore('editor', {
       const minutes = Math.ceil(state.wordCount / 200)
       return minutes
     },
+    getPost: (state) => {
+      return {
+        title: state.title,
+        excerpt: state.excerpt,
+        content: state.content,
+        categories: state.categories,
+        tags: state.tags,
+        slug: state.slug,
+        publishedAt: state.publishedAt,
+        featuredImage: state.featuredImage,
+        readTime: Math.ceil(state.wordCount / 200),
+        updatedAt: new Date(),
+        status: state.status,
+        authorId: 'authj',
+        commentCount: state.commentCount,
+        likeCount: state.likeCount,
+      } satisfies Post
+    },
   },
   actions: {
     setTitle(title: string) {
@@ -63,6 +85,7 @@ export const useEditorStore = defineStore('editor', {
         .replace(/[\s_-]+/g, '-')
         .replace(/^-+|-+$/g, '')
     },
+
     setContent(content: string) {
       this.content = content
       this.isDirty = true
@@ -99,7 +122,7 @@ export const useEditorStore = defineStore('editor', {
       this.publishedAt = date
       this.isDirty = true
     },
-    saveContent(status: PostStatus) {
+    async saveContent(status: PostStatus, authorId?: string) {
       // Create a snapshot for history
       if (this.content) {
         this.history.push({
@@ -116,11 +139,27 @@ export const useEditorStore = defineStore('editor', {
       this.lastSaved = new Date().toISOString()
       this.isDirty = false
 
-      // TODO: save to backend
+      try {
+        let msg = 'saved to local storage'
+        if (authorId) {
+          msg = await savePostOrUpdate({
+            ...this.getPost,
+            status: status,
+            authorId: authorId,
+          })
+        }
 
-      return {
-        success: true,
-        timestamp: this.lastSaved,
+        return {
+          success: true,
+          msg,
+          timestamp: this.lastSaved,
+        }
+      } catch (e: any) {
+        return {
+          success: false,
+          msg: e.message,
+          timestamp: this.lastSaved,
+        }
       }
     },
     async loadPost(slug: string) {
@@ -129,6 +168,8 @@ export const useEditorStore = defineStore('editor', {
       this.title = edit.title
       this.content = edit.content
       this.publishedAt = edit.publishedAt
+      this.likeCount = edit.likeCount
+      this.commentCount = edit.commentCount
       this.status = edit.status
       this.excerpt = edit.excerpt
       this.tags = edit.tags || []
