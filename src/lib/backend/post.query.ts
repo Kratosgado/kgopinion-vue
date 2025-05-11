@@ -8,16 +8,24 @@ import {
   serverTimestamp,
   setDoc,
   startAfter,
+  Timestamp,
   updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore'
 import { getCollRef, getDocRef } from './helpers'
 import { getAuthor } from './user.query'
-import { parseDate } from './utils'
 import type { Post } from '../utils/types'
 import { db, firebaseAuth } from '../utils/firebase'
 
+export function parseDate<T = Post>(data: any): T {
+  for (const [k, v] of Object.entries<any>(data)) {
+    if (v instanceof Timestamp) {
+      data[k] = v.toDate()
+    }
+  }
+  return data
+}
 export async function savePostOrUpdate(postData: Post): Promise<string> {
   // Update existing document.
   const postRef = getDocRef('posts', `${postData.slug}-${postData.status}`)

@@ -2,7 +2,7 @@
 import type { Post } from '@/lib/utils/types'
 
 defineProps<{
-  post: Post
+  post: Omit<Post, 'content' | 'tags'>
 }>()
 </script>
 <template>

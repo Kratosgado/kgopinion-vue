@@ -11,6 +11,10 @@ const metadata: SEOMetadata = {
   title: 'Articles - Kratosgado',
   description: 'Browse all articles on Kratosgado',
   keywords: ['articles', 'posts', 'science', 'programming'],
+  type: 'website',
+  canonicalUrl: 'https://Kratosgado.pages.dev/articles',
+  publishedTime: '2023',
+  author: 'Kratosgado',
 }
 
 const posts = ref<Post[]>([])
@@ -21,7 +25,7 @@ onBeforeMount(async () => {
   try {
     isLoading.value = true
 
-    posts.value = await new Query<Post>('posts').limit(10).get<Post[]>()
+    posts.value = await new Query<Post>('posts').whereEqualTo('status', 'published').limit(10).postOverView().get<Post[]>()
   } catch (err) {
     console.error(err)
   } finally {
@@ -44,8 +48,8 @@ const filteredPosts = computed(() =>
 </script>
 
 <template>
-  <SEO :metadata="metadata" />
   <div class="container mx-auto py-12 px-4">
+    <SEO :metadata="metadata" />
     <h1 class="text-4xl font-bold mb-8">Articles</h1>
 
     <!-- Category Filter -->

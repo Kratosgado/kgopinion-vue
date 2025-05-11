@@ -1,15 +1,3 @@
-import { Timestamp } from 'firebase/firestore'
-import type { Post } from '../utils/types'
-
-export function parseDate<T = Post>(data: any): T {
-  for (const [k, v] of Object.entries<any>(data)) {
-    if (v instanceof Timestamp) {
-      data[k] = v.toDate()
-    }
-  }
-  return data
-}
-
 export type Collections = 'posts' | 'categories' | 'comments' | 'admins'
 
 export function parseData(data: any) {
@@ -28,11 +16,11 @@ export function parseData(data: any) {
     } else if (v.arrayValue !== undefined) {
       result[k] = v.arrayValue.values
         ? v.arrayValue.values.map((obj: any) => {
-            if (obj.stringValue) return obj.stringValue
-            if (obj.integerValue) return obj.integerValue
-            if (obj.booleanValue) return obj.booleanValue
-            if (obj.doubleValue) return obj.doubleValue
-          })
+          if (obj.stringValue) return obj.stringValue
+          if (obj.integerValue) return obj.integerValue
+          if (obj.booleanValue) return obj.booleanValue
+          if (obj.doubleValue) return obj.doubleValue
+        })
         : []
     } else if (v.mapValue !== undefined) {
       result[k] = parseData(v.mapValue.fields)

@@ -1,3 +1,4 @@
+import type { Author } from '../utils/types'
 import { convertValue, parseData, type Collections } from './utils'
 
 export type Direction = 'asc' | 'desc'
@@ -15,12 +16,40 @@ export class Query<T = any> {
   private collectionId: Collections
   private filters: Filter<T>[] = []
   private orderBys: { field: keyof T; direction: FDirection }[] = []
+  private fields?: { fieldPath: keyof T }[]
+  private join = false
   private limitValue?: number
   private startCursor?: { values: any[]; before: boolean }
   private endCursor?: { values: any[]; before: boolean }
 
   constructor(collectionId: Collections) {
     this.collectionId = collectionId
+  }
+
+  select(fields: (keyof T)[]) {
+    this.fields = fields.map((f) => {
+      return { fieldPath: f }
+    })
+    return this
+  }
+
+  postOverView() {
+    return this.select([
+      'slug',
+      'categories',
+      'title',
+      'readTime',
+      'excerpt',
+      'featuredImage',
+      'authorId',
+      'likeCount',
+      'commentCount',
+      'publishedAt',
+    ] as (keyof T)[]).setJoin()
+  }
+  setJoin() {
+    this.join = true
+    return this
   }
 
   orderBy(field: keyof T, direction: Direction = 'desc') {
@@ -119,6 +148,11 @@ export class Query<T = any> {
         direction: o.direction,
       }))
     }
+    if (this.fields) {
+      structuredQuery.select = {
+        fields: this.fields,
+      }
+    }
     if (this.limitValue !== undefined) {
       structuredQuery.limit = this.limitValue
     }
@@ -139,16 +173,28 @@ export class Query<T = any> {
     if (!res.ok) {
       throw new Error(`Error running query: ${res.status}`)
     }
+
     const data: any = await res.json()
     // console.log(data);
     if (data.length === 1) {
-      return parseData(data[0].document.fields) as G
+      const parsed = parseData(data[0].document.fields)
+      if (this.join) {
+        const author = await new Query<Author>('admins').whereEqualTo('id', parsed.authorId).get()
+        parsed.author = author
+      }
+      return parsed as G
     }
+    let extra: any
 
     // Extract documents from the response.
-    const docs = data.map((item: any) => {
-      return parseData(item.document.fields)
+    const docs = data.map(async (item: any) => {
+      const parsed = parseData(item.document.fields)
+      if (!extra && this.join) {
+        extra = await new Query<Author>('admins').whereEqualTo('id', parsed.authorId).get()
+      }
+      parsed.author = extra
+      return parsed
     })
-    return docs as G
+    return Promise.all(docs) as G
   }
 }

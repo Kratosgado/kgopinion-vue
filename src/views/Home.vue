@@ -26,8 +26,7 @@ const metadata: SEOMetadata = {
 onBeforeMount(async () => {
   try {
     isLoading.value = true
-    // const postsData = await getRecentPosts(6, null, false)
-    posts.value = await new Query<Post>('posts').limit(6).get<Post[]>()
+    posts.value = await new Query<Post>('posts').whereEqualTo('status', 'published').limit(6).postOverView().get<Post[]>()
   } catch (err) {
     console.error(err)
   } finally {
