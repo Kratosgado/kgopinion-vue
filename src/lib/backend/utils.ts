@@ -16,11 +16,11 @@ export function parseData(data: any) {
     } else if (v.arrayValue !== undefined) {
       result[k] = v.arrayValue.values
         ? v.arrayValue.values.map((obj: any) => {
-          if (obj.stringValue) return obj.stringValue
-          if (obj.integerValue) return obj.integerValue
-          if (obj.booleanValue) return obj.booleanValue
-          if (obj.doubleValue) return obj.doubleValue
-        })
+            if (obj.stringValue) return obj.stringValue
+            if (obj.integerValue) return obj.integerValue
+            if (obj.booleanValue) return obj.booleanValue
+            if (obj.doubleValue) return obj.doubleValue
+          })
         : []
     } else if (v.mapValue !== undefined) {
       result[k] = parseData(v.mapValue.fields)
@@ -39,6 +39,7 @@ export function convertValue(value: any): any {
   if (typeof value === 'string') return { stringValue: value }
   if (typeof value === 'number') return { integerValue: value }
   if (typeof value === 'boolean') return { booleanValue: value }
+  if (value instanceof Array) return { arrayValue: { values: value } }
   if (value instanceof Date) return { timestampValue: value.toISOString() }
   return { stringValue: String(value) }
 }

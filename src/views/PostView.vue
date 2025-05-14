@@ -2,15 +2,14 @@
 import { onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { type Post, type Comment } from '@/lib/utils/types'
-import { getPostBySlug, togglePostLike } from '@/lib/backend/post.query'
 import type { SEOMetadata } from '@/lib/seo/types'
 import SEO from '@/lib/seo/SEO.vue'
 import { isLoading } from '@/stores/isLoading'
 import IconTwitter from '@/components/icons/IconTwitter.vue'
 import IconGithub from '@/components/icons/IconGithub.vue'
-import IconFacebook from '@/components/icons/IconFacebook.vue'
 import IconLinkedIn from '@/components/icons/IconLinkedIn.vue'
 import Article from '@/components/Article.vue'
+import { Query } from '@/lib/backend/query'
 
 const route = useRoute()
 const { post } = defineProps<{ post: Post | null }>()
@@ -33,7 +32,10 @@ const metadata = ref<SEOMetadata>({
 const fetchPost = async () => {
   isLoading.value = true
   try {
-    article = await getPostBySlug(route.params.slug as string)
+    article = await new Query<Post>('posts')
+      .one()
+      .whereEqualTo('slug', route.params.slug as string)
+      .get()
     if (article) {
       metadata.value = {
         title: article.title,
@@ -54,12 +56,12 @@ const fetchPost = async () => {
 }
 onBeforeMount(() => {
   if (!post) fetchPost()
-  else article = post;
+  else article = post
 })
 const handleLike = () => {
   if (article) {
     article.likeCount += 1
-    togglePostLike(article.slug)
+    // togglePostLike(article.slug)
   }
 }
 
@@ -193,7 +195,7 @@ const likeComment = (commentId: string) => {
                         <span class="font-bold">{{ comment.authorName }}</span>
                         <span class="ml-2 text-sm text-gray-500">{{
                           comment.createdAt.toLocaleDateString()
-                        }}</span>
+                          }}</span>
                       </div>
                       <button class="btn btn-ghost btn-xs gap-1" @click="likeComment(comment.id)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -218,7 +220,7 @@ const likeComment = (commentId: string) => {
                               <span class="font-bold">{{ reply.authorName }}</span>
                               <span class="ml-2 text-sm text-gray-500">{{
                                 reply.createdAt.toLocaleDateString()
-                              }}</span>
+                                }}</span>
                             </div>
                             <button class="btn btn-ghost btn-xs gap-1" @click="likeComment(reply.id)">
                               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
@@ -249,7 +251,7 @@ const likeComment = (commentId: string) => {
             <div class="flex flex-wrap gap-2">
               <span v-for="keyword in article.tags" :key="keyword" class="badge badge-outline">{{
                 keyword
-              }}</span>
+                }}</span>
             </div>
           </div>
 

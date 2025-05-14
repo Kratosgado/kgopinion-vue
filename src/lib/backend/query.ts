@@ -17,6 +17,7 @@ export class Query<T = any> {
   private filters: Filter<T>[] = []
   private orderBys: { field: keyof T; direction: FDirection }[] = []
   private fields?: { fieldPath: keyof T }[]
+  private isOne?: boolean
   private join = false
   private limitValue?: number
   private startCursor?: { values: any[]; before: boolean }
@@ -47,8 +48,13 @@ export class Query<T = any> {
       'publishedAt',
     ] as (keyof T)[]).setJoin()
   }
+
   setJoin() {
     this.join = true
+    return this
+  }
+  one() {
+    this.isOne = true
     return this
   }
 
@@ -67,6 +73,12 @@ export class Query<T = any> {
     this.filters.push({ field, op: 'EQUAL', value })
     return this
   }
+
+  whereIncludes(field: keyof T, value: any) {
+    this.filters.push({ field, op: 'ARRAY_CONTAINS', value })
+    return this
+  }
+
   /** Adds a greater-than filter. */
   whereGreaterThan(field: keyof T, value: any) {
     this.filters.push({ field, op: 'GREATER_THAN', value })
@@ -176,7 +188,7 @@ export class Query<T = any> {
 
     const data: any = await res.json()
     // console.log(data);
-    if (data.length === 1) {
+    if (this.isOne) {
       const parsed = parseData(data[0].document.fields)
       if (this.join) {
         const author = await new Query<Author>('admins').whereEqualTo('id', parsed.authorId).get()

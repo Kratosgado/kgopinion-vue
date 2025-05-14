@@ -7,7 +7,12 @@ const routes: RouteRecordRaw[] = [
   { path: '/contact', component: () => import('../views/Contact.vue') },
   { path: '/articles', component: () => import('../views/Articles.vue') },
   { path: '/articles/categories', component: () => import('../views/Categories.vue') },
-  { path: '/articles/:slug', component: () => import('../views/PostView.vue') },
+  { path: '/articles/categories/:slug', component: () => import('../views/CategoryArticles.vue') },
+  {
+    path: '/articles/:slug',
+    component: () => import('../views/PostView.vue'),
+    props: { post: null },
+  },
   { path: '/auth', component: () => import('../views/Auth.vue') },
   { path: '/auth/profile', component: () => import('../views/Profile.vue') },
   { path: '/auth/dashboard', component: () => import('../views/Dashboard.vue') },
