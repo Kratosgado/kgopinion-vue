@@ -53,8 +53,14 @@ const ProfileDropdown = defineAsyncComponent(() => import('./components/ProfileD
 
       <!-- Page content -->
       <main class="min-h-svh">
-        <LoadingPage v-show="isLoading" v-if="isLoading" />
-        <RouterView v-show="!isLoading" />
+        <Transition>
+          <LoadingPage v-show="isLoading" v-if="isLoading" />
+        </Transition>
+        <RouterView v-show="!isLoading" v-slot="{ Component }">
+          <Transition>
+            <component :is="Component" />
+          </Transition>
+        </RouterView>
       </main>
 
       <Footer />
@@ -92,5 +98,15 @@ const ProfileDropdown = defineAsyncComponent(() => import('./components/ProfileD
 html,
 body {
   height: 100%;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

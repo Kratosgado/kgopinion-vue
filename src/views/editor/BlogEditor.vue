@@ -8,8 +8,8 @@ import EditorContent from './EditorContent.vue'
 import SeoPanel from './SeoPanel.vue'
 import EditorSidebar from './EditorSidebar.vue'
 import EditorTopBar from './EditorTopBar.vue'
+import PostView from '../PostView.vue'
 import { useRoute } from 'vue-router'
-import Preview from './Preview.vue'
 import Status from '@/components/Status.vue'
 
 const editorStore = useEditorStore()
@@ -62,7 +62,7 @@ editorStore.$subscribe((mutation, state) => {
     <EditorTopBar @change-view="changeView" @status-change="updateStatus" />
     <Status :success="success" :error="error" />
 
-    <Preview v-if="view === 'preview'" />
+    <PostView v-if="view === 'preview'" :post="editorStore.getPost" />
     <div v-else class="flex-1 flex overflow-hidden">
       <EditorSidebar />
       <section class="flex-1 overflow-auto p-6">

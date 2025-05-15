@@ -130,7 +130,7 @@ editorStore.$subscribe((mutation, state) => {
         <div class="grid grid-cols-2 gap-2">
           <div class="p-2 rounded-md border border-success">
             <div class="text-sm text-gray-400">Words</div>
-            <div class="text-lg font-bold">{{ editorStore.wordCount }}</div>
+            <div class="text-lg font-bold">{{ editorStore.getWordCount }}</div>
           </div>
           <div class="p-2 rounded-md border border-success">
             <div class="text-sm text-gray-400">Reading time</div>

@@ -63,7 +63,7 @@ export const useEditorStore = defineStore('editor', {
     }
   },
   getters: {
-    wordCount: (state) => {
+    getWordCount: (state) => {
       if (!state.content) return 0
       // Remove HTML tags and count words
       const text = state.content.replace(/<\/?[^>]+(>|$)/g, ' ')

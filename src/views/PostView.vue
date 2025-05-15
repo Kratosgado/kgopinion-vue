@@ -35,6 +35,7 @@ const fetchPost = async () => {
     article = await new Query<Post>('posts')
       .one()
       .whereEqualTo('slug', route.params.slug as string)
+      .setJoin()
       .get()
     if (article) {
       metadata.value = {
@@ -96,7 +97,7 @@ const likeComment = (commentId: string) => {
     <SEO :metadata="metadata" />
     <div v-if="article" class="relative h-[40vh] w-full">
       <img :src="article.featuredImage || '/favicon.ico'" :alt="article.title" class="h-full w-full object-cover" />
-      <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div class="absolute inset-0 flex items-center justify-center bg-black/50">
         <div class="max-w-4xl px-4 text-center text-white">
           <div class="mb-4 flex flex-wrap justify-center gap-2">
             <div v-for="category in article.categories" :key="category" class="badge badge-primary">
@@ -120,7 +121,7 @@ const likeComment = (commentId: string) => {
     </div>
 
     <section v-if="article" class="container mx-auto px-4 py-10">
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <!-- col 1 -->
         <div>Table of content;</div>
 

@@ -5,6 +5,9 @@
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/container-queries";
 
+@source not "../lib";
+@source not "../stores";
+
 #app {
   flex: 1;
   display: flex;

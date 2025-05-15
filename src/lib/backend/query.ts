@@ -48,6 +48,9 @@ export class Query<T = any> {
       'publishedAt',
     ] as (keyof T)[]).setJoin()
   }
+  published() {
+    return this.whereEqualTo('status' as any, 'published')
+  }
 
   setJoin() {
     this.join = true
@@ -191,7 +194,10 @@ export class Query<T = any> {
     if (this.isOne) {
       const parsed = parseData(data[0].document.fields)
       if (this.join) {
-        const author = await new Query<Author>('admins').whereEqualTo('id', parsed.authorId).get()
+        const author = await new Query<Author>('admins')
+          .whereEqualTo('id', parsed.authorId)
+          .one()
+          .get()
         parsed.author = author
       }
       return parsed as G
@@ -202,7 +208,7 @@ export class Query<T = any> {
     const docs = data.map(async (item: any) => {
       const parsed = parseData(item.document.fields)
       if (!extra && this.join) {
-        extra = await new Query<Author>('admins').whereEqualTo('id', parsed.authorId).get()
+        extra = await new Query<Author>('admins').whereEqualTo('id', parsed.authorId).one().get()
       }
       parsed.author = extra
       return parsed

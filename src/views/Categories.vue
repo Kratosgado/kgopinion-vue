@@ -23,7 +23,7 @@ const categories = ref<Category[]>([])
 onMounted(async () => {
   try {
     isLoading.value = true
-    categories.value = (await new Query<Post>('posts').select(['categories']).get<Post[]>())
+    categories.value = (await new Query<Post>('posts').published().select(['categories']).get<Post[]>())
       .flatMap((p) => p.categories)
       .map((c) => {
         return { name: c, description: 'No description', postCount: 1 }
