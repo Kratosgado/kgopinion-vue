@@ -6,6 +6,7 @@ import MenuBar from './MenuBar.vue'
 import LinkModal from '@/components/editor/LinkModal.vue'
 import ImageModal from '@/components/editor/ImageModal.vue'
 import YoutubeModal from '@/components/editor/YoutubeModal.vue'
+import TOC from '@/components/editor/TOC.vue'
 
 const editorStore = useEditorStore()
 
@@ -28,7 +29,7 @@ const { editor } = useBlogEditor()
 }
 
 /* Add some spacing between blocks */
-.ProseMirror>*+* {
+.ProseMirror > * + * {
   margin-top: 0.75em;
 }
 
@@ -45,11 +46,21 @@ const { editor } = useBlogEditor()
 <template>
   <div class="editor-container" v-if="editor">
     <div class="px-4 py-3 border-b border-gray-200">
-      <input v-model="editorStore.title" class="w-full text-3xl font-bold outline-none input input-xl"
-        placeholder="Add Title" />
+      <input
+        v-model="editorStore.title"
+        class="w-full text-3xl font-bold outline-none input input-xl"
+        placeholder="Add Title"
+      />
     </div>
 
     <MenuBar :editor="editor" />
+    <TOC
+      :editor="editor"
+      title="Table Of Content"
+      :levels="[1, 2, 3]"
+      update-event="update:toc"
+      :active-offset="100"
+    />
 
     <div class="px-6 py-4 min-h-[500px]">
       <!-- <EditorBubbleMenu :editor="editor" /> -->

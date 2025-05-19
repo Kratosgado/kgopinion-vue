@@ -25,6 +25,7 @@ import {
   Shortcode,
   Widget,
 } from './extensions'
+import TOC from './TOCExtension'
 
 export function useBlogEditor() {
   const editorStore = useEditorStore()
@@ -36,6 +37,10 @@ export function useBlogEditor() {
         },
       }) as AnyExtension,
       SlashCommands,
+      TOC.configure({
+        levels: [1, 2, 3],
+        updateEvent: 'update:toc',
+      }),
       Underline,
       // BubbleMenu.configure({
       //   element: document.querySelector('#bubblemenu') as any,
