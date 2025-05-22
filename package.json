@@ -70,6 +70,7 @@
 		"firebase": "^11.6.0",
 		"highlight.js": "^11.11.1",
 		"lowlight": "^3.3.0",
+		"nodemailer": "^7.0.3",
 		"pinia": "^3.0.2",
 		"prismjs": "^1.30.0",
 		"prosemirror-state": "^1.4.3",
