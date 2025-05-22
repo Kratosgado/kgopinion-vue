@@ -4,6 +4,17 @@ import IconGithub from './icons/IconGithub.vue'
 import IconTwitter from './icons/IconTwitter.vue'
 import IconFacebook from './icons/IconFacebook.vue'
 import IconLinkedIn from './icons/IconLinkedIn.vue'
+import { ref } from 'vue'
+import { Query } from '@/lib/backend/query'
+
+const email = ref('')
+
+async function subscribe() {
+  const res = await new Query('subscribers').subscribe(email.value)
+  if (res) {
+    email.value = 'submitted'
+  }
+}
 </script>
 
 <template>
@@ -36,13 +47,13 @@ import IconLinkedIn from './icons/IconLinkedIn.vue'
       </div>
     </nav>
 
-    <form @submit.prevent="console.log('d')">
+    <form @submit.prevent="subscribe">
       <h6 class="footer-title">Newsletter</h6>
       <fieldset class="w-80">
         <label>Enter your email address</label>
         <div class="join">
-          <input type="text" placeholder="username@site.com" class="input input-bordered join-item" />
-          <input type="submit" class="btn btn-primary join-item" value="Subscribe" />
+          <input type="email" v-model="email" placeholder="username@site.com" class="input input-bordered join-item" />
+          <button type="submit" class="btn btn-primary join-item">Subscribe</button>
         </div>
       </fieldset>
     </form>

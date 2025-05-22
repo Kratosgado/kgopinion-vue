@@ -138,6 +138,24 @@ export class Query<T = any> {
     return snapshot.length
   }
 
+  async subscribe(email: string): Promise<boolean> {
+    const isValid = email && email.includes('@') && email.includes('.com')
+
+    const url = `https://firestore.googleapis.com/v1/projects/${this.projectId}/databases/(default)/documents/subscribers/${email}?key=${this.apiKey}`
+    if (isValid) {
+      const res = await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      console.log(res)
+      if (!res.ok) {
+        return false
+      }
+      return true
+    }
+    return false
+  }
+
   /** Execute the query and returns a query snapshop */
   async get<G = T>(): Promise<G> {
     const structuredQuery: any = {

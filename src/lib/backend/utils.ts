@@ -1,4 +1,4 @@
-export type Collections = 'posts' | 'categories' | 'comments' | 'admins'
+export type Collections = 'posts' | 'categories' | 'comments' | 'admins' | 'subscribers'
 
 export function parseData(data: any) {
   const result: any = {}

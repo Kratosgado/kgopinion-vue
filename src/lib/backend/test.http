@@ -1,0 +1,10 @@
+@url = https://firestore.googleapis.com/v1/projects/zomujo-emr/databases/(default)/documents/subscribers/kratos?key=AIzaSyDhsg8Ws-Ut0ieDtVnWtnGXs15AU2Oiw8Y
+
+PATCH {{url}}
+Content-Type: application/json
+
+{
+	"fields" : {
+		"name": { "stringValue": "prince"}
+	}
+}
