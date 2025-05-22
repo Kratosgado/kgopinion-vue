@@ -13,8 +13,7 @@ watch(
       router.replace('/auth?returnUrl=' + returnUrl)
     } else if (auth.state.isAuthenticated) {
       const urlParams = new URLSearchParams(window.location.search)
-      const returnUrl = decodeURIComponent(urlParams.get('returnUrl') || '/dashboard')
-      console.log(returnUrl)
+      const returnUrl = decodeURIComponent(urlParams.get('returnUrl') || '/auth/dashboard')
       router.replace(returnUrl)
     }
   },
@@ -39,7 +38,7 @@ watch(
           <RouterLink to="/auth/profile">Profile</RouterLink>
         </li>
         <li>
-          <RouterLink to="/" @click.prevent="auth.signOut">Sign Out</RouterLink>
+          <RouterLink to="/auth" @click.prevent="auth.signOut">Sign Out</RouterLink>
         </li>
       </ul>
     </details>

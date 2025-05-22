@@ -36,13 +36,13 @@ import IconLinkedIn from './icons/IconLinkedIn.vue'
       </div>
     </nav>
 
-    <form>
+    <form @submit.prevent="console.log('d')">
       <h6 class="footer-title">Newsletter</h6>
       <fieldset class="w-80">
         <label>Enter your email address</label>
         <div class="join">
           <input type="text" placeholder="username@site.com" class="input input-bordered join-item" />
-          <button class="btn btn-primary join-item">Subscribe</button>
+          <input type="submit" class="btn btn-primary join-item" value="Subscribe" />
         </div>
       </fieldset>
     </form>

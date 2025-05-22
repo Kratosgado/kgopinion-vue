@@ -58,7 +58,7 @@ export const TOC = Extension.create<TOCOptions>({
 
               // update toc element if provided
               if (extension.options.element) {
-                extension.renderToElement(extension.options.element, headings)
+                ;(extension as any).renderToElement(extension.options.element, headings)
               }
 
               // emit event for vue component to catch
