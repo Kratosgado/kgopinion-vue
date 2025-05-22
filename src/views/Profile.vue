@@ -2,11 +2,11 @@
 import { useAuth } from '@/lib/backend/auth'
 import type { Author } from '@/lib/utils/types'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import Status from '@/components/Status.vue'
-import Loading from '@/components/Loading.vue'
+import IconLinkedIn from '@/components/icons/IconLinkedIn.vue'
+import IconGithub from '@/components/icons/IconGithub.vue'
+import IconTwitter from '@/components/icons/IconTwitter.vue'
 
-const router = useRouter()
 
 // State
 const editMode = ref(false)
@@ -26,14 +26,6 @@ const setStatus = ({ err, succ }: { err?: string; succ?: string }) => {
     success.value = ''
   }, 5000)
 }
-
-// Initialize authState
-if (!authState.value.isLoading && !authState.value.isAuthenticated) {
-  const returnUrl = encodeURIComponent(window.location.pathname)
-  router.push(`/auth?returnUrl=${returnUrl}`)
-}
-editedAuthor.value = authState.value.user
-
 const toggleEditMode = () => {
   if (!editMode.value) {
     editedAuthor.value = auth.state.user
@@ -76,16 +68,14 @@ const ensureSocialExists = () => {
 </script>
 
 <template>
-  <Loading v-if="!authState.user" />
-  <div v-else class="container mx-auto py-12 px-4">
+  <div class="container mx-auto py-12 px-4">
+    <Status :success="success" :error="error" />
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-4xl font-bold">My Profile</h1>
       <button v-if="!authState.isLoading && !editMode" class="btn btn-primary" @click="toggleEditMode">
         Edit Profile
       </button>
     </div>
-
-    <Status :success="success" :error="error" />
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2">
@@ -186,39 +176,9 @@ const ensureSocialExists = () => {
                 <div v-if="authState.user?.social">
                   <h3 class="text-lg font-semibold mb-2">Social Media</h3>
                   <div class="flex flex-wrap gap-3">
-                    <a v-if="authState.user?.social.twitter"
-                      :href="`https://twitter.com/${authState.user?.social.twitter}`" target="_blank"
-                      rel="noopener noreferrer" class="btn btn-outline btn-sm gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path
-                          d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                        </path>
-                      </svg>
-                      Twitter
-                    </a>
-                    <a v-if="authState.user?.social.github"
-                      :href="`https://github.com/${authState.user?.social.github}`" target="_blank"
-                      rel="noopener noreferrer" class="btn btn-outline btn-sm gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path
-                          d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                        </path>
-                      </svg>
-                      GitHub
-                    </a>
-                    <a v-if="authState.user?.social.linkedIn"
-                      :href="`https://linkedin.com/in/${authState.user?.social.linkedIn}`" target="_blank"
-                      rel="noopener noreferrer" class="btn btn-outline btn-sm gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                        <rect x="2" y="9" width="4" height="12"></rect>
-                        <circle cx="4" cy="4" r="2"></circle>
-                      </svg>
-                      LinkedIn
-                    </a>
+                    <IconGithub :link="authState.user?.social.github" v-if="authState.user?.social.github" />
+                    <IconTwitter :link="authState.user?.social.twitter" v-if="authState.user?.social.twitter" />
+                    <IconLinkedIn :link="authState.user?.social.linkedIn" v-if="authState.user?.social.linkedIn" />
                   </div>
                 </div>
               </div>
@@ -307,36 +267,9 @@ const ensureSocialExists = () => {
               <h3 class="text-xl font-bold">{{ authState.user?.name }}</h3>
               <p v-if="authState.user?.bio" class="mt-2">{{ authState.user!.bio }}</p>
               <div v-if="authState.user?.social" class="flex gap-3 mt-4">
-                <a v-if="authState.user?.social.twitter" aria-label="twitter"
-                  :href="`https://twitter.com/${authState.user?.social.twitter}`" target="_blank"
-                  rel="noopener noreferrer" class="btn btn-circle btn-sm btn-ghost">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                      d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                    </path>
-                  </svg>
-                </a>
-                <a v-if="authState.user?.social.github" aria-label="github"
-                  :href="`https://github.com/${authState.user?.social.github}`" target="_blank"
-                  rel="noopener noreferrer" class="btn btn-circle btn-sm btn-ghost">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                    </path>
-                  </svg>
-                </a>
-                <a v-if="authState.user?.social.linkedIn" aria-label="linkedin"
-                  :href="`https://linkedin.com/in/${authState.user?.social.linkedIn}`" target="_blank"
-                  rel="noopener noreferrer" class="btn btn-circle btn-sm btn-ghost">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
+                <IconGithub :link="authState.user?.social.github" v-if="authState.user?.social.github" />
+                <IconTwitter :link="authState.user?.social.twitter" v-if="authState.user?.social.twitter" />
+                <IconLinkedIn :link="authState.user?.social.linkedIn" v-if="authState.user?.social.linkedIn" />
               </div>
             </div>
           </div>

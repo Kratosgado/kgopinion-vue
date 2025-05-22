@@ -1,21 +1,33 @@
 <script setup lang="ts">
 import { useAuth } from '@/lib/backend/auth'
+import { watch } from 'vue'
 import { useRouter } from 'vue-router'
+const auth = useAuth()
+const router = useRouter()
 
-const { state: authState, signOut } = useAuth()
-if (!authState.isLoading && !authState.isAuthenticated) {
-  const router = useRouter()
-  const returnUrl = router.currentRoute.value.path
-  router.replace('/auth?returnUrl=' + returnUrl)
-}
+watch(
+  () => auth.state.isLoading,
+  (isLoading) => {
+    if (!isLoading && !auth.state.isAuthenticated) {
+      const returnUrl = router.currentRoute.value.path
+      router.replace('/auth?returnUrl=' + returnUrl)
+    } else if (auth.state.isAuthenticated) {
+      const urlParams = new URLSearchParams(window.location.search)
+      const returnUrl = decodeURIComponent(urlParams.get('returnUrl') || '/dashboard')
+      console.log(returnUrl)
+      router.replace(returnUrl)
+    }
+  },
+)
 </script>
-<template v-if="authState?.isAuthenticated && authState.user">
+
+<template v-if="auth.state?.isAuthenticated && authState.user">
   <li>
     <details>
       <summary>
         <div class="avatar">
           <div class="h-8 w-8 rounded-full">
-            <img :src="authState.user?.avatar || '/favicon.ico'" :alt="authState.user?.name" />
+            <img :src="auth.state.user?.avatar || '/favicon.ico'" :alt="auth.state.user?.name" />
           </div>
         </div>
       </summary>
@@ -27,7 +39,7 @@ if (!authState.isLoading && !authState.isAuthenticated) {
           <RouterLink to="/auth/profile">Profile</RouterLink>
         </li>
         <li>
-          <RouterLink to="/" @click.prevent="signOut">Sign Out</RouterLink>
+          <RouterLink to="/" @click.prevent="auth.signOut">Sign Out</RouterLink>
         </li>
       </ul>
     </details>

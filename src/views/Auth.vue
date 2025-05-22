@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { useAuth } from '@/lib/backend/auth'
-import type { SEOMetadata } from '@/lib/seo/types'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const metadata: SEOMetadata = {
-  title: 'Sign in - Kratosgado',
-  description: 'Become a creator',
-  keywords: ['Kratosgado', 'blogger', 'contact', 'developer'],
-}
 
 const email = ref('')
 const password = ref('')
@@ -21,13 +15,6 @@ const confirmPassword = ref('')
 
 const auth = useAuth()
 const authState = auth.state
-
-// Subscribe to auth changes
-if (authState.isAuthenticated) {
-  const urlParams = new URLSearchParams(window.location.search)
-  const returnUrl = decodeURIComponent(urlParams.get('returnUrl') || '/dashboard')
-  router.push(returnUrl)
-}
 
 const handleSubmit = async () => {
   if (!email.value || !password.value) {
@@ -68,7 +55,6 @@ const toggleMode = () => {
 
 <template>
   <div class="flex min-h-screen items-center justify-center bg-base-200 px-4">
-    <SEO :metadata="metadata" />
     <div class="card w-full max-w-md bg-base-100 shadow-xl">
       <div class="card-body">
         <h2 class="card-title mx-auto mb-2 text-center text-2xl font-bold">
