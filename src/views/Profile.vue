@@ -13,7 +13,7 @@ const editMode = ref(false)
 const isSaving = ref(false)
 const error = ref('')
 const success = ref('')
-const editedAuthor = ref<Author | undefined>()
+const editedAuthor = ref<Author | undefined>(undefined)
 const newAvatarUrl = ref('')
 const auth = useAuth()
 const authState = ref(auth.state)
@@ -35,8 +35,8 @@ if (!authState.value.isLoading && !authState.value.isAuthenticated) {
 editedAuthor.value = authState.value.user
 
 const toggleEditMode = () => {
-  if (editMode.value) {
-    editedAuthor.value = JSON.parse(JSON.stringify(authState.value.user))
+  if (!editMode.value) {
+    editedAuthor.value = auth.state.user
     newAvatarUrl.value = ''
   }
   editMode.value = !editMode.value
