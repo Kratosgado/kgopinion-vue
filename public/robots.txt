@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /editor/
-Sitemap: https://Kratosgado.pages.dev/sitemap.xml
+
+Disallow: /auth
+Disallow: /.vitepress/
+
+Sitemap: https://kratosgado.pages.dev/sitemap.xml

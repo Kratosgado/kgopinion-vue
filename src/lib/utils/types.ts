@@ -36,6 +36,9 @@ export type Post = {
   slug: string
   excerpt: string
   publishedAt?: Date
+  lastModified?: string
+  imageCaption?: string
+  isNews?: boolean
   updatedAt: Date
   authorId: string
   author?: Author
