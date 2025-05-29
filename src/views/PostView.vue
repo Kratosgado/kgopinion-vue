@@ -10,6 +10,7 @@ import IconGithub from '@/components/icons/IconGithub.vue'
 import IconLinkedIn from '@/components/icons/IconLinkedIn.vue'
 import Article from '@/components/Article.vue'
 import { Query } from '@/lib/backend/query'
+import TOComp from '@/components/editor/TOComp.vue'
 
 const route = useRoute()
 const { post } = defineProps<{ post: Post | null }>()
@@ -130,7 +131,9 @@ const likeComment = (commentId: string) => {
     <section v-if="article" class="container mx-auto px-4 py-10">
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <!-- col 1 -->
-        <div>Table of content;</div>
+        <div>
+          <TOComp :title="article.title" :active-offset="100" :content="article.content" />
+        </div>
 
         <!-- col 2-->
         <div class="lg:col-span-2">
