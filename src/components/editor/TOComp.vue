@@ -34,9 +34,10 @@ const handleScroll = () => {
 }
 
 const scrollToHeading = (id: string) => {
-  const element = document.getElementById(id)
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const element = document.getElementsByTagName('hgroup')
+  const d = element[4]
+  if (d) {
+    d.scrollIntoView({ behavior: 'smooth', block: 'start' })
     activeId.value = id
   }
 }
@@ -49,7 +50,6 @@ const updateHeadings = () => {
   while (m) {
     const level = Number(m[1])
     const text = m[2]
-    console.log(level, text)
     // Generate an ID based on text content if none exists
     let id = text
       .toLowerCase()
