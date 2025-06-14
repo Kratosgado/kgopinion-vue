@@ -18,7 +18,7 @@ const defaultMetadata: SEOMetadata = {
   keywords: [],
 }
 
-const seoData = { ...defaultMetadata, ...metadata }
+let seoData = { ...defaultMetadata, ...metadata }
 
 // Use @vueuse/head to manage head tags
 useHead({

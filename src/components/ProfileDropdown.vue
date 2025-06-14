@@ -17,6 +17,7 @@ watch(
       router.replace(returnUrl)
     }
   },
+  { once: true },
 )
 </script>
 

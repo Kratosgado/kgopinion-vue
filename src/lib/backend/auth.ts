@@ -1,5 +1,5 @@
 // src/composables/useAuth.ts
-import { reactive, onMounted, onBeforeMount } from 'vue'
+import { reactive, onBeforeMount } from 'vue'
 import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -36,34 +36,34 @@ export const useAuth = () => {
     state.isLoading = true
     state.error = null
 
-    try {
-      if (u) {
-        if (!(await getAuthor(u.uid))) {
-          await addAuthor(u)
-        }
-        const user = (await getAuthor(u.uid)) || null
+      try {
+        if (u) {
+          if (!(await getAuthor(u.uid))) {
+            await addAuthor(u)
+          }
+          const user = (await getAuthor(u.uid)) || null
 
-        Object.assign(state, {
-          user,
-          isAuthenticated: true,
-          isLoading: false,
-        })
-      } else {
+          Object.assign(state, {
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+          })
+        } else {
+          Object.assign(state, {
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+          })
+        }
+      } catch (err) {
+        console.error('Auth initialization failed:', err)
         Object.assign(state, {
           user: null,
           isAuthenticated: false,
           isLoading: false,
+          error: 'Failed to authenticate',
         })
       }
-    } catch (err) {
-      console.error('Auth initialization failed:', err)
-      Object.assign(state, {
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        error: 'Failed to authenticate',
-      })
-    }
   }
 
   // Sign in with email and password
