@@ -61,7 +61,7 @@ const updateHeadings = () => {
   if (!editor) return
 
   const newHeadings: HeadingItem[] = []
-  editor.state.doc.descendants((node, pos) => {
+  editor.state.doc.descendants((node, pos, _, idx) => {
     if (node.type.name === 'heading' && levels.includes(node.attrs.level)) {
       // Generate an ID based on text content if none exists
       let id = node.attrs.id || ''

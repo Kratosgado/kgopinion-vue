@@ -34,7 +34,8 @@ const handleScroll = () => {
 }
 
 const scrollToHeading = (id: string) => {
-  const element = document.getElementsByTagName('hgroup')
+  const element = document.getElementsByTagName('svg')
+  console.info('hgroup: ', element[0])
   const d = element[4]
   if (d) {
     d.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -44,12 +45,12 @@ const scrollToHeading = (id: string) => {
 
 const updateHeadings = () => {
   const newHeadings: HeadingItem[] = []
-  const p = content.matchAll(/<h([123456])>(.*?)<\/h[123456]>/g)
+  const hmatches = content.matchAll(/<h([123456])>(.*?)<\/h[123456]>/g)
 
-  let m = p.next().value
-  while (m) {
-    const level = Number(m[1])
-    const text = m[2]
+  let cmatch = hmatches.next().value
+  while (cmatch) {
+    const level = Number(cmatch[1])
+    const text = cmatch[2]
     // Generate an ID based on text content if none exists
     let id = text
       .toLowerCase()
@@ -62,7 +63,7 @@ const updateHeadings = () => {
       text,
       pos: 3,
     })
-    m = p.next().value
+    cmatch = hmatches.next().value
   }
 
   headings.value = newHeadings

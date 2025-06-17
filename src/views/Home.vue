@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, onMounted } from 'vue'
 import PostOverview from '@/components/PostOverview.vue'
 import SEO from '@/lib/seo/SEO.vue'
 import { type SEOMetadata } from '@/lib/seo/types'
@@ -23,10 +23,14 @@ const metadata: SEOMetadata = {
 }
 
 // Fetch data on mount
-onBeforeMount(async () => {
+onMounted(async () => {
   try {
     isLoading.value = true
-    posts.value = await new Query<Post>('posts').whereEqualTo('status', 'published').limit(6).postOverView().get<Post[]>()
+    posts.value = await new Query<Post>('posts')
+      .whereEqualTo('status', 'published')
+      .limit(6)
+      .postOverView()
+      .get<Post[]>()
   } catch (err) {
     console.error(err)
   } finally {
