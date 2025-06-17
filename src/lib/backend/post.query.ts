@@ -28,33 +28,17 @@ export function parseDate<T = Post>(data: any): T {
 }
 export async function savePostOrUpdate(postData: Post): Promise<string> {
   // Update existing document.
-  const postRef = getDocRef('posts', `${postData.slug}-${postData.status}`)
-  const postShot = await getDoc(postRef)
-  const post = postShot.data() as Post
+  const postRef = getDocRef('posts', postData.slug)
   delete postData.author
   await setDoc(
     postRef,
     {
       ...postData,
-      slug: postData.slug,
       createdAt: postData.publishedAt || serverTimestamp(),
       updatedAt: serverTimestamp(),
     },
     { merge: true },
   )
-
-  const batch = writeBatch(db)
-  postData.categories.forEach((cat) => {
-    if (!post.categories.includes(cat)) {
-      const catref = getDocRef('categories', cat)
-      batch.update(catref, {
-        postCount: increment(1),
-      })
-    }
-  })
-
-  await batch.commit()
-
   return 'post updated successfully'
 }
 
@@ -71,7 +55,7 @@ export async function getPostBySlug(slug: string) {
   return post
 }
 
-export async function deletePost(slug: string) {
+export async function deletePostBySlug(slug: string) {
   const ref = getDocRef('posts', slug)
   const snapshot = await getDoc(ref)
 

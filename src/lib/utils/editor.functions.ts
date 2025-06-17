@@ -1,15 +1,16 @@
-import { doc, setDoc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from './firebase'
+import type { PostStatus } from './types'
 
-export async function togglePublish(id: string, publish: boolean) {
+export async function togglePublish(slug: string, status: PostStatus) {
   try {
-    await updateDoc(doc(db, 'post', id), {
-      published: publish,
+    await updateDoc(doc(db, 'posts', slug), {
+      status,
     })
-    console.log('Post published')
+    return true
   } catch (err) {
     console.error('Error publishing post', err)
-    throw err
+    return false
   }
 }
 

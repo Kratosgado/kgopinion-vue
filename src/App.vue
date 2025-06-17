@@ -40,6 +40,8 @@ const ProfileDropdown = defineAsyncComponent(() => import('./components/ProfileD
           <ul class="menu lg:menu-horizontal items-center rounded-box">
             <!-- Public navigation -->
             <NavLinks />
+
+            <ProfileDropdown v-if="$route.path.startsWith('/auth')" />
           </ul>
         </div>
       </div>

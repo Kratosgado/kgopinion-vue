@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { getPostsByAuthor } from '@/lib/backend/post.query'
+import { deletePostBySlug, getPostsByAuthor } from '@/lib/backend/post.query'
+import { togglePublish } from '@/lib/utils/editor.functions'
 import type { Post, PostStatus } from '@/lib/utils/types'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -51,26 +52,13 @@ onMounted(async () => {
   }
 })
 
-const createNewPost = () => {
-  router.push('/auth/editor/new')
-}
-
-const editPost = (slug: string) => {
-  router.push(`/auth/editor/${slug}`)
-}
-
-const viewPost = (slug: string) => {
-  router.push(`/articles/${slug}`)
-}
-
 const togglePublishStatus = async (post: Post) => {
-  // post.published = !post.published
-  // if (post.published) {
-  //   post.publishedAt = new Date()
-  // } else {
-  //   post.publishedAt = undefined
-  // }
-  posts.value = [...posts.value]
+  const status = post.status === 'draft' ? 'published' : 'draft'
+  const value = await togglePublish(post.slug, status)
+  if (value) {
+    const p = posts.value.findIndex((pred) => (pred.slug = post.slug))
+    posts.value[p] = { ...post, status }
+  }
 }
 
 const deletePost = async (postToDelete: Post) => {
@@ -81,6 +69,7 @@ const deletePost = async (postToDelete: Post) => {
   ) {
     return
   }
+  await deletePostBySlug(postToDelete.slug)
   posts.value = posts.value.filter((post) => post.slug !== postToDelete.slug)
 }
 </script>
@@ -89,7 +78,7 @@ const deletePost = async (postToDelete: Post) => {
   <div class="container mx-auto py-12 px-4">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
       <h1 class="text-4xl font-bold">Author Dashboard</h1>
-      <button class="btn btn-primary" @click="createNewPost">
+      <button class="btn btn-primary" @click="router.push('/auth/editor/new')">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
           <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -137,19 +126,19 @@ const deletePost = async (postToDelete: Post) => {
         <p v-if="searchQuery">No posts match your search criteria. Try a different search term.</p>
         <template v-else-if="activeTab === 'published'">
           <p>You don't have any published posts yet.</p>
-          <button class="btn btn-primary mt-4 mx-auto" @click="createNewPost">
+          <button class="btn btn-primary mt-4 mx-auto" @click="router.push('/auth/editor/new')">
             Create Your First Post
           </button>
         </template>
         <template v-else-if="activeTab === 'draft'">
           <p>You don't have any drafts.</p>
-          <button class="btn btn-primary mt-4 mx-auto" @click="createNewPost">
+          <button class="btn btn-primary mt-4 mx-auto" @click="router.push('/auth/editor/new')">
             Create New Post
           </button>
         </template>
         <template v-else>
           <p>You don't have any posts yet.</p>
-          <button class="btn btn-primary mt-4 mx-auto" @click="createNewPost">
+          <button class="btn btn-primary mt-4 mx-auto" @click="router.push('/auth/editor/new')">
             Create Your First Post
           </button>
         </template>
@@ -245,9 +234,9 @@ const deletePost = async (postToDelete: Post) => {
                   </svg>
                 </label>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                  <li><button @click="editPost(post.slug)">Edit</button></li>
+                  <li><button @click="router.push(`/auth/editor/${post.slug}`)">Edit</button></li>
                   <li v-if="post.status === 'published'">
-                    <button @click="viewPost(post.slug)">View</button>
+                    <button @click="router.push(`/articles/${post.slug}`)">View</button>
                   </li>
                   <li>
                     <button @click="togglePublishStatus(post)">
