@@ -2,6 +2,7 @@
 import { useHead } from '@vueuse/head'
 import { useRouter } from 'vue-router'
 import type { SEOMetadata } from './types'
+import { watch } from 'vue'
 
 const { metadata } = defineProps<{
   metadata: SEOMetadata
@@ -18,9 +19,8 @@ const defaultMetadata: SEOMetadata = {
   keywords: [],
 }
 
-let seoData = { ...defaultMetadata, ...metadata }
+const seoData = { ...defaultMetadata, ...metadata }
 
-// Use @vueuse/head to manage head tags
 useHead({
   title: `${seoData.title} | Kratosgado`,
   meta: [
@@ -41,10 +41,10 @@ useHead({
     // Article-specific meta
     ...(seoData.type === 'article'
       ? [
-        { property: 'article:published_time', content: seoData.publishedTime },
-        { property: 'article:modified_time', content: seoData.modifiedTime },
-        { property: 'article:author', content: seoData.author },
-      ]
+          { property: 'article:published_time', content: seoData.publishedTime },
+          { property: 'article:modified_time', content: seoData.modifiedTime },
+          { property: 'article:author', content: seoData.author },
+        ]
       : []),
   ],
   link: [{ rel: 'canonical', href: seoData.canonicalUrl }],
@@ -58,13 +58,13 @@ useHead({
         description: seoData.description,
         ...(seoData.type === 'article'
           ? {
-            datePublished: seoData.publishedTime,
-            dateModified: seoData.modifiedTime,
-            author: {
-              '@type': 'Person',
-              name: seoData.author,
-            },
-          }
+              datePublished: seoData.publishedTime,
+              dateModified: seoData.modifiedTime,
+              author: {
+                '@type': 'Person',
+                name: seoData.author,
+              },
+            }
           : {}),
         url: seoData.canonicalUrl,
       }),

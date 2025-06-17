@@ -95,7 +95,7 @@ const likeComment = (commentId: string) => {
 
 <template>
   <div>
-    <SEO :metadata="metadata" />
+    <SEO v-if="metadata.title" :metadata="metadata" />
     <div v-if="article" class="relative h-[40vh] w-full">
       <img :src="article.featuredImage || '/favicon.ico'" :alt="article.title" class="h-full w-full object-cover" />
       <div class="absolute inset-0 flex items-center justify-center bg-black/50">
@@ -199,7 +199,7 @@ const likeComment = (commentId: string) => {
                         <span class="font-bold">{{ comment.authorName }}</span>
                         <span class="ml-2 text-sm text-gray-500">{{
                           comment.createdAt.toLocaleDateString()
-                        }}</span>
+                          }}</span>
                       </div>
                       <button class="btn btn-ghost btn-xs gap-1" @click="likeComment(comment.id)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -224,7 +224,7 @@ const likeComment = (commentId: string) => {
                               <span class="font-bold">{{ reply.authorName }}</span>
                               <span class="ml-2 text-sm text-gray-500">{{
                                 reply.createdAt.toLocaleDateString()
-                              }}</span>
+                                }}</span>
                             </div>
                             <button class="btn btn-ghost btn-xs gap-1" @click="likeComment(reply.id)">
                               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
@@ -255,7 +255,7 @@ const likeComment = (commentId: string) => {
             <div class="flex flex-wrap gap-2">
               <span v-for="keyword in article.tags" :key="keyword" class="badge badge-outline">{{
                 keyword
-              }}</span>
+                }}</span>
             </div>
           </div>
 

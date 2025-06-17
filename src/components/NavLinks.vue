@@ -1,6 +1,6 @@
 <template>
   <li aria-label="home">
-    <RouterLink to="/home" :class="$route.path === '/home' && 'bg-primary'">Home</RouterLink>
+    <RouterLink to="/" :class="$route.path === '/' && 'bg-primary'">Home</RouterLink>
   </li>
   <li aria-label="articles">
     <RouterLink to="/articles" :class="$route.path === '/articles' && 'bg-primary'"
