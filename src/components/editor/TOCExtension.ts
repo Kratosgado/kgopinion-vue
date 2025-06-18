@@ -10,24 +10,12 @@ type TOCOptions = {
   updateEvent: string
 }
 
-function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '') // Remove special characters
-    .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
-    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
-}
-function ensureUniqueId(id: string, ids: Set<string>) {
-  if (!ids.has(id)) {
-    return id
-  }
-
+function ensureUniqueId(ids: Set<string>) {
   let counter = 1
-  let uniqueId = `${id}-${counter}`
+  let uniqueId = `h-${counter}`
   while (ids.has(uniqueId)) {
     counter++
-    uniqueId = `${id}-${counter}`
+    uniqueId = `h-${counter}`
   }
   return uniqueId
 }
@@ -77,55 +65,7 @@ export const TOC = Extension.create<TOCOptions>({
   },
 
   addProseMirrorPlugins() {
-    const extension = this
     return [
-      new Plugin({
-        key: new PluginKey('toc'),
-        view() {
-          return {
-            update: (view, prevState) => {
-              const state = view.state
-              if (prevState && prevState.doc.eq(state.doc)) return
-
-              const headings: HeadingItem[] = []
-              const { levels } = extension.options
-
-              state.doc.descendants((node, pos) => {
-                if (node.type.name === 'heading' && levels.includes(node.attrs.level)) {
-                  // generate id based on text content if none exists
-                  let id = node.attrs.id || ''
-                  if (!id) {
-                    id = node.textContent
-                      .toLowerCase()
-                      .replace(/\s+/g, '-')
-                      .replace(/[^\w-]/g, '')
-                  }
-
-                  headings.push({
-                    id,
-                    level: node.attrs.level,
-                    text: node.textContent,
-                    pos,
-                  })
-                }
-                return true
-              })
-
-              // update toc element if provided
-              if (extension.options.element) {
-                ; (extension as any).renderToElement(extension.options.element, headings)
-              }
-
-              // emit event for vue component to catch
-              const event = new CustomEvent(extension.options.updateEvent, {
-                detail: { headings },
-              })
-              window.dispatchEvent(event)
-              return true
-            },
-          }
-        },
-      }),
       new Plugin({
         key: new PluginKey('headingId'),
         appendTransaction: (
@@ -146,8 +86,7 @@ export const TOC = Extension.create<TOCOptions>({
             if (node.type.name === 'heading') {
               const textContent = node.textContent.trim()
               if (textContent && !node.attrs.id) {
-                const baseId = generateSlug(textContent)
-                const uniqueId = ensureUniqueId(baseId, existingIds)
+                const uniqueId = ensureUniqueId(existingIds)
                 existingIds.add(uniqueId)
                 tr.setNodeMarkup(pos, null, { ...node.attrs, id: uniqueId })
                 modified = true
