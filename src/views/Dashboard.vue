@@ -3,9 +3,6 @@ import { deletePostBySlug, getPostsByAuthor } from '@/lib/backend/post.query'
 import { togglePublish } from '@/lib/utils/editor.functions'
 import type { Post, PostStatus } from '@/lib/utils/types'
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
 
 // State
 const posts = ref<Post[]>([])
@@ -78,9 +75,19 @@ const deletePost = async (postToDelete: Post) => {
   <div class="container mx-auto py-12 px-4">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
       <h1 class="text-4xl font-bold">Author Dashboard</h1>
-      <button class="btn btn-primary" @click="router.push('/auth/editor/new')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+      <button class="btn btn-primary" @click="$router.push('/auth/editor/new')">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="mr-2"
+        >
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
@@ -90,25 +97,55 @@ const deletePost = async (postToDelete: Post) => {
 
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
       <div class="tabs tabs-boxed">
-        <button class="tab" :class="{ 'tab-active': activeTab === 'published' }" @click="activeTab = 'published'">
+        <button
+          class="tab"
+          :class="{ 'tab-active': activeTab === 'published' }"
+          @click="activeTab = 'published'"
+        >
           Published ({{ publishedCount }})
         </button>
-        <button class="tab" :class="{ 'tab-active': activeTab === 'draft' }" @click="activeTab = 'draft'">
+        <button
+          class="tab"
+          :class="{ 'tab-active': activeTab === 'draft' }"
+          @click="activeTab = 'draft'"
+        >
           Drafts ({{ draftCount }})
         </button>
-        <button class="tab" :class="{ 'tab-active': activeTab === 'scheduled' }" @click="activeTab = 'scheduled'">
+        <button
+          class="tab"
+          :class="{ 'tab-active': activeTab === 'scheduled' }"
+          @click="activeTab = 'scheduled'"
+        >
           Scheduled ({{ scheduledCount }})
         </button>
-        <button class="tab" :class="{ 'tab-active': activeTab === undefined }" @click="activeTab = undefined">
+        <button
+          class="tab"
+          :class="{ 'tab-active': activeTab === undefined }"
+          @click="activeTab = undefined"
+        >
           All Posts ({{ posts.length }})
         </button>
       </div>
       <div class="form-control w-full md:w-auto">
         <div class="input-group">
-          <input v-model="searchQuery" type="text" placeholder="Search posts..." class="input input-bordered" />
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search posts..."
+            class="input input-bordered"
+          />
           <button aria-label="search" class="btn btn-square">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -126,19 +163,19 @@ const deletePost = async (postToDelete: Post) => {
         <p v-if="searchQuery">No posts match your search criteria. Try a different search term.</p>
         <template v-else-if="activeTab === 'published'">
           <p>You don't have any published posts yet.</p>
-          <button class="btn btn-primary mt-4 mx-auto" @click="router.push('/auth/editor/new')">
+          <button class="btn btn-primary mt-4 mx-auto" @click="$router.push('/auth/editor/new')">
             Create Your First Post
           </button>
         </template>
         <template v-else-if="activeTab === 'draft'">
           <p>You don't have any drafts.</p>
-          <button class="btn btn-primary mt-4 mx-auto" @click="router.push('/auth/editor/new')">
+          <button class="btn btn-primary mt-4 mx-auto" @click="$router.push('/auth/editor/new')">
             Create New Post
           </button>
         </template>
         <template v-else>
           <p>You don't have any posts yet.</p>
-          <button class="btn btn-primary mt-4 mx-auto" @click="router.push('/auth/editor/new')">
+          <button class="btn btn-primary mt-4 mx-auto" @click="$router.push('/auth/editor/new')">
             Create Your First Post
           </button>
         </template>
@@ -180,7 +217,11 @@ const deletePost = async (postToDelete: Post) => {
             </td>
             <td class="hidden md:table-cell">
               <div class="flex flex-wrap gap-1">
-                <div v-for="category in post.categories.slice(0, 2)" :key="category" class="badge badge-outline">
+                <div
+                  v-for="category in post.categories.slice(0, 2)"
+                  :key="category"
+                  class="badge badge-outline"
+                >
                   {{ category }}
                 </div>
                 <div v-if="post.categories.length > 2" class="badge badge-outline">
@@ -191,26 +232,53 @@ const deletePost = async (postToDelete: Post) => {
             <td class="hidden md:table-cell">
               <div class="flex items-center gap-2">
                 <div class="flex items-center gap-1" title="Likes">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <path
-                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
                   </svg>
                   {{ post.likeCount }}
                 </div>
                 <div class="flex items-center gap-1" title="Comments">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <path
-                      d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
-                    </path>
+                      d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                    ></path>
                   </svg>
                   {{ post.commentCount }}
                 </div>
                 <div class="flex items-center gap-1" title="Read Time">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
@@ -219,24 +287,38 @@ const deletePost = async (postToDelete: Post) => {
               </div>
             </td>
             <td>
-              <div :class="`badge ${post.status === 'published' ? 'badge-success' : 'badge-secondary'}`">
+              <div
+                :class="`badge ${post.status === 'published' ? 'badge-success' : 'badge-secondary'}`"
+              >
                 {{ post.status === 'published' ? 'Published' : 'Draft' }}
               </div>
             </td>
             <td>
               <div class="dropdown dropdown-end">
                 <label for="" tabindex="0" class="btn btn-ghost btn-xs">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <circle cx="12" cy="12" r="1"></circle>
                     <circle cx="12" cy="5" r="1"></circle>
                     <circle cx="12" cy="19" r="1"></circle>
                   </svg>
                 </label>
-                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                  <li><button @click="router.push(`/auth/editor/${post.slug}`)">Edit</button></li>
+                <ul
+                  tabindex="0"
+                  class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li><button @click="$router.push(`/auth/editor/${post.slug}`)">Edit</button></li>
                   <li v-if="post.status === 'published'">
-                    <button @click="router.push(`/articles/${post.slug}`)">View</button>
+                    <button @click="$router.push(`/articles/${post.slug}`)">View</button>
                   </li>
                   <li>
                     <button @click="togglePublishStatus(post)">

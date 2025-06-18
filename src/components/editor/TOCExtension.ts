@@ -1,12 +1,46 @@
 import type { HeadingItem } from '@/lib/utils/types'
 import { Extension } from '@tiptap/core'
-import { Plugin, PluginKey } from 'prosemirror-state'
+import type { Node } from '@tiptap/pm/model'
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state'
 
 type TOCOptions = {
   element: HTMLElement | null
   levels: number[]
   cssClass: string
   updateEvent: string
+}
+
+function generateSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
+    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+}
+function ensureUniqueId(id: string, ids: Set<string>) {
+  if (!ids.has(id)) {
+    return id
+  }
+
+  let counter = 1
+  let uniqueId = `${id}-${counter}`
+  while (ids.has(uniqueId)) {
+    counter++
+    uniqueId = `${id}-${counter}`
+  }
+  return uniqueId
+}
+
+function collectExistingIds(doc: Node): Set<string> {
+  const existingIds = new Set<string>()
+
+  doc.descendants((node) => {
+    if (node.type.name === 'heading' && node.attrs.id) {
+      existingIds.add(node.attrs.id)
+    }
+  })
+  return existingIds
 }
 
 export const TOC = Extension.create<TOCOptions>({
@@ -19,6 +53,27 @@ export const TOC = Extension.create<TOCOptions>({
       cssClass: 'toc',
       updateEvent: 'update:toc',
     }
+  },
+  addGlobalAttributes() {
+    return [
+      {
+        types: ['heading'],
+        attributes: {
+          id: {
+            default: null,
+            parseHTML: (element) => element.getAttribute('id'),
+            renderHTML: (attributes: { id?: string }) => {
+              if (!attributes.id) {
+                return {}
+              }
+              return {
+                id: attributes.id,
+              }
+            },
+          },
+        },
+      },
+    ]
   },
 
   addProseMirrorPlugins() {
@@ -58,7 +113,7 @@ export const TOC = Extension.create<TOCOptions>({
 
               // update toc element if provided
               if (extension.options.element) {
-                ;(extension as any).renderToElement(extension.options.element, headings)
+                ; (extension as any).renderToElement(extension.options.element, headings)
               }
 
               // emit event for vue component to catch
@@ -69,6 +124,37 @@ export const TOC = Extension.create<TOCOptions>({
               return true
             },
           }
+        },
+      }),
+      new Plugin({
+        key: new PluginKey('headingId'),
+        appendTransaction: (
+          transactions: readonly Transaction[],
+          oldState: EditorState,
+          newState: EditorState,
+        ): Transaction | null => {
+          const docChanged = transactions.some((trans) => trans.docChanged)
+          if (!docChanged) {
+            return null
+          }
+
+          const tr = newState.tr
+          const existingIds = collectExistingIds(newState.doc)
+          let modified = false
+
+          newState.doc.descendants((node, pos) => {
+            if (node.type.name === 'heading') {
+              const textContent = node.textContent.trim()
+              if (textContent && !node.attrs.id) {
+                const baseId = generateSlug(textContent)
+                const uniqueId = ensureUniqueId(baseId, existingIds)
+                existingIds.add(uniqueId)
+                tr.setNodeMarkup(pos, null, { ...node.attrs, id: uniqueId })
+                modified = true
+              }
+            }
+          })
+          return modified ? tr : null
         },
       }),
     ]
