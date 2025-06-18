@@ -17,7 +17,6 @@ export type HeadingItem = {
   id: string
   level: number
   text: string
-  pos: number
 }
 
 export type ImageType = {

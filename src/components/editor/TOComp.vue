@@ -47,15 +47,10 @@ const updateHeadings = () => {
 
   let cmatch = hmatches.next().value
   while (cmatch) {
-    const level = Number(cmatch[1])
-    const id = cmatch[2]
-    const text = cmatch[3]
-
     newHeadings.push({
-      id,
-      level,
-      text,
-      pos: 3,
+      id: cmatch[2],
+      level: Number(cmatch[1]),
+      text: cmatch[3],
     })
     cmatch = hmatches.next().value
   }

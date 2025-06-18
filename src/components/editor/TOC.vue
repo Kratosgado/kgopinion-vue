@@ -64,19 +64,12 @@ const updateHeadings = () => {
   editor.state.doc.descendants((node, pos, _, idx) => {
     if (node.type.name === 'heading' && levels.includes(node.attrs.level)) {
       // Generate an ID based on text content if none exists
-      let id = node.attrs.id || ''
-      if (!id) {
-        id = node.textContent
-          .toLowerCase()
-          .replace(/\s+/g, '-')
-          .replace(/[^\w-]/g, '')
-      }
+      let id = node.attrs.id
 
       newHeadings.push({
         id,
         level: node.attrs.level,
         text: node.textContent,
-        pos,
       })
     }
     return true
@@ -110,13 +103,19 @@ onUnmounted(() => {
     <div v-else class="toc-container">
       <ul class="toc-list">
         <template v-for="(heading, index) in headings" :key="index">
-          <li :class="[
-            'toc-item',
-            `toc-level-${heading.level}`,
-            { 'toc-active': activeId === heading.id },
-          ]" :style="{ paddingLeft: `${(heading.level - 1) * 1}rem` }">
-            <a :href="`#${heading.id}`" class="toc-link block py-1 px-2 rounded hover:bg-base-200 transition-colors"
-              @click.prevent="scrollToHeading(heading.id)">
+          <li
+            :class="[
+              'toc-item',
+              `toc-level-${heading.level}`,
+              { 'toc-active': activeId === heading.id },
+            ]"
+            :style="{ paddingLeft: `${(heading.level - 1) * 1}rem` }"
+          >
+            <a
+              :href="`#${heading.id}`"
+              class="toc-link block py-1 px-2 rounded hover:bg-base-200 transition-colors"
+              @click.prevent="scrollToHeading(heading.id)"
+            >
               {{ heading.text }}
             </a>
           </li>

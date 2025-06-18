@@ -66,8 +66,8 @@ const deletePost = async (postToDelete: Post) => {
   ) {
     return
   }
-  await deletePostBySlug(postToDelete.slug)
-  posts.value = posts.value.filter((post) => post.slug !== postToDelete.slug)
+  const done = await deletePostBySlug(postToDelete.slug)
+  if (done) posts.value = posts.value.filter((post) => post.slug !== postToDelete.slug)
 }
 </script>
 
